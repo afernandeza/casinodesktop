@@ -29,15 +29,16 @@ import com.toedter.calendar.JTextFieldDateEditor;
 public class MemberInfoForm extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
-	private static final int FIELDSSIZE = 15;
-	private static final int PICWIDTH = 200;
-	private static final int PICHEIGHT = 150;
-	
+	private static final int FIELDSIZE = 15;
+	private static final int PICWIDTH = 300;
+	private static final int PICHEIGHT = 225;
 	
 	private final JFileChooser fc;
 	private JTextField appat;
 	private JTextField apmat;
 	private JTextField nombre;
+	private JTextField telcasa;
+	private JTextField telcel;
 	private JComboBox sexo; 
 	private JDateChooser fecha;
 	private JButton imagebutton;
@@ -49,7 +50,6 @@ public class MemberInfoForm extends JFrame implements ActionListener{
 	private JTextField estado;
 	private JTextField pais;
 	private ImagePanel image;
-	
 	
 	public MemberInfoForm(){
 		super("Miembro del Casino");
@@ -87,19 +87,19 @@ public class MemberInfoForm extends JFrame implements ActionListener{
 
         JLabel l = new JLabel(labels[1], JLabel.TRAILING);
         memberform.add(l);
-        appat = new JTextField(FIELDSSIZE);
+        appat = new JTextField(FIELDSIZE);
         l.setLabelFor(appat);
         memberform.add(appat);
         
         JLabel l2 = new JLabel(labels[2], JLabel.TRAILING);
         memberform.add(l2);
-        apmat = new JTextField(FIELDSSIZE);
+        apmat = new JTextField(FIELDSIZE);
         l2.setLabelFor(apmat);
         memberform.add(apmat);
         
         JLabel l3 = new JLabel(labels[3], JLabel.TRAILING);
         memberform.add(l3);
-        nombre = new JTextField(FIELDSSIZE);
+        nombre = new JTextField(FIELDSIZE);
         l3.setLabelFor(nombre);
         memberform.add(nombre);
         
@@ -124,8 +124,22 @@ public class MemberInfoForm extends JFrame implements ActionListener{
 				"<html><b>Municipio o delegaci"+Helpers.OACUTE+"n:</b></html>",
 				"<html><b>C"+Helpers.OACUTE+"digo postal:</b></html>",
 				"<html><b>Estado:</b></html>",
-				"<html><b>Pa"+Helpers.IACUTE+"s:</b></html>"};
+				"<html><b>Pa"+Helpers.IACUTE+"s:</b></html>",
+				"<html><b>Tel"+ Helpers.EACUTE+"fono casa:</b></html>",
+				"<html><b>Tel"+ Helpers.EACUTE+"fono celular:</b></html>"};
         int aPairs = alabels.length;
+        
+        JLabel labeltelcasa = new JLabel(alabels[9], JLabel.TRAILING);
+        addressform.add(labeltelcasa);
+        telcasa = new JTextField(FIELDSIZE);
+        labeltelcasa.setLabelFor(telcasa);
+        addressform.add(telcasa);
+        
+        JLabel labeltelcel = new JLabel(alabels[10], JLabel.TRAILING);
+        addressform.add(labeltelcel);
+        telcel = new JTextField(FIELDSIZE);
+        labeltelcel.setLabelFor(telcel);
+        addressform.add(telcel);
         
         JLabel l4 = new JLabel(alabels[0], JLabel.TRAILING);
         addressform.add(l4);
@@ -148,43 +162,43 @@ public class MemberInfoForm extends JFrame implements ActionListener{
         
         l = new JLabel(alabels[2], JLabel.TRAILING);
         addressform.add(l);
-        calle = new JTextField(FIELDSSIZE);
+        calle = new JTextField(FIELDSIZE);
         l.setLabelFor(calle);
         addressform.add(calle);
         
         l2 = new JLabel(alabels[3], JLabel.TRAILING);
         addressform.add(l2);
-        num = new JTextField(FIELDSSIZE);
+        num = new JTextField(FIELDSIZE);
         l2.setLabelFor(num);
         addressform.add(num);
 
         l3 = new JLabel(alabels[4], JLabel.TRAILING);
         addressform.add(l3);
-        colonia = new JTextField(FIELDSSIZE);
+        colonia = new JTextField(FIELDSIZE);
         l3.setLabelFor(colonia);
         addressform.add(colonia);
         
         l4 = new JLabel(alabels[5], JLabel.TRAILING);
         addressform.add(l4);
-        municipio = new JTextField(FIELDSSIZE);
+        municipio = new JTextField(FIELDSIZE);
         l4.setLabelFor(municipio);
         addressform.add(municipio);
         
         l5 = new JLabel(alabels[6], JLabel.TRAILING);
         addressform.add(l5);
-        cp = new JTextField(FIELDSSIZE);
+        cp = new JTextField(FIELDSIZE);
         l5.setLabelFor(cp);
         addressform.add(cp);
         
         JLabel l6 = new JLabel(alabels[7], JLabel.TRAILING);
         addressform.add(l6);
-        estado = new JTextField(FIELDSSIZE);
+        estado = new JTextField(FIELDSIZE);
         l6.setLabelFor(estado);
         addressform.add(estado);
         
         JLabel l7 = new JLabel(alabels[8], JLabel.TRAILING);
         addressform.add(l7);
-        pais = new JTextField(FIELDSSIZE);
+        pais = new JTextField(FIELDSIZE);
         l7.setLabelFor(pais);
         addressform.add(pais);
         
@@ -210,7 +224,7 @@ public class MemberInfoForm extends JFrame implements ActionListener{
 	}
 	
 	public static void main(String args[]){
-		MemberInfoForm n = new MemberInfoForm();
+		EmployeeInfoForm n = new EmployeeInfoForm();
 		n.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		n.setVisible(true);
 	}

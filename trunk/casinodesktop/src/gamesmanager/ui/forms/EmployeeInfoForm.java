@@ -33,7 +33,6 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 	private static final int PICWIDTH = 300;
 	private static final int PICHEIGHT = 225;
 	
-	
 	private final JFileChooser fc;
 	private JTextField appat;
 	private JTextField apmat;
@@ -51,7 +50,6 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 	private JTextField estado;
 	private JTextField pais;
 	private ImagePanel image;
-	
 	
 	public EmployeeInfoForm(){
 		super("Empleado del Casino");
@@ -245,4 +243,5 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 			}
 		}
 	}
+
 }

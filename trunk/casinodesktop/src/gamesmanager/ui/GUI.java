@@ -3,8 +3,10 @@ package gamesmanager.ui;
 import gamesmanager.db.SynchronizeDatabase;
 import gamesmanager.ui.forms.CheckMemberForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
+import gamesmanager.ui.forms.GameTypeForm;
 import gamesmanager.ui.forms.LoginForm;
 import gamesmanager.ui.forms.MemberInfoForm;
+import gamesmanager.ui.forms.SessionForm;
 import gamesmanager.ui.forms.TableInfoForm;
 
 import java.awt.BorderLayout;
@@ -27,7 +29,9 @@ public class GUI extends JFrame implements ActionListener{
 
 	private static final String NEWMEMBER = "Nuevo miembro...";
 	private static final String NEWEMPLOYEE = "Nuevo empleado...";
-	private static final String NEWTABLE = "Nueva mesa...";
+	private static final String NEWTABLE = "Mesas...";
+	private static final String NEWSESSION = "Nueva sesi"+Helpers.OACUTE+"n...";
+	private static final String NEWGAMETYPE = "Tipos de juego...";
 	private static final String SYNC = "Sincronizar...";
 	private static final String MANUAL = "Manual de usuario";
 	private static final String ABOUT = "Acerca de";
@@ -39,6 +43,7 @@ public class GUI extends JFrame implements ActionListener{
 	private JMenuBar menubar;
 	private JMenu file;
 	private JMenu services;
+	private JMenu admin;
 	private JMenu help;
 	private LoginForm loginForm;
 	private CheckMemberForm checkForm;
@@ -111,6 +116,7 @@ public class GUI extends JFrame implements ActionListener{
 	private void setMenuBarEnabled(boolean enabled){
 		file.setEnabled(enabled);
 		services.setEnabled(enabled);
+		admin.setEnabled(enabled);
 		help.setEnabled(enabled);
 	}
 
@@ -130,9 +136,9 @@ public class GUI extends JFrame implements ActionListener{
 		newEmployee.addActionListener(this);
 		file.add(newEmployee);
 		
-		JMenuItem newTable = new JMenuItem(NEWTABLE);
-		newTable.addActionListener(this);
-		file.add(newTable);
+		JMenuItem newSession = new JMenuItem(NEWSESSION);
+		newSession.addActionListener(this);
+		file.add(newSession);
 		
 		file.addSeparator();
 
@@ -151,6 +157,17 @@ public class GUI extends JFrame implements ActionListener{
 		JMenuItem sync = new JMenuItem(SYNC);
 		sync.addActionListener(this);
 		services.add(sync);
+		
+		admin = new JMenu("Administrar");
+		menubar.add(admin);
+		
+		JMenuItem newTable = new JMenuItem(NEWTABLE);
+		newTable.addActionListener(this);
+		admin.add(newTable);
+		
+		JMenuItem newGameType = new JMenuItem(NEWGAMETYPE);
+		newGameType.addActionListener(this);
+		admin.add(newGameType);
 		
 		help = new JMenu("Ayuda");
 		menubar.add(help);
@@ -216,6 +233,12 @@ public class GUI extends JFrame implements ActionListener{
 	        db.start();
 //			SyncForm tableform = new SyncForm();
 //			tableform.setVisible(true);
+		} else if(action.equals(NEWSESSION)){
+			SessionForm sessionform = new SessionForm();
+			sessionform.setVisible(true);
+		} else if(action.equals(NEWGAMETYPE)){
+			GameTypeForm gametypeform = new GameTypeForm();
+			gametypeform.setVisible(true);
 		} else if(action.equals(MANUAL)){
 	    	HelpWindow h = new HelpWindow("help/index.html", 500, 450);
 	    	h.setVisible(true);

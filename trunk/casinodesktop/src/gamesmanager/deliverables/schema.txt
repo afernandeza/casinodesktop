@@ -1,0 +1,18 @@
+Base de datos por casino
+
+Clientes (clienteid, direccionid, fecha registro, credito, nombres, apellido paterno, apellido materno, sexo, fecha nacimiento, fotografia)
+Empleados (empleadoid, direccionid, usuario, password, tipo, nombres, apellido paterno, apellido materno, sexo, fecha nacimiento, fotografia)
+Direcciones (direccionid, calle y numero, numero interior, colonia, municipio o delegacion, codigo postal, estado, pais)
+Sesiones (sesionid, empleadoid, numero de mesa, juego, fecha, hora apertura, hora cierre, fichas inicio, fichas fin)
+MiembrosCadena(casinoid, clienteid)
+
+Base de datos central
+
+Casinos (casinoid, nombre, direccionid)
+Direcciones (direccionid, calle y numero, numero interior, colonia, municipio o delegacion, codigo postal, estado, pais)
+Administradores (adminid, nombres, apellido paterno, apellido materno, sexo, usuario, password)
+
+Usuarios:
+Empleado 
+Gerente de casino
+Due–o / Administrador

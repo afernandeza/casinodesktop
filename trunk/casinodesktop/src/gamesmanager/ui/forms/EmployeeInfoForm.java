@@ -245,5 +245,4 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 			}
 		}
 	}
-
 }

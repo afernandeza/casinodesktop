@@ -182,7 +182,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
         l6.setLabelFor(estado);
         addressform.add(estado);
         
-        JLabel l7 = new JLabel(alabels[7], JLabel.TRAILING);
+        JLabel l7 = new JLabel(alabels[8], JLabel.TRAILING);
         addressform.add(l7);
         pais = new JTextField(FIELDSSIZE);
         l7.setLabelFor(pais);

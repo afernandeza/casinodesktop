@@ -1,6 +1,5 @@
 package gamesmanager.ui;
 
-import gamesmanager.db.SynchronizeDatabase;
 import gamesmanager.ui.forms.CheckMemberForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
 import gamesmanager.ui.forms.GameTypeForm;
@@ -228,11 +227,7 @@ public class GUI extends JFrame implements ActionListener{
 			TableInfoForm tableform = new TableInfoForm();
 			tableform.setVisible(true);
 		} else if(action.equals(SYNC)){
-			TrackProgress monitor = new TrackProgress();
-	    	SynchronizeDatabase db = new SynchronizeDatabase(monitor);
-	        db.start();
-//			SyncForm tableform = new SyncForm();
-//			tableform.setVisible(true);
+			checkForm.startSync();
 		} else if(action.equals(NEWSESSION)){
 			SessionForm sessionform = new SessionForm();
 			sessionform.setVisible(true);

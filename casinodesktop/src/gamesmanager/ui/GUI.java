@@ -1,5 +1,7 @@
 package gamesmanager.ui;
 
+import gamesmanager.beans.Member;
+import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.forms.CheckMemberForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
 import gamesmanager.ui.forms.GameTypeForm;
@@ -28,9 +30,10 @@ public class GUI extends JFrame implements ActionListener{
 
 	private static final String NEWMEMBER = "Nuevo miembro...";
 	private static final String NEWEMPLOYEE = "Nuevo empleado...";
-	private static final String NEWTABLE = "Mesas...";
+	private static final String ADMINTABLES = "Mesas...";
 	private static final String NEWSESSION = "Nueva sesi"+Helpers.OACUTE+"n...";
-	private static final String NEWGAMETYPE = "Tipos de juego...";
+	private static final String ADMINGAMETYPES = "Tipos de juego...";
+	private static final String ADMINEMPLOYEES = "Empleados...";
 	private static final String SYNC = "Sincronizar...";
 	private static final String MANUAL = "Manual de usuario";
 	private static final String ABOUT = "Acerca de";
@@ -160,13 +163,17 @@ public class GUI extends JFrame implements ActionListener{
 		admin = new JMenu("Administrar");
 		menubar.add(admin);
 		
-		JMenuItem newTable = new JMenuItem(NEWTABLE);
+		JMenuItem newTable = new JMenuItem(ADMINTABLES);
 		newTable.addActionListener(this);
 		admin.add(newTable);
 		
-		JMenuItem newGameType = new JMenuItem(NEWGAMETYPE);
+		JMenuItem newGameType = new JMenuItem(ADMINGAMETYPES);
 		newGameType.addActionListener(this);
 		admin.add(newGameType);
+		
+		JMenuItem adminEmployees = new JMenuItem(ADMINEMPLOYEES);
+		adminEmployees.addActionListener(this);
+		admin.add(adminEmployees);
 		
 		help = new JMenu("Ayuda");
 		menubar.add(help);
@@ -218,12 +225,12 @@ public class GUI extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if(action.equals(NEWMEMBER)){
-			MemberInfoForm memberform = new MemberInfoForm();
+			MemberInfoForm memberform = new MemberInfoForm(null);
 			memberform.setVisible(true);
 		} else if(action.equals(NEWEMPLOYEE)){
 			EmployeeInfoForm employeeform = new EmployeeInfoForm();
 			employeeform.setVisible(true);
-		} else if(action.equals(NEWTABLE)){
+		} else if(action.equals(ADMINTABLES)){
 			TableInfoForm tableform = new TableInfoForm();
 			tableform.setVisible(true);
 		} else if(action.equals(SYNC)){
@@ -231,7 +238,7 @@ public class GUI extends JFrame implements ActionListener{
 		} else if(action.equals(NEWSESSION)){
 			SessionForm sessionform = new SessionForm();
 			sessionform.setVisible(true);
-		} else if(action.equals(NEWGAMETYPE)){
+		} else if(action.equals(ADMINGAMETYPES)){
 			GameTypeForm gametypeform = new GameTypeForm();
 			gametypeform.setVisible(true);
 		} else if(action.equals(MANUAL)){

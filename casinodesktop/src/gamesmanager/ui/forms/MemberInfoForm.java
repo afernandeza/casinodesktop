@@ -1,5 +1,7 @@
 package gamesmanager.ui.forms;
 
+import gamesmanager.beans.Member;
+import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
 import gamesmanager.ui.ImagePanel;
@@ -51,7 +53,7 @@ public class MemberInfoForm extends JFrame implements ActionListener{
 	private JTextField pais;
 	private ImagePanel image;
 	
-	public MemberInfoForm(){
+	public MemberInfoForm(Member m){
 		super("Miembro del Casino");
 		Helpers.setDefaultAppearance(this, true);
 		this.setLayout(new GridBagLayout());
@@ -213,14 +215,17 @@ public class MemberInfoForm extends JFrame implements ActionListener{
 		c.gridheight = 2;
         this.add(addressform, c);
 		
+        if(m == null){
+        	// new member
+        	System.out.println("swhit");
+        } else {
+        	// existing member
+        }
+        
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
 		this.pack();
 		this.setSize(this.getWidth() + Helpers.XOFFSET, this.getHeight() + Helpers.YOFFSET);
 		this.setLocationRelativeTo(null);
-	}
-	
-	public MemberInfoForm(String memberid){
-		this();
 	}
 	
 	public static void main(String args[]){

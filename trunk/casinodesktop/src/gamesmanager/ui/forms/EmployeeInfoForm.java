@@ -236,7 +236,6 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();
 				this.image.loadImage(file.getAbsolutePath());
-				this.image.repaint();
 				System.out.println("Opening: " + file.getName() + ".");
 			} else {
 				System.out.println("Open command cancelled by user.");

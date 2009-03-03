@@ -1,5 +1,6 @@
 package gamesmanager.ui.forms;
 
+import gamesmanager.beans.Employee;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
 import gamesmanager.ui.ImagePanel;
@@ -22,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.SwingWorker;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -50,9 +52,14 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 	private JTextField estado;
 	private JTextField pais;
 	private ImagePanel image;
+	private JButton newemployee;
+	private JButton savechanges;
+	private JButton cancel;
+	private Employee e;
 	
-	public EmployeeInfoForm(){
+	public EmployeeInfoForm(Employee e){
 		super("Empleado del Casino");
+		this.e = e;
 		Helpers.setDefaultAppearance(this, true);
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -213,25 +220,50 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 		c.gridheight = 2;
         this.add(addressform, c);
 		
+		cancel = new JButton("Cancelar");
+		cancel.addActionListener(this);
+		
+		if (this.e == null) {
+			// new member
+			JPanel p = new JPanel();
+			newemployee = new JButton("Agregar");
+			newemployee.addActionListener(this);
+			p.add(newemployee);
+			p.add(cancel);
+			c.gridy = 2;
+			c.gridx = 0;
+			c.gridheight = 1;
+			c.gridwidth = 2;
+			this.add(p, c);
+		} else {
+			JPanel p = new JPanel();
+			savechanges = new JButton("Guardar cambios");
+			savechanges.addActionListener(this);
+			p.add(savechanges);
+			p.add(cancel);
+			c.gridy = 2;
+			c.gridx = 0;
+			c.gridheight = 1;
+			c.gridwidth = 2;
+			this.add(p, c);
+		}
+        
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
 		this.pack();
 		this.setSize(this.getWidth() + Helpers.XOFFSET, this.getHeight() + Helpers.YOFFSET);
 		this.setLocationRelativeTo(null);
 	}
 	
-	public EmployeeInfoForm(String memberid){
-		this();
-	}
-	
 	public static void main(String args[]){
-		EmployeeInfoForm n = new EmployeeInfoForm();
+		EmployeeInfoForm n = new EmployeeInfoForm(null);
 		n.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		n.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == imagebutton) {
+		Object o = e.getSource();
+		if (o == imagebutton) {
 			int returnVal = fc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();
@@ -240,6 +272,32 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 			} else {
 				System.out.println("Open command cancelled by user.");
 			}
+		} else if (o == newemployee) {
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+
+				public Void doInBackground() {
+					System.out.println("agregando");
+					return null;
+				}
+
+				public void done() {
+				}
+			};
+			worker.execute();
+		} else if (o == cancel) {
+			this.dispose();
+		} else if (o == savechanges){
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+
+				public Void doInBackground() {
+					System.out.println("guardando cambios");
+					return null;
+				}
+
+				public void done() {
+				}
+			};
+			worker.execute();
 		}
 	}
 

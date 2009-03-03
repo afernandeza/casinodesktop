@@ -1,0 +1,8 @@
+CREATE FUNCTION insertemployee() RETURNS boolean AS $$
+DECLARE     
+   inserted boolean;
+BEGIN
+    GET DIAGNOSTICS inserted = FOUND;
+    RETURN inserted;
+END;
+$$ LANGUAGE plpgsql;

@@ -1,7 +1,6 @@
 package gamesmanager.db;
 
 import gamesmanager.beans.Member;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

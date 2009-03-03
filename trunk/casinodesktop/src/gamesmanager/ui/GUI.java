@@ -228,7 +228,7 @@ public class GUI extends JFrame implements ActionListener{
 			MemberInfoForm memberform = new MemberInfoForm(null);
 			memberform.setVisible(true);
 		} else if(action.equals(NEWEMPLOYEE)){
-			EmployeeInfoForm employeeform = new EmployeeInfoForm();
+			EmployeeInfoForm employeeform = new EmployeeInfoForm(null);
 			employeeform.setVisible(true);
 		} else if(action.equals(ADMINTABLES)){
 			TableInfoForm tableform = new TableInfoForm();

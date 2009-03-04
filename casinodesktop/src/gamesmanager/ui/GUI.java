@@ -1,6 +1,6 @@
 package gamesmanager.ui;
 
-import gamesmanager.beans.Member;
+import gamesmanager.beans.Client;
 import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.forms.CheckMemberForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;

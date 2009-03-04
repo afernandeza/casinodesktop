@@ -1,5 +1,5 @@
 package gamesmanager.beans;
 
-public class Member {
+public class Client {
 
 }

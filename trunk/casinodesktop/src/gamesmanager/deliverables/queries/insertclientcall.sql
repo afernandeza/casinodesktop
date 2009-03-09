@@ -1,0 +1,1 @@
+select insertclient(null, null, null, null, null, null, null, null, null);

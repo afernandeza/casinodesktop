@@ -1,6 +1,6 @@
 package gamesmanager.ui.forms;
 
-import gamesmanager.beans.Client;
+import gamesmanager.beans.Person;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
 import gamesmanager.ui.ImagePanel;
@@ -55,9 +55,9 @@ public class MemberInfoForm extends JFrame implements ActionListener {
 	private JButton newmember;
 	private JButton register;
 	private JButton cancel;
-	private Client m;
+	private Person m;
 
-	public MemberInfoForm(Client m) {
+	public MemberInfoForm(Person m) {
 		super("Miembro del Casino");
 		this.m = m;
 		Helpers.setDefaultAppearance(this, true);

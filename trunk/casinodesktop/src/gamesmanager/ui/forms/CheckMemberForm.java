@@ -1,7 +1,7 @@
 package gamesmanager.ui.forms;
 
-import gamesmanager.beans.Client;
-import gamesmanager.db.DatabaseOperations;
+import gamesmanager.beans.Person;
+import gamesmanager.db.ClientManager;
 import gamesmanager.db.SynchronizeMembers;
 import gamesmanager.ui.Helpers;
 
@@ -61,7 +61,7 @@ public class CheckMemberForm extends JPanel implements KeyListener{
 	
 	public void findMember(){
 		System.out.println("finding member");
-		Client m = DatabaseOperations.findMember(this.memberid.getText());
+		Person m = ClientManager.findClient(this.memberid.getText());
 		if(m != null){
 			System.out.println("member found");
 			MemberInfoForm form = new MemberInfoForm(m);

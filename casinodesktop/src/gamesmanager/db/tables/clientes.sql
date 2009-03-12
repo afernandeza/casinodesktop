@@ -17,9 +17,7 @@ CREATE TABLE clientes
   telcel character varying(100) NOT NULL,
   clienteid character varying(100) NOT NULL,
   CONSTRAINT clientes_pkey PRIMARY KEY (clienteid),
-  CONSTRAINT clientes_direccionid_fkey FOREIGN KEY (direccionid)
-      REFERENCES direcciones (direccionid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT clientes_direccionid_key UNIQUE (direccionid),
   CONSTRAINT clientes_nombres_key UNIQUE (nombres, appaterno, apmaterno, fechanac)
 )
 WITH (OIDS=FALSE);

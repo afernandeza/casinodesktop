@@ -7,7 +7,6 @@ CREATE TABLE usuarios
   usuarioid integer NOT NULL,
   usuario character varying(100) NOT NULL,
   "password" character varying(100) NOT NULL,
-  nivel integer NOT NULL,
   CONSTRAINT usuarios_pkey PRIMARY KEY (usuarioid)
 )
 WITH (OIDS=FALSE);

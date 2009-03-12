@@ -4,6 +4,10 @@ import java.util.Date;
 
 public class Client extends Person{
 
+	public Client(){
+		super();
+	}
+	
 	public Client(String nombres, String appaterno, String apmaterno,
 			Double credito, Character sexo, Date fechanac, Date membersince,
 			String telcasa, String telcel, Address address) {

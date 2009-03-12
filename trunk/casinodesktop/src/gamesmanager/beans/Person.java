@@ -1,5 +1,6 @@
 package gamesmanager.beans;
 
+import java.io.InputStream;
 import java.util.Date;
 
 public class Person {
@@ -15,6 +16,11 @@ public class Person {
 	private String telcasa;
 	private String telcel;
 	private Address address;
+	private InputStream foto;
+	
+	public Person(){
+		
+	}
 	
 	public Person(String nombres, String appaterno, String apmaterno,
 			Double credito, Character sexo, Date fechanac, Date membersince,
@@ -61,15 +67,23 @@ public class Person {
 		if(o == this) return true;
 		if(o == null || !(o instanceof Person)) return false;
 		Person c = (Person) o;
-		return this.id.equals(c.getClientid());
+		return this.id.equals(c.getId());
 	}
-	
-	public String getClientid() {
+
+	public String getId() {
 		return id;
 	}
 
-	public void setClientid(String clientid) {
-		this.id = clientid;
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public InputStream getFoto() {
+		return foto;
+	}
+
+	public void setFoto(InputStream foto) {
+		this.foto = foto;
 	}
 
 	public String getNombres() {

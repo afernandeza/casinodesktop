@@ -17,14 +17,11 @@ declare
   userid integer;
   success boolean;
 begin
-  select into employeeid employeeidgenerator from employeeidgenerator();
-  select into addressid addressauto from nextval('addressid') as addressauto;
-  select into userid usidauto from nextval('userid') as usidauto;
-  insert into empleados values(addressid, nombres, appaterno, apmaterno,
+  update empleados values(addressid, nombres, appaterno, apmaterno,
   sexo, fechanac, foto, userid, tipoempleadoid, telcasa, telcel, employeeid, current_date);
-  insert into direcciones values(addressid, callenum, numint, colonia,
+  update direcciones values(addressid, callenum, numint, colonia,
   municipio, codigopostal, estado, pais);
-  insert into usuarios values(userid, usuario, passwd);
+  update usuarios values(userid, usuario, passwd);
   success := true;
   return success;
 end;

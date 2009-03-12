@@ -7,6 +7,10 @@ public class Employee extends Person{
 	private EmployeeType employeetype;
 	private User user;
 	
+	public Employee(){
+		super();
+	}
+	
 	public Employee(String nombres, String appaterno, String apmaterno,
 			Double credito, Character sexo, Date fechanac, Date membersince,
 			String telcasa, String telcel, Address address, EmployeeType e,

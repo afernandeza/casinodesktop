@@ -49,8 +49,9 @@ public class ClientManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DatabaseManager.close(conn);			
 		}
-		DatabaseManager.close(conn);
 		return false;
 	}
 	

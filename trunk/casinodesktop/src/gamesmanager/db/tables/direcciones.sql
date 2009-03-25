@@ -12,10 +12,7 @@ CREATE TABLE direcciones
   codigopostal character varying(10) NOT NULL,
   estado character varying(200) NOT NULL,
   pais character varying(200) NOT NULL,
-  CONSTRAINT pkdirecciones PRIMARY KEY (direccionid),
-  CONSTRAINT direcciones_direccionid_fkey FOREIGN KEY (direccionid)
-      REFERENCES clientes (direccionid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE
+  CONSTRAINT pkdirecciones PRIMARY KEY (direccionid)
 )
 WITH (OIDS=FALSE);
 ALTER TABLE direcciones OWNER TO casindesktopapp;

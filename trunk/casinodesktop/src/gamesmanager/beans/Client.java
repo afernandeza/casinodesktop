@@ -22,4 +22,17 @@ public class Client extends Person{
 				membersince, telcasa, telcel, address);
 	}
 
+	public String toString(){
+	    final String TAB = ", ";
+	    
+	    StringBuffer retValue = new StringBuffer();
+	    
+	    retValue.append("Client ( ")
+	        .append(super.toString()).append(TAB)
+	
+	        .append(" )");
+	    
+	    return retValue.toString();
+	}
+	
 }

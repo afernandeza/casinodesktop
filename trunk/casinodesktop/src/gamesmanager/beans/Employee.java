@@ -46,5 +46,18 @@ public class Employee extends Person{
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	public String toString(){
+	    final String TAB = ", ";
+	    
+	    StringBuffer retValue = new StringBuffer();
+	    
+	    retValue.append("Employee ( ")
+	        .append(super.toString()).append(TAB)
+	        .append("employeetype = ").append(this.employeetype).append(TAB)
+	        .append("user = ").append(this.user).append(TAB)
+	        .append(" )");
+	    
+	    return retValue.toString();
+	}
 }

@@ -1,6 +1,7 @@
-package gamesmanager.db;
+package gamesmanager.db.tests;
 
 import gamesmanager.beans.Client;
+import gamesmanager.db.ClientManager;
 import junit.framework.Assert;
 
 import org.junit.Test;

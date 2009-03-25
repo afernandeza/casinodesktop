@@ -11,6 +11,9 @@ public class Address {
 	private String estado;
 	private String pais;
 	
+	public Address(){
+	}
+	
 	public Address(int addressid, String callenum, String numint,
 			String colonia, String municipio, String codigopostal,
 			String estado, String pais) {
@@ -36,6 +39,8 @@ public class Address {
 		this.estado = estado;
 		this.pais = pais;
 	}
+	
+	
 
 	public int getAddressid() {
 		return addressid;

@@ -2,10 +2,10 @@
 
 -- DROP VIEW clientsinfo;
 
-CREATE OR REPLACE VIEW clientsinfo AS 
+CREATE OR REPLACE VIEW clientsdata AS 
  SELECT clientes.appaterno
    FROM clientes, direcciones
   WHERE clientes.direccionid = direcciones.direccionid;
 
-ALTER TABLE clientsinfo OWNER TO postgres;
+ALTER TABLE clientsdata OWNER TO postgres;
 

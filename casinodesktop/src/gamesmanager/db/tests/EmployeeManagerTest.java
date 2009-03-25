@@ -1,6 +1,7 @@
 package gamesmanager.db.tests;
 
 import static org.junit.Assert.*;
+import gamesmanager.db.EmployeeManager;
 
 import org.junit.Test;
 
@@ -13,7 +14,8 @@ public class EmployeeManagerTest {
 
 	@Test
 	public void testFindEmployee() {
-		fail("Not yet implemented");
+		EmployeeManager.findEmployee("SUCA12");
 	}
 
 }
+	

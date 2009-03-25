@@ -96,7 +96,9 @@ public class EmployeeManager {
 			
 			ResultSet rs = cs.executeQuery();
 			rs.next();
+			System.out.println("nombres: " + cs.getString("nombres"));
 			e = new Employee();
+			
 			e.setNombres(cs.getString(1));
 			e.setAppaterno(cs.getString(2));
 			e.setApmaterno(cs.getString(3));
@@ -130,7 +132,7 @@ public class EmployeeManager {
 
 
 		} catch (SQLException sqle) {
-			// e.printStackTrace();
+			sqle.printStackTrace();
 			System.out.println("Error finding employee: " + sqle.getMessage());
 		} finally {
 			DatabaseManager.close(cs);

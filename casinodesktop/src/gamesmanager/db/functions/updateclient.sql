@@ -1,23 +1,37 @@
--- Function: insertclient(numeric, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying)
+-- Function: updateclient(character varying, numeric, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying)
 
--- DROP FUNCTION insertclient(numeric, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying);
+-- DROP FUNCTION updateclient(character varying, numeric, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying);
 
-CREATE OR REPLACE FUNCTION updateclient(credito numeric, nombres character varying, appaterno character varying, apmaterno character varying, sexo character, fechanac date, foto bytea, telcasa character varying, telcel character varying, callenum character varying, numint character varying, colonia character varying, municipio character varying, codigopostal character varying, estado character varying, pais character varying)
-  RETURNS boolean AS
+CREATE OR REPLACE FUNCTION updateclient(cid character varying, cred numeric, n character varying, ap character varying, am character varying, s character, fn date, ft bytea, tc character varying, tl character varying, calle character varying, nint character varying, col character varying, 
+mun character varying, cp character varying, edo character varying, ps character varying)
+  RETURNS VOID AS
 $BODY$
 declare
   addressid integer;
-  clientid varchar;
-  success boolean;
 begin
-  update  clientes values(addressid, credito, nombres, appaterno, apmaterno,
-  sexo, fechanac, foto, current_date, telcasa, telcel, clientid);
-  update into direcciones values(addressid, callenum, numint, colonia,
-  municipio, codigopostal, estado, pais);
-  success := true;
-  return success;
+  select into addressid direccionid from clientes where clienteid = cid;
+  update clientes set 
+    credito = cred,
+    nombres = n,
+    appaterno = ap,
+    apmaterno = am,
+    sexo = s,
+    fechanac = fn,
+    foto = ft,
+    telcasa = tc,
+    telcel = tl
+    where clienteid = cid;
+  update direcciones set 
+    callenum = calle,
+    numint = nint,
+    colonia = col,
+    municipio = mun,
+    codigopostal = cp,
+    estado = edo,
+    pais = ps
+    where direccionid = addressid;
 end;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
-ALTER FUNCTION updateclient(numeric, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION updateclient(character varying, numeric, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying) OWNER TO postgres;

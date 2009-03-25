@@ -2,20 +2,13 @@
 
 -- DROP FUNCTION insertemployee(character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer);
 
-CREATE OR REPLACE FUNCTION insertemployee(nombres character varying, 
-appaterno character varying, apmaterno character varying, sexo character, 
-fechanac date, foto bytea, telcasa character varying, telcel character varying, 
-callenum character varying, numint character varying, colonia character varying, 
-municipio character varying, codigopostal character varying, estado character varying, 
-pais character varying, usuario character varying, passwd character varying, 
-tipoempleadoid integer)
-  RETURNS boolean AS
+CREATE OR REPLACE FUNCTION insertemployee(nombres character varying, appaterno character varying, apmaterno character varying, sexo character, fechanac date, foto bytea, telcasa character varying, telcel character varying, callenum character varying, numint character varying, colonia character varying, municipio character varying, codigopostal character varying, estado character varying, pais character varying, usuario character varying, passwd character varying, tipoempleadoid integer)
+  RETURNS void AS
 $BODY$
 declare
   addressid integer;
-  employeeid integer;
+  employeeid character varying;
   userid integer;
-  success boolean;
 begin
   select into employeeid employeeidgenerator from employeeidgenerator();
   select into addressid addressauto from nextval('addressid') as addressauto;
@@ -25,8 +18,6 @@ begin
   insert into direcciones values(addressid, callenum, numint, colonia,
   municipio, codigopostal, estado, pais);
   insert into usuarios values(userid, usuario, passwd);
-  success := true;
-  return success;
 end;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE

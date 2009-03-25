@@ -18,12 +18,6 @@ CREATE TABLE empleados
   empleadoid character varying(100) NOT NULL,
   fechareg date NOT NULL,
   CONSTRAINT empleados_pkey PRIMARY KEY (empleadoid),
-  CONSTRAINT empleados_tipoempleadoid_fkey FOREIGN KEY (tipoempleadoid)
-      REFERENCES tipoempleados (tipoempleadoid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT empleados_usuarioid_fkey FOREIGN KEY (usuarioid)
-      REFERENCES usuarios (usuarioid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE,
   CONSTRAINT empleados_direccionid_key UNIQUE (direccionid),
   CONSTRAINT empleados_nombres_key UNIQUE (nombres, appaterno, apmaterno, fechanac)
 )

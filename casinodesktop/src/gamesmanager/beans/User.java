@@ -40,4 +40,20 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public String toString(){
+	    final String TAB = ", ";
+	    
+	    StringBuffer retValue = new StringBuffer();
+	    
+	    retValue.append("User ( ")
+	        .append(super.toString()).append(TAB)
+	        .append("userid = ").append(this.userid).append(TAB)
+	        .append("username = ").append(this.username).append(TAB)
+	        .append("password = ").append(this.password).append(TAB)
+	        .append(" )");
+	    
+	    return retValue.toString();
+	}
+	
 }

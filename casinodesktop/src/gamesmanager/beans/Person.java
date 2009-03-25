@@ -56,13 +56,6 @@ public class Person {
 	}
 
 	@Override
-	public String toString(){
-		StringBuffer sb = new StringBuffer();
-		
-		return sb.toString();
-	}
-	
-	@Override
 	public boolean equals(Object o){
 		if(o == this) return true;
 		if(o == null || !(o instanceof Person)) return false;
@@ -165,5 +158,31 @@ public class Person {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+
+	public String toString(){
+	    final String TAB = ", ";
+	    
+	    StringBuffer retValue = new StringBuffer();
+	    
+	    retValue.append("Person ( ")
+	        .append(super.toString()).append(TAB)
+	        .append("id = ").append(this.id).append(TAB)
+	        .append("nombres = ").append(this.nombres).append(TAB)
+	        .append("appaterno = ").append(this.appaterno).append(TAB)
+	        .append("apmaterno = ").append(this.apmaterno).append(TAB)
+	        .append("credito = ").append(this.credito).append(TAB)
+	        .append("sexo = ").append(this.sexo).append(TAB)
+	        .append("fechanac = ").append(this.fechanac).append(TAB)
+	        .append("membersince = ").append(this.membersince).append(TAB)
+	        .append("telcasa = ").append(this.telcasa).append(TAB)
+	        .append("telcel = ").append(this.telcel).append(TAB)
+	        .append("address = ").append(this.address).append(TAB)
+	        .append("foto = ").append(this.foto).append(TAB)
+	        .append(" )");
+	    
+	    return retValue.toString();
+	}
+	
+	
 	
 }

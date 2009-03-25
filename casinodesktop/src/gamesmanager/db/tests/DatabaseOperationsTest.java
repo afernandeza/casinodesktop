@@ -1,4 +1,4 @@
-package gamesmanager.db;
+package gamesmanager.db.tests;
 
 import org.junit.Test;
 

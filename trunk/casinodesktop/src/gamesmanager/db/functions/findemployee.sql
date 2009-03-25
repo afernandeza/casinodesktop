@@ -12,8 +12,8 @@ FROM empleados, direcciones, usuarios, tipoempleados
 WHERE empleados.empleadoid = $1 AND 
 empleados.direccionid = direcciones.direccionid AND
 empleados.usuarioid = usuarios.usuarioid AND
-empleados.tipoempleadoid = tipoempleados.tipoempleadoid;
+empleados.tipoempleadoid = tipoempleados.tipoempleadoid
 $BODY$
   LANGUAGE 'sql' VOLATILE
   COST 100;
-ALTER FUNCTION findemployee(character varying) OWNER TO postgres;
+ALTER FUNCTION findemployee(character varying) OWNER TO casindesktopapp;

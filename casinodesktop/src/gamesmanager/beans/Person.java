@@ -9,10 +9,8 @@ public class Person {
 	private String nombres;
 	private String appaterno;
 	private String apmaterno;
-	private Double credito;
 	private Character sexo;
 	private Date fechanac;
-	private Date membersince;
 	private String telcasa;
 	private String telcel;
 	private Address address;
@@ -23,33 +21,29 @@ public class Person {
 	}
 	
 	public Person(String nombres, String appaterno, String apmaterno,
-			Double credito, Character sexo, Date fechanac, Date membersince,
+			Character sexo, Date fechanac, Date membersince,
 			String telcasa, String telcel, Address address) {
 		super();
 		this.nombres = nombres;
 		this.appaterno = appaterno;
 		this.apmaterno = apmaterno;
-		this.credito = credito;
 		this.sexo = sexo;
 		this.fechanac = fechanac;
-		this.membersince = membersince;
 		this.telcasa = telcasa;
 		this.telcel = telcel;
 		this.address = address;
 	}
 
 	public Person(String id, String nombres, String appaterno,
-			String apmaterno, Double credito, Character sexo, Date fechanac,
+			String apmaterno, Character sexo, Date fechanac,
 			Date membersince, String telcasa, String telcel, Address address) {
 		super();
 		this.id = id;
 		this.nombres = nombres;
 		this.appaterno = appaterno;
 		this.apmaterno = apmaterno;
-		this.credito = credito;
 		this.sexo = sexo;
 		this.fechanac = fechanac;
-		this.membersince = membersince;
 		this.telcasa = telcasa;
 		this.telcel = telcel;
 		this.address = address;
@@ -103,14 +97,6 @@ public class Person {
 		this.apmaterno = apmaterno;
 	}
 
-	public Double getCredito() {
-		return credito;
-	}
-
-	public void setCredito(Double credito) {
-		this.credito = credito;
-	}
-
 	public Character getSexo() {
 		return sexo;
 	}
@@ -126,15 +112,6 @@ public class Person {
 	public void setFechanac(Date fechanac) {
 		this.fechanac = fechanac;
 	}
-
-	public Date getMembersince() {
-		return membersince;
-	}
-
-	public void setMembersince(Date membersince) {
-		this.membersince = membersince;
-	}
-
 	public String getTelcasa() {
 		return telcasa;
 	}
@@ -170,10 +147,8 @@ public class Person {
 	        .append("nombres = ").append(this.nombres).append(TAB)
 	        .append("appaterno = ").append(this.appaterno).append(TAB)
 	        .append("apmaterno = ").append(this.apmaterno).append(TAB)
-	        .append("credito = ").append(this.credito).append(TAB)
 	        .append("sexo = ").append(this.sexo).append(TAB)
 	        .append("fechanac = ").append(this.fechanac).append(TAB)
-	        .append("membersince = ").append(this.membersince).append(TAB)
 	        .append("telcasa = ").append(this.telcasa).append(TAB)
 	        .append("telcel = ").append(this.telcel).append(TAB)
 	        .append("address = ").append(this.address).append(TAB)
@@ -182,7 +157,5 @@ public class Person {
 	    
 	    return retValue.toString();
 	}
-	
-	
 	
 }

@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class EmployeeManager {
@@ -78,8 +79,13 @@ public class EmployeeManager {
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();
 			
+			String eid = rs.getString(1);
+			if(eid == null){
+				return null;
+			}
+			
 			e = new Employee();
-			e.setId(rs.getString(1));
+			e.setId(eid);
 			e.setNombres(rs.getString(2));
 			e.setAppaterno(rs.getString(3));
 			String appaterno = null;
@@ -112,9 +118,6 @@ public class EmployeeManager {
 			e.setEmployeetype(et);
 			
 			System.out.println(e);
-			System.out.println(a);
-			System.out.println(u);
-			System.out.println(et);
 
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();

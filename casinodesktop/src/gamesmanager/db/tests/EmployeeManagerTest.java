@@ -1,6 +1,7 @@
 package gamesmanager.db.tests;
 
 import static org.junit.Assert.*;
+import junit.framework.Assert;
 import gamesmanager.db.EmployeeManager;
 
 import org.junit.Test;
@@ -14,7 +15,12 @@ public class EmployeeManagerTest {
 
 	@Test
 	public void testFindEmployee() {
-		EmployeeManager.findEmployee("SUCA_E16");
+		Assert.assertNull(EmployeeManager.findEmployee("asdf"));
+	}
+	
+	@Test
+	public void testFindEmployee2() {
+		Assert.assertNotNull(EmployeeManager.findEmployee("SUCA_E16"));
 	}
 
 }

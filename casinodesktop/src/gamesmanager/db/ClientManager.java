@@ -17,7 +17,7 @@ public class ClientManager {
 	private static String UPDATE = "{call updateclient[(?, ?, ?, ?, ?, ?, ?,"
 			+ "?, ?, ?, ?, ?, ?, ?, ?, ?)]}";
 	private static String DELETE = "{call deleteclient[(?)]}";
-	private static String FIND = "{call findclient[(?)]}";
+	private static String FIND = "select * from findclient(?)";
 
 	public static boolean insertClient(Client c) {
 		Connection conn = DatabaseManager.connect();

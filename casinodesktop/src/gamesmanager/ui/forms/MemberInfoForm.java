@@ -1,6 +1,7 @@
 package gamesmanager.ui.forms;
 
 import gamesmanager.beans.Person;
+import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
 import gamesmanager.ui.ImagePanel;
@@ -50,7 +51,7 @@ public class MemberInfoForm extends JFrame implements ActionListener {
 	private JTextField municipio;
 	private JTextField cp;
 	private JTextField estado;
-	private JTextField pais;
+	private JComboBox pais;
 	private ImagePanel image;
 	private JButton newmember;
 	private JButton register;
@@ -198,17 +199,21 @@ public class MemberInfoForm extends JFrame implements ActionListener {
 		l5.setLabelFor(cp);
 		addressform.add(cp);
 
+		JLabel paisl = new JLabel(alabels[8], JLabel.TRAILING);
+		addressform.add(paisl);
+		pais = new JComboBox();
+        for(String country: DatabaseOperations.getCountries()){
+        	pais.addItem(country);
+        }
+        paisl.setLabelFor(pais);
+		addressform.add(pais);
+		pais.addActionListener(this);
+		
 		JLabel l6 = new JLabel(alabels[7], JLabel.TRAILING);
 		addressform.add(l6);
 		estado = new JTextField(FIELDSIZE);
 		l6.setLabelFor(estado);
 		addressform.add(estado);
-
-		JLabel l7 = new JLabel(alabels[8], JLabel.TRAILING);
-		addressform.add(l7);
-		pais = new JTextField(FIELDSIZE);
-		l7.setLabelFor(pais);
-		addressform.add(pais);
 
 		SpringUtilities.makeCompactGrid(addressform, aPairs, 2, // rows, cols
 				6, 6, // initX, initY
@@ -263,7 +268,13 @@ public class MemberInfoForm extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if (o == imagebutton) {
+		if(o == pais){
+			String selectedcountry = (String)pais.getSelectedItem();
+			if(selectedcountry.equals("Mexico")){
+				System.out.println("mexico selected");
+				this.remove(estado);
+			}
+		} else if (o == imagebutton) {
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
 				public Void doInBackground() {

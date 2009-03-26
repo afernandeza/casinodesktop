@@ -20,7 +20,7 @@ public class EmployeeManagerTest {
 	
 	@Test
 	public void testFindEmployee2() {
-		Assert.assertNotNull(EmployeeManager.findEmployee("SUCA_E16"));
+		Assert.assertNotNull(EmployeeManager.findEmployee("SUCA_E17"));
 	}
 
 }

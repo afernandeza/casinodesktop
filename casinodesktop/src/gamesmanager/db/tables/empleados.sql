@@ -17,6 +17,7 @@ CREATE TABLE empleados
   telcel character varying(100) NOT NULL,
   empleadoid character varying(100) NOT NULL,
   fechareg date NOT NULL,
+  despedido date,
   CONSTRAINT empleados_pkey PRIMARY KEY (empleadoid),
   CONSTRAINT empleados_direccionid_key UNIQUE (direccionid),
   CONSTRAINT empleados_nombres_key UNIQUE (nombres, appaterno, apmaterno, fechanac)

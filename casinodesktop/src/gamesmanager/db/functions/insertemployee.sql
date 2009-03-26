@@ -14,7 +14,7 @@ begin
   select into addressid addressauto from nextval('addressid') as addressauto;
   select into userid usidauto from nextval('userid') as usidauto;
   insert into empleados values(addressid, nombres, appaterno, apmaterno,
-  sexo, fechanac, foto, userid, tipoempleadoid, telcasa, telcel, employeeid, current_date);
+  sexo, fechanac, foto, userid, tipoempleadoid, telcasa, telcel, employeeid, current_date, null);
   insert into usuarios values(userid, usuario, md5(passwd));
   insert into direcciones values(addressid, callenum, numint, colonia,
   municipio, codigopostal, estado, pais);

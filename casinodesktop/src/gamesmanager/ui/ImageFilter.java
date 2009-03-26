@@ -38,35 +38,35 @@ import javax.swing.filechooser.FileFilter;
 /* ImageFilter.java is used by FileChooserDemo2.java. */
 public class ImageFilter extends FileFilter {
 
-	// Accept all directories and all gif, jpg, tiff, or png files.
-	public boolean accept(File f) {
-		if (f.isDirectory()) {
-			return true;
-		}
+    // Accept all directories and all gif, jpg, tiff, or png files.
+    public boolean accept(File f) {
+        if (f.isDirectory()) {
+            return true;
+        }
 
-		String extension = Helpers.getExtension(f);
-		if (extension != null) {
-			if (extension.equals(Helpers.tiff) || extension.equals(Helpers.tif)
-					|| extension.equals(Helpers.gif)
-					|| extension.equals(Helpers.jpeg)
-					|| extension.equals(Helpers.jpg)
-					|| extension.equals(Helpers.png)) {
-				return true;
-			} else {
-				return false;
-			}
-		}
+        String extension = Helpers.getExtension(f);
+        if (extension != null) {
+            if (extension.equals(Helpers.tiff) || extension.equals(Helpers.tif)
+                    || extension.equals(Helpers.gif)
+                    || extension.equals(Helpers.jpeg)
+                    || extension.equals(Helpers.jpg)
+                    || extension.equals(Helpers.png)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	// The description of this filter
-	public String getDescription() {
-		return "Im" + Helpers.AACUTE + "genes";
-	}
+    // The description of this filter
+    public String getDescription() {
+        return "Im" + Helpers.AACUTE + "genes";
+    }
 
-	@Override
-	public String toString() {
-		return getDescription();
-	}
+    @Override
+    public String toString() {
+        return getDescription();
+    }
 }

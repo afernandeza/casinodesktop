@@ -10,9 +10,9 @@ import javax.swing.JProgressBar;
 
 public class TrackProgress extends ProgressJFrame {
 
-	private static final long serialVersionUID = 1L;
-	
-	private JProgressBar current;
+    private static final long serialVersionUID = 1L;
+
+    private JProgressBar current;
     int num = 0;
 
     public TrackProgress() {
@@ -29,29 +29,28 @@ public class TrackProgress extends ProgressJFrame {
         this.setLocationRelativeTo(null);
     }
 
-
     public static void main(String[] arguments) {
-    	TrackProgress frame = new TrackProgress();
-    	SynchronizeDatabase db = new SynchronizeDatabase(frame);
+        TrackProgress frame = new TrackProgress();
+        SynchronizeDatabase db = new SynchronizeDatabase(frame);
         db.start();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         System.out.println("another thread running");
-   }
+    }
 
-	@Override
-	public void setProgress(int progress) {
-		current.setValue(progress);
-	}
+    @Override
+    public void setProgress(int progress) {
+        current.setValue(progress);
+    }
 
-	@Override
-	public void signalError() {
-		this.setVisible(false);
-		this.dispose();
-	}
+    @Override
+    public void signalError() {
+        this.setVisible(false);
+        this.dispose();
+    }
 
-	@Override
-	public void signalSuccess() {
-		this.setVisible(false);
-		this.dispose();
-	}
+    @Override
+    public void signalSuccess() {
+        this.setVisible(false);
+        this.dispose();
+    }
 }

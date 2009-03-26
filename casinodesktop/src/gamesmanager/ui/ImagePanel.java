@@ -33,93 +33,94 @@ import javax.swing.SwingWorker;
 
 public class ImagePanel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-	private Image image;
-	private Image scaledImage;
-	private int imageWidth = 0;
-	private int imageHeight = 0;
+    private static final long serialVersionUID = 1L;
+    private Image image;
+    private Image scaledImage;
+    private int imageWidth = 0;
+    private int imageHeight = 0;
 
-	public ImagePanel() {
-		super();
-	}
+    public ImagePanel() {
+        super();
+    }
 
-	public void loadImage(File f){
-		try {
-			image = ImageIO.read(f);
-		} catch (IOException e) {
-			System.out.println("Image could not be read");
-			e.printStackTrace();
-		}
+    public void loadImage(File f) {
+        try {
+            image = ImageIO.read(f);
+        } catch (IOException e) {
+            System.out.println("Image could not be read");
+            e.printStackTrace();
+        }
 
-		imageWidth = image.getWidth(this);
-		imageHeight = image.getHeight(this);
-		
-		if ( image != null ) {
+        imageWidth = image.getWidth(this);
+        imageHeight = image.getHeight(this);
 
-			//use floats so division below won't round
-			float iw = imageWidth;
-			float ih = imageHeight;
-			float pw = this.getWidth();   //panel width
-			float ph = this.getHeight();  //panel height
+        if (image != null) {
 
-			if ( pw < iw || ph < ih ) {
+            // use floats so division below won't round
+            float iw = imageWidth;
+            float ih = imageHeight;
+            float pw = this.getWidth(); // panel width
+            float ph = this.getHeight(); // panel height
 
-				if ( (pw / ph) > (iw / ih) ) {
-					iw = -1;
-					ih = ph;
-				} else {
-					iw = pw;
-					ih = -1;
-				}
+            if (pw < iw || ph < ih) {
 
-				//prevent errors if panel is 0 wide or high
-				if (iw == 0) {
-					iw = -1;
-				}
-				if (ih == 0) {
-					ih = -1;
-				}
+                if ((pw / ph) > (iw / ih)) {
+                    iw = -1;
+                    ih = ph;
+                } else {
+                    iw = pw;
+                    ih = -1;
+                }
 
-				scaledImage = image.getScaledInstance(
-						new Float(iw).intValue(), new Float(ih).intValue(), Image.SCALE_DEFAULT);
+                // prevent errors if panel is 0 wide or high
+                if (iw == 0) {
+                    iw = -1;
+                }
+                if (ih == 0) {
+                    ih = -1;
+                }
 
-			} else {
-				scaledImage = image;
-			}
-		}
-		
-		Graphics g = this.getGraphics();
-		this.paintComponent(g);
-	}
+                scaledImage = image.getScaledInstance(new Float(iw).intValue(),
+                        new Float(ih).intValue(), Image.SCALE_DEFAULT);
 
-	public void loadImage(String file){
-		this.loadImage(new File(file));
-	}
-	
-	@Override
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		g.drawImage(scaledImage, 0, 0, this);
-	}
+            } else {
+                scaledImage = image;
+            }
+        }
 
-	private class ImageLoader extends SwingWorker<Void, Void>{
-		private JPanel jp;
-		private Graphics g;
-		public ImageLoader(JPanel jp, Graphics g){
-			this.jp = jp;
-			this.g = g;
-		}
-		
-		@Override
-		protected Void doInBackground(){
-			System.out.println("drawing");
-			g.drawImage(scaledImage, 0, 0, jp);
-			return null;
-		}
-		
-		@Override
-		protected void done(){
-			//jp.repaint();
-		}
-	}
+        Graphics g = this.getGraphics();
+        this.paintComponent(g);
+    }
+
+    public void loadImage(String file) {
+        this.loadImage(new File(file));
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(scaledImage, 0, 0, this);
+    }
+
+    private class ImageLoader extends SwingWorker<Void, Void> {
+        private JPanel jp;
+        private Graphics g;
+
+        public ImageLoader(JPanel jp, Graphics g) {
+            this.jp = jp;
+            this.g = g;
+        }
+
+        @Override
+        protected Void doInBackground() {
+            System.out.println("drawing");
+            g.drawImage(scaledImage, 0, 0, jp);
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            // jp.repaint();
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package gamesmanager.db;
 
 import gamesmanager.beans.Address;
-import gamesmanager.beans.Client;
 import gamesmanager.beans.Employee;
 import gamesmanager.beans.EmployeeType;
 import gamesmanager.beans.User;
@@ -9,9 +8,9 @@ import gamesmanager.beans.User;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 
 public class EmployeeManager {
 
@@ -20,7 +19,7 @@ public class EmployeeManager {
 	private static String UPDATE = "{call updateemployee[(?, ?, ?, ?, ?, ?, ?,"
 			+ "?, ?, ?, ?, ?, ?, ?, ?, ?)]}";
 	private static String DELETE = "{call deleteemployee[(?)]}";
-	private static String FIND = "{call findemployee[(?)]}";
+	private static String FIND = "SELECT * FROM findemployee(?)";
 
 	public static boolean insertEmployee(Employee e) {
 		Connection conn = DatabaseManager.connect();
@@ -67,62 +66,49 @@ public class EmployeeManager {
 
 	public static Employee findEmployee(String id) {
 		Connection conn = DatabaseManager.connect();
-		CallableStatement cs = null;
 		if (conn == null) {
 			return null;
 		}
+		PreparedStatement pstmt = null;
 		Employee e = null;
 		try {
-			cs = conn.prepareCall(FIND);
-			cs.setString(1, id);
-						  
-			cs.registerOutParameter(1, Types.VARCHAR);
-			cs.registerOutParameter(2, Types.VARCHAR);
-			cs.registerOutParameter(3, Types.VARCHAR);
-			cs.registerOutParameter(4, Types.CHAR);
-			cs.registerOutParameter(5, Types.DATE);
-			cs.registerOutParameter(6, Types.BLOB);
-			cs.registerOutParameter(7, Types.VARCHAR);
-			cs.registerOutParameter(8, Types.VARCHAR);
-			cs.registerOutParameter(9, Types.VARCHAR);
-			cs.registerOutParameter(10, Types.VARCHAR);
-			cs.registerOutParameter(11, Types.VARCHAR);
-			cs.registerOutParameter(12, Types.VARCHAR);
-			cs.registerOutParameter(13, Types.VARCHAR);
-			cs.registerOutParameter(14, Types.VARCHAR);
-			cs.registerOutParameter(15, Types.VARCHAR);
-			cs.registerOutParameter(16, Types.VARCHAR);
-			cs.registerOutParameter(17, Types.VARCHAR);
+			pstmt = conn.prepareStatement(FIND);
+			pstmt.setString(1, id);
 			
-			ResultSet rs = cs.executeQuery();
+			ResultSet rs = pstmt.executeQuery();
 			rs.next();
-			System.out.println("nombres: " + cs.getString("nombres"));
-			e = new Employee();
 			
-			e.setNombres(cs.getString(1));
-			e.setAppaterno(cs.getString(2));
-			e.setApmaterno(cs.getString(3));
-			e.setSexo(cs.getString(4).charAt(0));
-			e.setFechanac(cs.getDate(5));
-			//c.setFoto(cs.getBlob(6));
-			e.setTelcasa(cs.getString(7));
-			e.setTelcel(cs.getString(8));
+			e = new Employee();
+			e.setId(rs.getString(1));
+			e.setNombres(rs.getString(2));
+			e.setAppaterno(rs.getString(3));
+			String appaterno = null;
+			if((appaterno = rs.getString(4)) !=  null){
+				if(! appaterno.trim().equals("") ){
+					e.setApmaterno(appaterno);		
+				}
+			}
+			e.setSexo(rs.getString(5).charAt(0));
+			e.setFechanac(rs.getDate(6));
+			//c.setFoto(cs.getBlob(7));
+			e.setTelcasa(rs.getString(8));
+			e.setTelcel(rs.getString(9));
 			
 			Address a = new Address();
-			a.setCallenum(cs.getString(9));
-			a.setNumint(cs.getString(10));
-			a.setColonia(cs.getString(11));
-			a.setMunicipio(cs.getString(12));
-			a.setCodigopostal(cs.getString(13));
-			a.setEstado(cs.getString(14));
-			a.setPais(cs.getString(15));
-			
+			a.setAddressid(rs.getInt(10));
+			a.setCallenum(rs.getString(11));
+			a.setNumint(rs.getString(12));
+			a.setColonia(rs.getString(13));
+			a.setMunicipio(rs.getString(14));
+			a.setCodigopostal(rs.getString(15));
+			a.setEstado(rs.getString(16));
+			a.setPais(rs.getString(17));
 			
 			e.setAddress(a);
-			User u = new User(cs.getString(16));
+			User u = new User(rs.getInt(18), rs.getString(19), rs.getString(20));
 			e.setUser(u);
 			
-			EmployeeType et = new EmployeeType(cs.getString(17));
+			EmployeeType et = new EmployeeType(rs.getInt(21), rs.getString(22));
 			e.setEmployeetype(et);
 			
 			System.out.println(e);
@@ -130,12 +116,11 @@ public class EmployeeManager {
 			System.out.println(u);
 			System.out.println(et);
 
-
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			System.out.println("Error finding employee: " + sqle.getMessage());
 		} finally {
-			DatabaseManager.close(cs);
+			DatabaseManager.close(pstmt);
 			DatabaseManager.close(conn);
 		}
 		return e;

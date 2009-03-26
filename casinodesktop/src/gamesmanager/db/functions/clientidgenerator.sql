@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION clientidgenerator()
   RETURNS character varying AS
-$BODY$SELECT 'SUCA' || nextval('clientid')$BODY$
+$BODY$SELECT 'SUCA_C' || nextval('clientid')$BODY$
   LANGUAGE 'sql' VOLATILE
   COST 1;
 ALTER FUNCTION clientidgenerator() OWNER TO casindesktopapp;

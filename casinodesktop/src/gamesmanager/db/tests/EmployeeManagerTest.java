@@ -14,7 +14,7 @@ public class EmployeeManagerTest {
 
 	@Test
 	public void testFindEmployee() {
-		EmployeeManager.findEmployee("SUCA12");
+		EmployeeManager.findEmployee("SUCA_E16");
 	}
 
 }

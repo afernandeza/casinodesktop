@@ -15,11 +15,11 @@ begin
   select into userid usidauto from nextval('userid') as usidauto;
   insert into empleados values(addressid, nombres, appaterno, apmaterno,
   sexo, fechanac, foto, userid, tipoempleadoid, telcasa, telcel, employeeid, current_date);
+  insert into usuarios values(userid, usuario, md5(passwd));
   insert into direcciones values(addressid, callenum, numint, colonia,
   municipio, codigopostal, estado, pais);
-  insert into usuarios values(userid, usuario, passwd);
 end;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
-ALTER FUNCTION insertemployee(character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer) OWNER TO postgres;
+ALTER FUNCTION insertemployee(character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer) OWNER TO casindesktopapp;

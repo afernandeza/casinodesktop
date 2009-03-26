@@ -9,7 +9,8 @@ declare
   cont integer;
 begin
   select into cont count(*) from usuarios 
-  where usuario = un AND password = md5(pw);
+  where usuario = un AND password = md5(pw)
+  AND active = true;
   if cont = 1 then
     return true;
   else 

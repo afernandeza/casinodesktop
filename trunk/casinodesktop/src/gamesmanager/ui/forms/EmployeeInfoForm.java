@@ -1,6 +1,8 @@
 package gamesmanager.ui.forms;
 
 import gamesmanager.beans.Employee;
+import gamesmanager.beans.EmployeeType;
+import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
 import gamesmanager.ui.ImagePanel;
@@ -21,6 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingWorker;
@@ -49,13 +52,17 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 	private JTextField colonia;
 	private JTextField municipio;
 	private JTextField cp;
-	private JTextField estado;
-	private JTextField pais;
+	private JComboBox estado;
+	private JComboBox pais;
 	private ImagePanel image;
 	private JButton newemployee;
 	private JButton savechanges;
 	private JButton cancel;
 	private Employee e;
+	
+	private JComboBox types;
+	private JTextField username;
+	private JPasswordField password;
 	
 	public EmployeeInfoForm(Employee e){
 		super("Empleado del Casino");
@@ -70,7 +77,8 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 				"<html><b>Fotograf"+Helpers.IACUTE+"a:</b></html>",
 				"<html><b>Apellido paterno:</b></html>", 
 				"<html><b>Apellido materno:</b></html>", 
-				"<html><b>Nombre(s):</b></html>"};
+				"<html><b>Nombre(s):</b></html>",
+				"<html><b>Tipo:</b></html>"};
 		
         int numPairs = labels.length;
     
@@ -110,6 +118,15 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
         l3.setLabelFor(nombre);
         memberform.add(nombre);
         
+        JLabel typel = new JLabel(labels[4], JLabel.TRAILING);
+        memberform.add(typel);
+        types = new JComboBox();
+        for(EmployeeType et: DatabaseOperations.getEmployeeTypes()){
+        	types.addItem(et.getType());
+        }
+        typel.setLabelFor(types);
+        memberform.add(types);
+        
         SpringUtilities.makeCompactGrid(memberform,
         								numPairs, 2, //rows, cols
                 						6, 6,        //initX, initY
@@ -133,7 +150,9 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
 				"<html><b>Estado:</b></html>",
 				"<html><b>Pa"+Helpers.IACUTE+"s:</b></html>",
 				"<html><b>Tel"+ Helpers.EACUTE+"fono casa:</b></html>",
-				"<html><b>Tel"+ Helpers.EACUTE+"fono celular:</b></html>"};
+				"<html><b>Tel"+ Helpers.EACUTE+"fono celular:</b></html>",
+				"<html><b>Usuario:</b></html>",
+				"<html><b>Contrase"+ Helpers.NTILDE+"a:</b></html>"};
         int aPairs = alabels.length;
         
         JLabel labeltelcasa = new JLabel(alabels[9], JLabel.TRAILING);
@@ -199,16 +218,33 @@ public class EmployeeInfoForm extends JFrame implements ActionListener{
         
         JLabel l6 = new JLabel(alabels[7], JLabel.TRAILING);
         addressform.add(l6);
-        estado = new JTextField(FIELDSIZE);
+        estado = new JComboBox();
+        for(String est: DatabaseOperations.getStates()){
+        	estado.addItem(est);
+        }
         l6.setLabelFor(estado);
         addressform.add(estado);
         
-        JLabel l7 = new JLabel(alabels[8], JLabel.TRAILING);
-        addressform.add(l7);
-        pais = new JTextField(FIELDSIZE);
-        l7.setLabelFor(pais);
+        JLabel paisl = new JLabel(alabels[8], JLabel.TRAILING);
+        addressform.add(paisl);
+        pais = new JComboBox();
+        pais.addItem("Mexico");
+        pais.setSelectedIndex(0);
+        pais.setEditable(false);
+        paisl.setLabelFor(pais);
         addressform.add(pais);
         
+        JLabel userl = new JLabel(alabels[11], JLabel.TRAILING);
+        addressform.add(userl);
+        username = new JTextField(FIELDSIZE);
+        userl.setLabelFor(username);
+        addressform.add(username);
+        
+        JLabel passwordl = new JLabel(alabels[12], JLabel.TRAILING);
+        addressform.add(passwordl);
+        password = new JPasswordField(FIELDSIZE);
+        passwordl.setLabelFor(password);
+        addressform.add(password);
         
         SpringUtilities.makeCompactGrid(addressform,
         								aPairs, 2, //rows, cols

@@ -1,7 +1,5 @@
 package gamesmanager.ui;
 
-import gamesmanager.beans.Person;
-import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.forms.CheckMemberForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
 import gamesmanager.ui.forms.GameTypeForm;

@@ -12,20 +12,20 @@ public class Employee extends Person{
 	}
 	
 	public Employee(String nombres, String appaterno, String apmaterno,
-			Double credito, Character sexo, Date fechanac, Date membersince,
+			Character sexo, Date fechanac, Date membersince,
 			String telcasa, String telcel, Address address, EmployeeType e,
 			User user) {
-		super(nombres, appaterno, apmaterno, credito, sexo, fechanac, membersince,
+		super(nombres, appaterno, apmaterno, sexo, fechanac, membersince,
 				telcasa, telcel, address);
 		this.employeetype = e;
 		this.user = user;
 	}
 
 	public Employee(String id, String nombres, String appaterno,
-			String apmaterno, Double credito, Character sexo, Date fechanac,
+			String apmaterno, Character sexo, Date fechanac,
 			Date membersince, String telcasa, String telcel, Address address,
 			EmployeeType e, User user) {
-		super(id, nombres, appaterno, apmaterno, credito, sexo, fechanac, membersince,
+		super(id, nombres, appaterno, apmaterno, sexo, fechanac, membersince,
 				telcasa, telcel, address);
 		this.employeetype = e;
 		this.user = user;

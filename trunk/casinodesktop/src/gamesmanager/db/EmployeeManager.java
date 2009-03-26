@@ -99,22 +99,29 @@ public class EmployeeManager {
 			//c.setFoto(cs.getBlob(7));
 			e.setTelcasa(rs.getString(8));
 			e.setTelcel(rs.getString(9));
+			e.setHired(rs.getDate(10));
+			e.setFired(rs.getDate(11));
 			
+//			Date despedido;
+//			if((despedido = rs.getDate(11)) != null){
+//				e.setFired(despedido);
+//			}
+
 			Address a = new Address();
-			a.setAddressid(rs.getInt(10));
-			a.setCallenum(rs.getString(11));
-			a.setNumint(rs.getString(12));
-			a.setColonia(rs.getString(13));
-			a.setMunicipio(rs.getString(14));
-			a.setCodigopostal(rs.getString(15));
-			a.setEstado(rs.getString(16));
-			a.setPais(rs.getString(17));
+			a.setAddressid(rs.getInt(12));
+			a.setCallenum(rs.getString(13));
+			a.setNumint(rs.getString(14));
+			a.setColonia(rs.getString(15));
+			a.setMunicipio(rs.getString(16));
+			a.setCodigopostal(rs.getString(17));
+			a.setEstado(rs.getString(18));
+			a.setPais(rs.getString(19));
 			
 			e.setAddress(a);
-			User u = new User(rs.getInt(18), rs.getString(19), rs.getString(20));
+			User u = new User(rs.getInt(20), rs.getString(21), rs.getString(22));
 			e.setUser(u);
 			
-			EmployeeType et = new EmployeeType(rs.getInt(21), rs.getString(22));
+			EmployeeType et = new EmployeeType(rs.getInt(23), rs.getString(24));
 			e.setEmployeetype(et);
 			
 			System.out.println(e);

@@ -1,6 +1,6 @@
--- Function: finde(character varying)
+-- Function: findemployee(character varying)
 
--- DROP FUNCTION finde(character varying);
+-- DROP FUNCTION findemployee(character varying);
 
 CREATE OR REPLACE FUNCTION findemployee(id character varying)
   RETURNS employeesdata AS

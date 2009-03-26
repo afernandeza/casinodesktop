@@ -6,6 +6,8 @@ public class Employee extends Person{
 
 	private EmployeeType employeetype;
 	private User user;
+	private Date hired;
+	private Date fired;
 	
 	public Employee(){
 		super();
@@ -46,6 +48,21 @@ public class Employee extends Person{
 	public void setUser(User user) {
 		this.user = user;
 	}
+	public Date getHired() {
+		return hired;
+	}
+
+	public void setHired(Date hired) {
+		this.hired = hired;
+	}
+
+	public Date getFired() {
+		return fired;
+	}
+
+	public void setFired(Date fired) {
+		this.fired = fired;
+	}
 
 	public String toString(){
 	    final String TAB = ", ";
@@ -56,8 +73,12 @@ public class Employee extends Person{
 	        .append(super.toString()).append(TAB)
 	        .append("employeetype = ").append(this.employeetype).append(TAB)
 	        .append("user = ").append(this.user).append(TAB)
+	        .append("hired = ").append(this.hired).append(TAB)
+	        .append("fired = ").append(this.fired).append(TAB)
 	        .append(" )");
 	    
 	    return retValue.toString();
 	}
+	
+	
 }

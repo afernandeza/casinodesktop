@@ -1,5 +1,7 @@
 package gamesmanager.db.tests;
 
+import junit.framework.Assert;
+import gamesmanager.beans.User;
 import gamesmanager.db.DatabaseOperations;
 
 import org.junit.Test;
@@ -10,9 +12,19 @@ public class DatabaseOperationsTest {
 	public void testConnect() {
 	}
 	
-	@Test
+	//@Test
 	public void testGetTypes(){
 		System.out.println(DatabaseOperations.getEmployeeTypes());
+	}
+	
+	@Test
+	public void testlogin(){
+		Assert.assertTrue(DatabaseOperations.login(new User("ric", "ric")));
+	}
+	
+	@Test
+	public void testlogin2(){
+		Assert.assertFalse(DatabaseOperations.login(new User("rec", "rec")));
 	}
 
 }

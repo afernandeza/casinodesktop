@@ -24,9 +24,11 @@ package gamesmanager.ui;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -45,11 +47,16 @@ public class ImagePanel extends JPanel {
         super();
     }
 
-    public void loadImage(byte[] array){
-//        Image i = Toolkit.getDefaultToolkit().createImage(array);
-        ImageIcon ii = new ImageIcon(array);
-        Image i = ii.getImage();
-        this.loadImage(i);
+    public void loadImage(InputStream is){
+        try {
+            Image i = ImageIO.read(is);
+            this.loadImage(i);
+        } catch (IOException e) {
+            if(Helpers.DEBUG){
+                System.out.println("error reading image");
+                e.printStackTrace();
+            }
+        }    
     }
     
     public void loadImage(File f){

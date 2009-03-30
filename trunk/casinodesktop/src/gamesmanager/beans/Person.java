@@ -22,7 +22,6 @@ public class Person {
     private String telcel;
     private Address address;
     private File foto;
-    private byte[] fotobin;
     private InputStream fotoInputStream;
 
     public Person() {
@@ -223,15 +222,7 @@ public class Person {
         return retValue.toString();
     }
 
-    public byte[] getFotobin() {
-        return fotobin;
-    }
-
-    public void setFotobin(byte[] fotobin) {
-        this.fotobin = fotobin;
-    }
-
-    public InputStream getFotoInputStream() {
+    public InputStream getNewFotoInputStream() {
         try {
             this.fotoInputStream = new FileInputStream(this.foto);
         } catch (FileNotFoundException e) {
@@ -240,6 +231,10 @@ public class Person {
                 e.printStackTrace();
             }
         }
+        return this.fotoInputStream;
+    }
+    
+    public InputStream getCurrentFotoInputStream() {
         return this.fotoInputStream;
     }
 

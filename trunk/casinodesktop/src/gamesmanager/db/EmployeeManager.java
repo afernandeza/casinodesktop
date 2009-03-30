@@ -38,7 +38,7 @@ public class EmployeeManager {
             cs.setString(5, e.getSexo() + "");
             cs.setDate(6, new Date(e.getFechanac().getTime()));
 
-            InputStream is = e.getFotoInputStream();
+            InputStream is = e.getNewFotoInputStream();
             if (is != null) {
                 cs.setBinaryStream(7, is);
             } else {

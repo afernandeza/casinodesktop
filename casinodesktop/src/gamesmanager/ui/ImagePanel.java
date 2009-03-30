@@ -24,10 +24,12 @@ package gamesmanager.ui;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
@@ -43,20 +45,37 @@ public class ImagePanel extends JPanel {
         super();
     }
 
-    public void loadImage(File f) {
+    public void loadImage(byte[] array){
+        Image i = Toolkit.getDefaultToolkit().createImage(array);
+//        ImageIcon ii = new ImageIcon(array);
+//        Image i = ii.getImage();
+        this.loadImage(i);
+    }
+    
+    public void loadImage(File f){
+        if(f == null){
+            if(Helpers.DEBUG){
+                throw new NullPointerException("archivo nulo");
+            }
+            return;
+        }
         try {
             image = ImageIO.read(f);
         } catch (IOException e) {
-            if(Helpers.DEBUG){
-            System.out.println("Image could not be read");
-            e.printStackTrace();
+            if (Helpers.DEBUG) {
+                System.out.println("Image could not be read");
+                e.printStackTrace();
             }
         }
-
+        this.loadImage(image);
+    }
+    
+    private void loadImage(Image image) {
+        this.image = image;
         imageWidth = image.getWidth(this);
         imageHeight = image.getHeight(this);
 
-        if (image != null) {
+        if (this.image != null) {
 
             // use floats so division below won't round
             float iw = imageWidth;

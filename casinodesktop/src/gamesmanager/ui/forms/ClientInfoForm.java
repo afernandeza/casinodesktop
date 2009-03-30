@@ -1,6 +1,8 @@
 package gamesmanager.ui.forms;
 
-import gamesmanager.beans.Person;
+import gamesmanager.beans.Address;
+import gamesmanager.beans.Client;
+import gamesmanager.db.ClientManager;
 import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
@@ -32,7 +34,8 @@ import javax.swing.SwingWorker;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
-public class MemberInfoForm extends JFrame implements ActionListener, MouseListener {
+public class ClientInfoForm extends JFrame implements ActionListener,
+        MouseListener {
 
     private static final long serialVersionUID = 1L;
     private static final int FIELDSIZE = 15;
@@ -59,11 +62,11 @@ public class MemberInfoForm extends JFrame implements ActionListener, MouseListe
     private JButton newmember;
     private JButton register;
     private JButton cancel;
-    private Person m;
+    private Client client;
 
-    public MemberInfoForm(Person m) {
+    public ClientInfoForm(Client client) {
         super("Miembro del Casino");
-        this.m = m;
+        this.client = client;
         Helpers.setDefaultAppearance(this, true);
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -231,7 +234,7 @@ public class MemberInfoForm extends JFrame implements ActionListener, MouseListe
         cancel = new JButton("Cancelar");
         cancel.addActionListener(this);
 
-        if (this.m == null) {
+        if (this.client == null) {
             // new member
             JPanel p = new JPanel();
             newmember = new JButton("Agregar");
@@ -244,8 +247,9 @@ public class MemberInfoForm extends JFrame implements ActionListener, MouseListe
             c.gridwidth = 2;
             this.add(p, c);
         } else {
+            // existing member
             JPanel p = new JPanel();
-            register = new JButton("Registrar");
+            register = new JButton("Guardar cambios");
             register.addActionListener(this);
             p.add(register);
             p.add(cancel);
@@ -254,6 +258,25 @@ public class MemberInfoForm extends JFrame implements ActionListener, MouseListe
             c.gridheight = 1;
             c.gridwidth = 2;
             this.add(p, c);
+
+            this.nombre.setText(this.client.getNombres());
+            this.appat.setText(this.client.getAppaterno());
+            this.apmat.setText(this.client.getApmaterno());
+            this.sexo.setSelectedIndex(this.client.getSexoIndex());
+            this.telcasa.setText(this.client.getTelcasa());
+            this.telcel.setText(this.client.getTelcel());
+            this.fecha.setDate(this.client.getFechanac());
+
+            Address d = this.client.getAddress();
+            this.calle.setText(d.getCallenum());
+            this.num.setText(d.getNumint());
+            this.colonia.setText(d.getColonia());
+            this.municipio.setText(d.getMunicipio());
+            this.cp.setText(d.getCodigopostal());
+            this.estado.setText(d.getEstado());
+            this.pais.setSelectedItem(d.getPais());
+
+            // this.image.loadImage(this.client.getFotobin());
         }
 
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
@@ -264,23 +287,27 @@ public class MemberInfoForm extends JFrame implements ActionListener, MouseListe
     }
 
     public static void main(String args[]) {
-        MemberInfoForm n = new MemberInfoForm(null);
+        ClientInfoForm n = new ClientInfoForm(null);
         n.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         n.setVisible(true);
+    }
+    
+    private boolean validateForm(){
+        return true;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (o == pais) {
-//            String selectedcountry = (String) pais.getSelectedItem();
+            // String selectedcountry = (String) pais.getSelectedItem();
             estado.setEnabled(true);
 
         } else if (o == imagebutton) {
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
                 public Void doInBackground() {
-                    int returnVal = fc.showOpenDialog(MemberInfoForm.this);
+                    int returnVal = fc.showOpenDialog(ClientInfoForm.this);
                     if (returnVal == JFileChooser.APPROVE_OPTION) {
                         File file = fc.getSelectedFile();
                         image.loadImage(file.getAbsolutePath());
@@ -296,17 +323,42 @@ public class MemberInfoForm extends JFrame implements ActionListener, MouseListe
             };
             worker.execute();
         } else if (o == newmember) {
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            System.out.println("agregando");
+            if(this.validateForm()){
+            Client c = new Client();
+            c.setCredito("0");
+            c.setNombres(nombre.getText().trim());
+            c.setAppaterno(appat.getText().trim());
+            c.setApmaterno(apmat.getText().trim());
+            c.setSexo(sexo.getSelectedIndex());
+            c.setFechanac(fecha.getDate());
+            c.setFoto(fc.getSelectedFile());
+            c.setTelcasa(telcasa.getText().trim());
+            c.setTelcel(telcel.getText().trim());
 
-                public Void doInBackground() {
-                    System.out.println("agregando");
-                    return null;
-                }
+            Address d = new Address();
+            d.setCallenum(calle.getText().trim());
+            d.setNumint(num.getText().trim());
+            d.setColonia(colonia.getText().trim());
+            d.setMunicipio(municipio.getText().trim());
+            d.setCodigopostal(cp.getText().trim());
+            d.setEstado(estado.getText().trim());
+            d.setPais(pais.getSelectedItem());
 
-                public void done() {
-                }
-            };
-            worker.execute();
+            c.setAddress(d);
+            boolean inserted = ClientManager.insertClient(c);
+            System.out.println("inserted: " + inserted);
+            if (inserted) {
+                JOptionPane.showMessageDialog(null, "Nuevo miembro insertado.",
+                        "Informaci" + Helpers.OACUTE + "n",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "El nuevo miembro no ha sido insertado.", "Informaci"
+                                + Helpers.OACUTE + "n",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            }
         } else if (o == cancel) {
             this.dispose();
         } else if (o == register) {
@@ -327,24 +379,18 @@ public class MemberInfoForm extends JFrame implements ActionListener, MouseListe
     @Override
     public void mouseClicked(MouseEvent e) {
         String sc = (String) pais.getSelectedItem();
-        if(sc.equals("Mexico")){
-
+        if (sc.equals("Mexico")) {
             Object[] possibilities = DatabaseOperations.getStates().toArray();
-            String s = (String)
-            JOptionPane.showInputDialog(
-                    this,
-                    "Seleccione el estado de la Rep"+Helpers.UACUTE+"blica:\n",
-                    "",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    possibilities,
-                    "ham");
+            String s = (String) JOptionPane.showInputDialog(null,
+                    "Seleccione el estado de la Rep" + Helpers.UACUTE
+                            + "blica:\n", "", JOptionPane.QUESTION_MESSAGE,
+                    null, possibilities, "Distrito Federal");
 
             if ((s != null) && (s.length() > 0)) {
                 estado.setText(s);
                 estado.setEnabled(false);
                 return;
-            }        
+            }
         } else {
             estado.setEnabled(true);
         }
@@ -353,25 +399,25 @@ public class MemberInfoForm extends JFrame implements ActionListener, MouseListe
     @Override
     public void mouseEntered(MouseEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

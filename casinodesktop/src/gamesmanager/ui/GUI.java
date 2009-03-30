@@ -4,7 +4,7 @@ import gamesmanager.ui.forms.CheckMemberForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
 import gamesmanager.ui.forms.GameTypeForm;
 import gamesmanager.ui.forms.LoginForm;
-import gamesmanager.ui.forms.MemberInfoForm;
+import gamesmanager.ui.forms.ClientInfoForm;
 import gamesmanager.ui.forms.SessionForm;
 import gamesmanager.ui.forms.TableInfoForm;
 
@@ -226,7 +226,7 @@ public class GUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String action = e.getActionCommand();
         if (action.equals(NEWMEMBER)) {
-            MemberInfoForm memberform = new MemberInfoForm(null);
+            ClientInfoForm memberform = new ClientInfoForm(null);
             memberform.setVisible(true);
         } else if (action.equals(NEWEMPLOYEE)) {
             EmployeeInfoForm employeeform = new EmployeeInfoForm(null);

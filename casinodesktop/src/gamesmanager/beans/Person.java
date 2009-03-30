@@ -24,8 +24,8 @@ public class Person {
     private String telcel;
     private Address address;
     private File foto;
-    private ImageIcon fotoImage;
-
+    private byte[] fotobin;
+    
     public Person() {
 
     }
@@ -125,16 +125,47 @@ public class Person {
     public Character getSexo() {
         return sexo;
     }
+    
+    public int getSexoIndex() {
+        if(this.sexo.equals('M')){
+            return 0;
+        } else if (this.sexo.equals('F')){
+            return 1;
+        } else {
+            if(Helpers.DEBUG){
+                throw new IllegalArgumentException("Sexo invalido");
+            }
+            return -1;
+        }
+    }
 
     public void setSexo(String sexo) {
         if (sexo == null || sexo.length() < 1) {
-            throw new IllegalArgumentException("Sexo invalido");
+            if(Helpers.DEBUG){
+                throw new IllegalArgumentException("Sexo invalido");
+            }
         }
         this.sexo = sexo.charAt(0);
     }
+    
+    public void setSexo(int index) {
+        if(index == 0){
+            this.sexo = 'M';
+        } else if (index == 1){
+            this.sexo = 'F';
+        } else {
+            if(Helpers.DEBUG){
+                throw new IllegalArgumentException("Sexo invalido");
+            }
+        }
+    }
 
     public void setSexo(Character sexo) {
-        this.sexo = sexo;
+        if(sexo.equals('M') || sexo.equals('F')){
+            this.sexo = sexo;
+        } else {
+            throw new IllegalArgumentException("Sexo invalido");
+        }
     }
 
     public Date getFechanac() {
@@ -181,12 +212,9 @@ public class Person {
         this.address = address;
     }
     
-    public ImageIcon getFotoImage() {
-        return fotoImage;
-    }
-
-    public void setFotoImage(byte[] fotoimage) {
-        this.fotoImage = new ImageIcon(fotoimage);
+    public String getFullName(){
+        return this.id + ": " + this.appaterno + " " + 
+               this.apmaterno + " " + this.nombres;
     }
 
     public String toString() {
@@ -207,6 +235,14 @@ public class Person {
                         "foto = ").append(this.foto).append(TAB).append(" )");
 
         return retValue.toString();
+    }
+
+    public byte[] getFotobin() {
+        return fotobin;
+    }
+
+    public void setFotobin(byte[] fotobin) {
+        this.fotobin = fotobin;
     }
 
 }

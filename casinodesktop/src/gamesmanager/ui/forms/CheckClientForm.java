@@ -85,6 +85,8 @@ public class CheckClientForm extends JPanel implements KeyListener {
                       form.setVisible(true);
                     } else if(s.equals(OPTIONS[1])){
                         System.out.println("admin fichas");
+                        ChipManager cm = new ChipManager(client);
+                        cm.setVisible(true);
                     } else if(s.equals(OPTIONS[2])){
                         System.out.println("dar baja");
                         int n = JOptionPane.showConfirmDialog(

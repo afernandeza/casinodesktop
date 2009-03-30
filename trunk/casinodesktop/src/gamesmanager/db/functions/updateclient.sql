@@ -2,9 +2,11 @@
 
 -- DROP FUNCTION updateclient(character varying, numeric, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying);
 
-CREATE OR REPLACE FUNCTION updateclient(cid character varying, cred numeric, n character varying, ap character varying, am character varying, s character, fn date, ft bytea, tc character varying, tl character varying, calle character varying, nint character varying, col character varying, 
+CREATE OR REPLACE FUNCTION updateclient(cid character varying, cred numeric, n character varying, 
+ap character varying, am character varying, s character, fn date, ft bytea, tc character varying, 
+tl character varying, calle character varying, nint character varying, col character varying,
 mun character varying, cp character varying, edo character varying, ps character varying)
-  RETURNS VOID AS
+  RETURNS boolean AS
 $BODY$
 declare
   addressid integer;
@@ -30,6 +32,7 @@ begin
     estado = edo,
     pais = ps
     where direccionid = addressid;
+   return true;
 end;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE

@@ -12,11 +12,7 @@ import org.junit.Test;
 
 public class ClientManagerTest {
 
-//    select insertclient(90.34, 'Alfredo', 'Fernandez', 'Acuna', 
-//            'M', '1986-08-30', '01010101010101001', '5536051150', '0445554534335', 'av club de golf lomas 8',
-//            'mz 3 lt 7', 'col. greenhouse', 'huixquilucan', '52779', 'Edo Mex', 'Mexico');
-    
-    @Test
+    //@Test
     public void testInsert() {
         Client c = new Client();
         c.setCredito("90.34");
@@ -41,6 +37,39 @@ public class ClientManagerTest {
         c.setAddress(d);
         
         Assert.assertTrue(ClientManager.insertClient(c));
+    }
+    
+    //@Test
+    public void testUpdate() {
+        Client c = new Client();
+        c.setId("SUCA_C166");
+        c.setCredito("1120.34");
+        c.setNombres("Jose Alberto");
+        c.setAppaterno("Mu–iz");
+        c.setApmaterno("Navarro");
+        c.setSexo("F");
+        c.setFechanac("1983-08-31");
+        c.setFoto(new File("/Users/afa/Desktop/pics/DSCN0559.jpg"));
+        c.setTelcasa("5512131415");
+        c.setTelcel("04427281113");
+        
+        Address d = new Address();
+        d.setCallenum("memorial shit");
+        d.setNumint("mz 123");
+        d.setColonia("mit");
+        d.setMunicipio("mittermuni");
+        d.setCodigopostal("10710");
+        d.setEstado("MA");
+        d.setPais("USA");
+        
+        c.setAddress(d);
+        
+        Assert.assertTrue(ClientManager.updateClient(c));
+    }
+    
+    @Test
+    public void testFind(){
+        Assert.assertNotNull(ClientManager.findClient("SUCA_C166"));
     }
 
 }

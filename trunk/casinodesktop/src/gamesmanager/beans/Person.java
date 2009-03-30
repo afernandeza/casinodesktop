@@ -10,6 +10,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
+
 public class Person {
 
     private String id;
@@ -22,6 +24,7 @@ public class Person {
     private String telcel;
     private Address address;
     private File foto;
+    private ImageIcon fotoImage;
 
     public Person() {
 
@@ -176,6 +179,14 @@ public class Person {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+    
+    public ImageIcon getFotoImage() {
+        return fotoImage;
+    }
+
+    public void setFotoImage(byte[] fotoimage) {
+        this.fotoImage = new ImageIcon(fotoimage);
     }
 
     public String toString() {

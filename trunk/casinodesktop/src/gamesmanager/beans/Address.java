@@ -1,5 +1,7 @@
 package gamesmanager.beans;
 
+import gamesmanager.ui.Helpers;
+
 public class Address {
 
     private int addressid;
@@ -100,6 +102,16 @@ public class Address {
         return pais;
     }
 
+    public void setPais(Object pais) {
+        if(pais instanceof String){
+            this.pais = (String)pais;   
+        } else {
+            if(Helpers.DEBUG){
+                throw new IllegalArgumentException("pais invalido");
+            }
+        }
+    }
+    
     public void setPais(String pais) {
         this.pais = pais;
     }

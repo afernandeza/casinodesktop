@@ -161,9 +161,11 @@ public class ClientManager {
         try {
             pstmt = conn.prepareStatement(FIND);
             pstmt.setString(1, id);
-
             rs = pstmt.executeQuery();
             rs.next();
+            if(rs.getString(1) == null){
+                return null;
+            }            
             c = new Client();
             c.setId(rs.getString(1));
             c.setNombres(rs.getString(2));
@@ -171,7 +173,7 @@ public class ClientManager {
             c.setApmaterno(rs.getString(4));
             c.setSexo(rs.getString(5));
             c.setFechanac(rs.getDate(6));
-            c.setFotoImage(rs.getBytes(7));
+            c.setFotobin(rs.getBytes(7));
             c.setTelcasa(rs.getString(8));
             c.setTelcel(rs.getString(9));
             c.setMembersince(rs.getString(10));

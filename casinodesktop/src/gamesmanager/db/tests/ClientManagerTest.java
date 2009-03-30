@@ -5,10 +5,7 @@ import gamesmanager.beans.Client;
 import gamesmanager.db.ClientManager;
 
 import java.io.File;
-
-import junit.framework.Assert;
-
-import org.junit.Test;
+import org.junit.Assert;
 
 public class ClientManagerTest {
 

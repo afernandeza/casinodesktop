@@ -2,6 +2,7 @@ package gamesmanager.db;
 
 import gamesmanager.beans.EmployeeType;
 import gamesmanager.beans.User;
+import gamesmanager.ui.Helpers;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -41,8 +42,10 @@ public class DatabaseOperations {
             cs.execute();
             authorized = cs.getBoolean(1);
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            System.out.println("Error authorizing: " + sqle.getMessage());
+            if (Helpers.DEBUG) {
+                sqle.printStackTrace();
+                System.out.println("Error authorizing: " + sqle.getMessage());
+            }
         } finally {
             DatabaseManager.close(cs);
             DatabaseManager.close(conn);
@@ -75,9 +78,11 @@ public class DatabaseOperations {
             }
 
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            System.out.println("Error getting employee types: "
-                    + sqle.getMessage());
+            if (Helpers.DEBUG) {
+                sqle.printStackTrace();
+                System.out.println("Error getting employee types: "
+                        + sqle.getMessage());
+            }
         } finally {
             DatabaseManager.close(pstmt);
             DatabaseManager.close(conn);
@@ -102,8 +107,10 @@ public class DatabaseOperations {
             }
 
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            System.out.println("Error getting types: " + sqle.getMessage());
+            if (Helpers.DEBUG) {
+                sqle.printStackTrace();
+                System.out.println("Error getting types: " + sqle.getMessage());
+            }
         } finally {
             DatabaseManager.close(pstmt);
             DatabaseManager.close(conn);

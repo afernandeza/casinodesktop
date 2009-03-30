@@ -47,8 +47,10 @@ public class ImagePanel extends JPanel {
         try {
             image = ImageIO.read(f);
         } catch (IOException e) {
+            if(Helpers.DEBUG){
             System.out.println("Image could not be read");
             e.printStackTrace();
+            }
         }
 
         imageWidth = image.getWidth(this);

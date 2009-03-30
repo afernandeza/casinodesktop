@@ -1,10 +1,15 @@
 package gamesmanager.beans;
 
+import gamesmanager.ui.Helpers;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Client extends Person {
 
-    private Double credito;
+    private BigDecimal credito;
     private Date membersince;
 
     public Client() {
@@ -12,7 +17,7 @@ public class Client extends Person {
     }
 
     public Client(String nombres, String appaterno, String apmaterno,
-            Double credito, Character sexo, Date fechanac, Date membersince,
+            BigDecimal credito, Character sexo, Date fechanac, Date membersince,
             String telcasa, String telcel, Address address) {
         super(nombres, appaterno, apmaterno, sexo, fechanac, membersince,
                 telcasa, telcel, address);
@@ -21,7 +26,7 @@ public class Client extends Person {
     }
 
     public Client(String clientid, String nombres, String appaterno,
-            String apmaterno, Double credito, Character sexo, Date fechanac,
+            String apmaterno, BigDecimal credito, Character sexo, Date fechanac,
             Date membersince, String telcasa, String telcel, Address address) {
         super(clientid, nombres, appaterno, apmaterno, sexo, fechanac,
                 membersince, telcasa, telcel, address);
@@ -29,12 +34,17 @@ public class Client extends Person {
         this.membersince = membersince;
     }
 
-    public Double getCredito() {
+    public BigDecimal getCredito() {
         return credito;
     }
 
-    public void setCredito(Double credito) {
-        this.credito = credito;
+    public void setCredito(BigDecimal credito) {
+        this.credito = credito.setScale(2);
+    }
+    
+    public void setCredito(String credito) {
+        BigDecimal bd = new BigDecimal(credito);
+        this.credito = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public Date getMembersince() {
@@ -43,6 +53,18 @@ public class Client extends Person {
 
     public void setMembersince(Date membersince) {
         this.membersince = membersince;
+    }
+    
+    public void setMembersince(String membersince) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.membersince = sdf.parse(membersince);
+        } catch (ParseException e) {
+            System.out.println("wrong membersince date");
+            if(Helpers.DEBUG){
+                e.printStackTrace();
+            }
+        }
     }
 
     public String toString() {

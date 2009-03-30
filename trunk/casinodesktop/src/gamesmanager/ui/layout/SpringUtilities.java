@@ -31,8 +31,9 @@
 
 package gamesmanager.ui.layout;
 
+import gamesmanager.ui.Helpers;
+
 import javax.swing.*;
-import javax.swing.SpringLayout;
 import java.awt.*;
 
 /**
@@ -76,8 +77,10 @@ public class SpringUtilities {
         try {
             layout = (SpringLayout) parent.getLayout();
         } catch (ClassCastException exc) {
+            if(Helpers.DEBUG){
             System.err
                     .println("The first argument to makeGrid must use SpringLayout.");
+            }
             return;
         }
 
@@ -178,8 +181,10 @@ public class SpringUtilities {
         try {
             layout = (SpringLayout) parent.getLayout();
         } catch (ClassCastException exc) {
+            if(Helpers.DEBUG){
             System.err
                     .println("The first argument to makeCompactGrid must use SpringLayout.");
+            }
             return;
         }
 

@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
-public class CheckMemberForm extends JPanel implements KeyListener {
+public class CheckClientForm extends JPanel implements KeyListener {
 
     private static final long serialVersionUID = 1L;
     private JTextField memberid;
@@ -30,7 +30,7 @@ public class CheckMemberForm extends JPanel implements KeyListener {
     public String DELETE_CONFIRMATION = Helpers.OQUESTIONM+"Est"+Helpers.AACUTE+
             " seguro que desea borrar al miembro ";
 
-    public CheckMemberForm() {
+    public CheckClientForm() {
         super(new GridBagLayout());
         c.gridx = 0;
         c.gridy = 0;

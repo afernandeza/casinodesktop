@@ -291,8 +291,8 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         n.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         n.setVisible(true);
     }
-    
-    private boolean validateForm(){
+
+    private boolean validateForm() {
         return true;
     }
 
@@ -324,55 +324,78 @@ public class ClientInfoForm extends JFrame implements ActionListener,
             worker.execute();
         } else if (o == newmember) {
             System.out.println("agregando");
-            if(this.validateForm()){
-            Client c = new Client();
-            c.setCredito("0");
-            c.setNombres(nombre.getText().trim());
-            c.setAppaterno(appat.getText().trim());
-            c.setApmaterno(apmat.getText().trim());
-            c.setSexo(sexo.getSelectedIndex());
-            c.setFechanac(fecha.getDate());
-            c.setFoto(fc.getSelectedFile());
-            c.setTelcasa(telcasa.getText().trim());
-            c.setTelcel(telcel.getText().trim());
+            if (this.validateForm()) {
+                Client c = new Client();
+                c.setCredito("0");
+                c.setNombres(nombre.getText().trim());
+                c.setAppaterno(appat.getText().trim());
+                c.setApmaterno(apmat.getText().trim());
+                c.setSexo(sexo.getSelectedIndex());
+                c.setFechanac(fecha.getDate());
+                c.setFoto(fc.getSelectedFile());
+                c.setTelcasa(telcasa.getText().trim());
+                c.setTelcel(telcel.getText().trim());
 
-            Address d = new Address();
-            d.setCallenum(calle.getText().trim());
-            d.setNumint(num.getText().trim());
-            d.setColonia(colonia.getText().trim());
-            d.setMunicipio(municipio.getText().trim());
-            d.setCodigopostal(cp.getText().trim());
-            d.setEstado(estado.getText().trim());
-            d.setPais(pais.getSelectedItem());
+                Address d = new Address();
+                d.setCallenum(calle.getText().trim());
+                d.setNumint(num.getText().trim());
+                d.setColonia(colonia.getText().trim());
+                d.setMunicipio(municipio.getText().trim());
+                d.setCodigopostal(cp.getText().trim());
+                d.setEstado(estado.getText().trim());
+                d.setPais(pais.getSelectedItem());
 
-            c.setAddress(d);
-            boolean inserted = ClientManager.insertClient(c);
-            System.out.println("inserted: " + inserted);
-            if (inserted) {
-                JOptionPane.showMessageDialog(null, "Nuevo miembro insertado.",
-                        "Informaci" + Helpers.OACUTE + "n",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null,
-                        "El nuevo miembro no ha sido insertado.", "Informaci"
-                                + Helpers.OACUTE + "n",
-                        JOptionPane.ERROR_MESSAGE);
-            }
+                c.setAddress(d);
+                boolean inserted = ClientManager.insertClient(c);
+                System.out.println("inserted: " + inserted);
+                if (inserted) {
+                    JOptionPane.showMessageDialog(null,
+                            "Nuevo miembro insertado.", "Informaci"
+                                    + Helpers.OACUTE + "n",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "El nuevo miembro no ha sido insertado.",
+                            "Informaci" + Helpers.OACUTE + "n",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         } else if (o == cancel) {
             this.dispose();
         } else if (o == register) {
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            if (this.validateForm()) {
+                this.client.setNombres(nombre.getText().trim());
+                this.client.setAppaterno(appat.getText().trim());
+                this.client.setApmaterno(apmat.getText().trim());
+                this.client.setSexo(sexo.getSelectedIndex());
+                this.client.setFechanac(fecha.getDate());
+                this.client.setFoto(fc.getSelectedFile());
+                this.client.setTelcasa(telcasa.getText().trim());
+                this.client.setTelcel(telcel.getText().trim());
 
-                public Void doInBackground() {
-                    System.out.println("registrando");
-                    return null;
-                }
+                Address d = this.client.getAddress();
+                d.setCallenum(calle.getText().trim());
+                d.setNumint(num.getText().trim());
+                d.setColonia(colonia.getText().trim());
+                d.setMunicipio(municipio.getText().trim());
+                d.setCodigopostal(cp.getText().trim());
+                d.setEstado(estado.getText().trim());
+                d.setPais(pais.getSelectedItem());
 
-                public void done() {
+                boolean updated = ClientManager.updateClient(this.client);
+                System.out.println("updated: " + updated);
+                if (updated) {
+                    JOptionPane.showMessageDialog(null,
+                            "Cambios guardados exitosamente.", "Informaci"
+                                    + Helpers.OACUTE + "n",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Los cambios no han sido guardados",
+                            "Informaci" + Helpers.OACUTE + "n",
+                            JOptionPane.ERROR_MESSAGE);
                 }
-            };
-            worker.execute();
+            }
         }
     }
 

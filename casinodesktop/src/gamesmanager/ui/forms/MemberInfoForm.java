@@ -13,6 +13,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.Locale;
 
@@ -21,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -29,7 +32,7 @@ import javax.swing.SwingWorker;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
-public class MemberInfoForm extends JFrame implements ActionListener {
+public class MemberInfoForm extends JFrame implements ActionListener, MouseListener {
 
     private static final long serialVersionUID = 1L;
     private static final int FIELDSIZE = 15;
@@ -212,6 +215,7 @@ public class MemberInfoForm extends JFrame implements ActionListener {
         JLabel l6 = new JLabel(alabels[7], JLabel.TRAILING);
         addressform.add(l6);
         estado = new JTextField(FIELDSIZE);
+        estado.addMouseListener(this);
         l6.setLabelFor(estado);
         addressform.add(estado);
 
@@ -269,11 +273,9 @@ public class MemberInfoForm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (o == pais) {
-            String selectedcountry = (String) pais.getSelectedItem();
-            if (selectedcountry.equals("Mexico")) {
-                System.out.println("mexico selected");
-                this.remove(estado);
-            }
+//            String selectedcountry = (String) pais.getSelectedItem();
+            estado.setEnabled(true);
+
         } else if (o == imagebutton) {
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
@@ -320,6 +322,56 @@ public class MemberInfoForm extends JFrame implements ActionListener {
             };
             worker.execute();
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        String sc = (String) pais.getSelectedItem();
+        if(sc.equals("Mexico")){
+
+            Object[] possibilities = DatabaseOperations.getStates().toArray();
+            String s = (String)
+            JOptionPane.showInputDialog(
+                    this,
+                    "Seleccione el estado de la Rep"+Helpers.UACUTE+"blica:\n",
+                    "",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    possibilities,
+                    "ham");
+
+            if ((s != null) && (s.length() > 0)) {
+                estado.setText(s);
+                estado.setEnabled(false);
+                return;
+            }        
+        } else {
+            estado.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

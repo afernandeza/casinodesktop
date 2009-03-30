@@ -1,5 +1,7 @@
 package gamesmanager.db;
 
+import gamesmanager.ui.Helpers;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,9 +18,13 @@ public class DatabaseManager {
                     "jdbc:postgresql://localhost/casinolocal",
                     "casindesktopapp", "casindesktopapp");
         } catch (ClassNotFoundException cnfe) {
-            System.err.println(cnfe.getMessage());
+            if (Helpers.DEBUG) {
+                System.err.println(cnfe.getMessage());
+            }
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            if (Helpers.DEBUG) {
+                System.err.println(e.getMessage());
+            }
         }
 
         return conn;

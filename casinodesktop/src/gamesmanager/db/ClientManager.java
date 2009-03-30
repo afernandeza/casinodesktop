@@ -2,7 +2,10 @@ package gamesmanager.db;
 
 import gamesmanager.beans.Address;
 import gamesmanager.beans.Client;
+import gamesmanager.ui.Helpers;
 
+import java.io.File;
+import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -12,8 +15,8 @@ import java.sql.Types;
 
 public class ClientManager {
 
-    private static String INSERT = "{call insertclient[(?, ?, ?, ?, ?, ?, ?,"
-            + "?, ?, ?, ?, ?, ?, ?, ?, ?)]}";
+    private static String INSERT = "{? = call insertclient(?, ?, ?, ?, ?, ?, ?,"
+            + "?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String UPDATE = "{call updateclient[(?, ?, ?, ?, ?, ?, ?,"
             + "?, ?, ?, ?, ?, ?, ?, ?, ?)]}";
     private static String DELETE = "{call deleteclient[(?)]}";
@@ -27,32 +30,36 @@ public class ClientManager {
         }
         try {
             cs = conn.prepareCall(INSERT);
-            cs.setDouble(1, c.getCredito());
-            cs.setString(2, c.getNombres());
-            cs.setString(3, c.getAppaterno());
-            cs.setString(4, c.getApmaterno());
-            cs.setString(5, c.getSexo() + "");
-            cs.setDate(6, (Date) c.getFechanac());
-            cs.setBlob(7, c.getFoto());
-            cs.setString(8, c.getTelcasa());
-            cs.setString(9, c.getTelcel());
+            cs.registerOutParameter(1, Types.BOOLEAN);
+            cs.setBigDecimal(2, c.getCredito());
+            cs.setString(3, c.getNombres());
+            cs.setString(4, c.getAppaterno());
+            cs.setString(5, c.getApmaterno());
+            cs.setString(6, c.getSexo() + "");
+            cs.setDate(7, new Date(c.getFechanac().getTime()));
 
-            Address d = c.getAddress();
-            cs.setString(10, d.getCallenum());
-            cs.setString(11, d.getNumint());
-            cs.setString(12, d.getColonia());
-            cs.setString(13, d.getMunicipio());
-            cs.setString(14, d.getCodigopostal());
-            cs.setString(15, d.getEstado());
-            cs.setString(16, d.getPais());
-
-            int rows = cs.executeUpdate();
-            if (rows == 1) {
-                return true;
+            File foto = c.getFoto();
+            InputStream is = c.getFotoInputStream();
+            if (is != null) {
+                cs.setBinaryStream(8, is, (int) foto.length());
             } else {
-                return false;
+                throw new NullPointerException("Foto es null");
             }
 
+            cs.setString(9, c.getTelcasa());
+            cs.setString(10, c.getTelcel());
+
+            Address d = c.getAddress();
+            cs.setString(11, d.getCallenum());
+            cs.setString(12, d.getNumint());
+            cs.setString(13, d.getColonia());
+            cs.setString(14, d.getMunicipio());
+            cs.setString(15, d.getCodigopostal());
+            cs.setString(16, d.getEstado());
+            cs.setString(17, d.getPais());
+
+            cs.execute();
+            return cs.getBoolean(1);
         } catch (SQLException e) {
             // e.printStackTrace();
             System.out.println("Error inserting client: " + e.getMessage());
@@ -118,8 +125,10 @@ public class ClientManager {
             System.out.println(a);
 
         } catch (SQLException e) {
-            // e.printStackTrace();
-            System.out.println("Error finding client: " + e.getMessage());
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error finding client: " + e.getMessage());
+            }
         } finally {
             DatabaseManager.close(cs);
             DatabaseManager.close(conn);

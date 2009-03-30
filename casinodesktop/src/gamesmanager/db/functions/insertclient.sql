@@ -3,7 +3,7 @@
 -- DROP FUNCTION insertclient(numeric, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying);
 
 CREATE OR REPLACE FUNCTION insertclient(credito numeric, nombres character varying, appaterno character varying, apmaterno character varying, sexo character, fechanac date, foto bytea, telcasa character varying, telcel character varying, callenum character varying, numint character varying, colonia character varying, municipio character varying, codigopostal character varying, estado character varying, pais character varying)
-  RETURNS VOID AS
+  RETURNS boolean AS
 $BODY$
 declare
   addressid integer;
@@ -15,6 +15,7 @@ begin
   sexo, fechanac, foto, current_date, telcasa, telcel, clientid);
   insert into direcciones values(addressid, callenum, numint, colonia,
   municipio, codigopostal, estado, pais);
+  return true;
 end;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE

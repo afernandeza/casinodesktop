@@ -1,5 +1,7 @@
 package gamesmanager.db;
 
+import gamesmanager.ui.Helpers;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Random;
@@ -25,12 +27,17 @@ public class SynchronizeMembers extends SwingWorker<Void, Void> implements
         try {
             Thread.sleep(1000 + random.nextInt(2000));
         } catch (InterruptedException ignore) {
-
+            if (Helpers.DEBUG) {
+                ignore.printStackTrace();
+            }
         }
         while (progress < 100) {
             try {
                 Thread.sleep(random.nextInt(1000));
             } catch (InterruptedException ignore) {
+                if (Helpers.DEBUG) {
+                    ignore.printStackTrace();
+                }
             }
             progress += random.nextInt(10);
             setProgress(Math.min(progress, 100));

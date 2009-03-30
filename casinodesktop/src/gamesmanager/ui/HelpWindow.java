@@ -27,7 +27,10 @@ public class HelpWindow extends JFrame implements HyperlinkListener {
             try {
                 editorPane.setPage(url);
             } catch (IOException ioe) {
-                System.err.println("Bad URL: " + url);
+                if(Helpers.DEBUG){
+                    System.err.println("Bad URL: " + url);
+                    ioe.printStackTrace();
+                }
             }
         } else {
             System.err.println("File not found: " + index);
@@ -56,7 +59,9 @@ public class HelpWindow extends JFrame implements HyperlinkListener {
                 try {
                     pane.setPage(e.getURL());
                 } catch (Throwable t) {
-                    t.printStackTrace();
+                    if(Helpers.DEBUG){
+                        t.printStackTrace();
+                    }
                 }
             }
         }

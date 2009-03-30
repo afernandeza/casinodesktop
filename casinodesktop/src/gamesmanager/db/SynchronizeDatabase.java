@@ -46,7 +46,10 @@ public class SynchronizeDatabase extends Thread {
             progress.setProgress(n);
             success();
         } catch (InterruptedException e) {
-            System.out.println("Something went wrong");
+            if (Helpers.DEBUG) {
+                System.out.println("Something went wrong");
+                e.printStackTrace();
+            }
         }
     }
 

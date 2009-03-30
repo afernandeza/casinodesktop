@@ -1,6 +1,13 @@
 package gamesmanager.beans;
 
+import gamesmanager.ui.Helpers;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Person {
@@ -14,7 +21,7 @@ public class Person {
     private String telcasa;
     private String telcel;
     private Address address;
-    private InputStream foto;
+    private File foto;
 
     public Person() {
 
@@ -67,11 +74,24 @@ public class Person {
         this.id = id;
     }
 
-    public InputStream getFoto() {
+    public InputStream getFotoInputStream() {
+        InputStream fis = null;
+        try {
+            fis = new FileInputStream(this.foto);
+        } catch (FileNotFoundException e) {
+            System.out.println("photo not found");
+            if (Helpers.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        return fis;
+    }
+
+    public File getFoto() {
         return foto;
     }
 
-    public void setFoto(InputStream foto) {
+    public void setFoto(File foto) {
         this.foto = foto;
     }
 
@@ -103,12 +123,31 @@ public class Person {
         return sexo;
     }
 
+    public void setSexo(String sexo) {
+        if (sexo == null || sexo.length() < 1) {
+            throw new IllegalArgumentException("Sexo invalido");
+        }
+        this.sexo = sexo.charAt(0);
+    }
+
     public void setSexo(Character sexo) {
         this.sexo = sexo;
     }
 
     public Date getFechanac() {
         return fechanac;
+    }
+
+    public void setFechanac(String fechanac) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.fechanac = sdf.parse(fechanac);
+        } catch (ParseException e) {
+            System.out.println("wrong birthdate");
+            if(Helpers.DEBUG){
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setFechanac(Date fechanac) {

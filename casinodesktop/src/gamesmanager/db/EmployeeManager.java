@@ -4,7 +4,9 @@ import gamesmanager.beans.Address;
 import gamesmanager.beans.Employee;
 import gamesmanager.beans.EmployeeType;
 import gamesmanager.beans.User;
+import gamesmanager.ui.Helpers;
 
+import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -34,8 +36,15 @@ public class EmployeeManager {
             cs.setString(3, e.getAppaterno());
             cs.setString(4, e.getApmaterno());
             cs.setString(5, e.getSexo() + "");
-            cs.setDate(6, (Date) e.getFechanac());
-            cs.setBlob(7, e.getFoto());
+            cs.setDate(6, new Date(e.getFechanac().getTime()));
+
+            InputStream is = e.getFotoInputStream();
+            if (is != null) {
+                cs.setBinaryStream(7, is);
+            } else {
+                throw new NullPointerException("Foto es null");
+            }
+
             cs.setString(8, e.getTelcasa());
             cs.setString(9, e.getTelcel());
 
@@ -56,9 +65,11 @@ public class EmployeeManager {
             }
 
         } catch (SQLException sqle) {
-            // e.printStackTrace();
-            System.out
-                    .println("Error inserting employee: " + sqle.getMessage());
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error inserting employee: "
+                        + sqle.getMessage());
+            }
         } finally {
             DatabaseManager.close(cs);
             DatabaseManager.close(conn);
@@ -128,8 +139,11 @@ public class EmployeeManager {
             System.out.println(e);
 
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            System.out.println("Error finding employee: " + sqle.getMessage());
+            if (Helpers.DEBUG) {
+                sqle.printStackTrace();
+                System.out.println("Error finding employee: "
+                        + sqle.getMessage());
+            }
         } finally {
             DatabaseManager.close(pstmt);
             DatabaseManager.close(conn);

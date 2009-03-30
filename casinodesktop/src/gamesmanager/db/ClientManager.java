@@ -20,10 +20,17 @@ public class ClientManager {
             + "?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String UPDATE = "{? = call updateclient(?, ?, ?, ?, ?, ?, ?,"
             + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
-    private static String DELETE = "{call deleteclient[(?)]}";
+    private static String DELETE = "{? = call deleteclient(?)}";
     private static String FIND = "SELECT * FROM findclient(?)";
 
     public static boolean insertClient(Client c) {
+        if (c == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("Cliente nulo");
+            } else {
+                return false;
+            }
+        }
         Connection conn = DatabaseManager.connect();
         CallableStatement cs = null;
         if (conn == null) {
@@ -32,7 +39,7 @@ public class ClientManager {
         try {
             cs = conn.prepareCall(INSERT);
             cs.registerOutParameter(1, Types.BOOLEAN);
-            
+
             cs.setBigDecimal(2, c.getCredito());
             cs.setString(3, c.getNombres());
             cs.setString(4, c.getAppaterno());
@@ -63,7 +70,7 @@ public class ClientManager {
             cs.execute();
             return cs.getBoolean(1);
         } catch (SQLException e) {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 // e.printStackTrace();
                 System.out.println("Error inserting client: " + e.getMessage());
             }
@@ -73,8 +80,15 @@ public class ClientManager {
         }
         return false;
     }
-    
+
     public static boolean updateClient(Client c) {
+        if (c == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("Cliente nulo");
+            } else {
+                return false;
+            }
+        }
         Connection conn = DatabaseManager.connect();
         CallableStatement cs = null;
         if (conn == null) {
@@ -83,7 +97,7 @@ public class ClientManager {
         try {
             cs = conn.prepareCall(UPDATE);
             cs.registerOutParameter(1, Types.BOOLEAN);
-            
+
             cs.setString(2, c.getId());
             cs.setBigDecimal(3, c.getCredito());
             cs.setString(4, c.getNombres());
@@ -115,7 +129,7 @@ public class ClientManager {
             cs.execute();
             return cs.getBoolean(1);
         } catch (SQLException e) {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 // e.printStackTrace();
                 System.out.println("Error updating client: " + e.getMessage());
             }
@@ -127,6 +141,16 @@ public class ClientManager {
     }
 
     public static Client findClient(String id) {
+        if (id == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("clientid nulo");
+            }
+        }
+        if (id.equals("")) {
+            if (Helpers.DEBUG) {
+                throw new IllegalArgumentException("clientid vacio");
+            }
+        }
         Connection conn = DatabaseManager.connect();
         PreparedStatement pstmt = null;
         if (conn == null) {
@@ -162,7 +186,7 @@ public class ClientManager {
             a.setEstado(rs.getString(17));
             a.setPais(rs.getString(18));
             c.setAddress(a);
-            
+
             c.setCredito(rs.getBigDecimal(19));
 
             System.out.println(c);
@@ -178,5 +202,54 @@ public class ClientManager {
             DatabaseManager.close(conn);
         }
         return c;
+    }
+
+    public static boolean deleteClient(Client c) {
+        if (c == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("Cliente nulo");
+            } else {
+                return false;
+            }
+        }
+        return deleteClient(c.getId());
+    }
+
+    public static boolean deleteClient(String clientid) {
+        if (clientid == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("clientid nulo");
+            } else {
+                return false;
+            }
+        }
+        if (clientid.equals("")) {
+            if (Helpers.DEBUG) {
+                throw new IllegalArgumentException("clientid vacio");
+            } else {
+                return false;
+            }
+        }
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return false;
+        }
+        try {
+            cs = conn.prepareCall(DELETE);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+            cs.setString(2, clientid);
+            cs.execute();
+            return cs.getBoolean(1);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error deleting client: " + e.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return false;
     }
 }

@@ -67,9 +67,14 @@ public class ClientManagerTest {
         Assert.assertTrue(ClientManager.updateClient(c));
     }
     
-    @Test
+    //@Test
     public void testFind(){
         Assert.assertNotNull(ClientManager.findClient("SUCA_C166"));
+    }
+    
+    //@Test
+    public void testDelete(){
+        Assert.assertTrue(ClientManager.deleteClient("SUCA_C166"));
     }
 
 }

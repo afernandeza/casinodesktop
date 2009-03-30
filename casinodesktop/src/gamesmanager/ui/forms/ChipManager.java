@@ -5,13 +5,16 @@ import gamesmanager.ui.Helpers;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class ChipManager extends JFrame{
+public class ChipManager extends JFrame implements ActionListener{
     
     private static final long serialVersionUID = 1L;
     
@@ -31,25 +34,28 @@ public class ChipManager extends JFrame{
         c.gridx = 0;
         c.gridy = 0;
         
-        JLabel ncliente = new JLabel("Cliente " + client.getFullName());
-        JLabel ccliente = new JLabel("<html>Cr"+Helpers.EACUTE+"dito: " + 
-                "<b>" + client.getCredito() + "</b></html>");
+        JLabel ncliente = new JLabel("<html><b>Cliente " + client.getFullName()+
+                            "</b></html>");
         c.gridwidth = 2;
         this.add(ncliente, c);
-        c.gridy++;
-        this.add(ccliente, c);
         
+        JLabel ccliente = new JLabel("<html><b>Cr"+Helpers.EACUTE+"dito: " + 
+               client.getCredito() + "</b></html>");
         amount = new JTextField(6);
         sumar = new JButton("Agregar cr"+Helpers.EACUTE+"dito");
+        sumar.addActionListener(this);
         restar = new JButton("Restar cr"+Helpers.EACUTE+"dito");
+        restar.addActionListener(this);
         
         c.gridwidth = 1;
         c.gridy++;
-        c.gridheight = 2;
+        
+        this.add(ccliente, c);
+        c.gridy++;
         this.add(amount, c);
         
         c.gridx++;
-        c.gridheight = 1;
+        c.gridy = 1;
         this.add(sumar, c);
         
         c.gridy++;
@@ -60,5 +66,28 @@ public class ChipManager extends JFrame{
         this.setSize(this.getWidth() + Helpers.XOFFSET, this.getHeight()
                 + Helpers.YOFFSET);
         this.setLocationRelativeTo(null);
+    }
+    
+    public boolean validateForm(){
+        String s = this.amount.getText();
+        try{
+            BigDecimal bd = new BigDecimal(s);
+        } catch (NumberFormatException nfe){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(this.validateForm()){
+            Object o = e.getSource();
+            if(sumar.equals(o)){
+                System.out.println("sumar");
+            } else if (restar.equals(o)){
+                System.out.println("restar");
+            }
+        }
+        
     }
 }

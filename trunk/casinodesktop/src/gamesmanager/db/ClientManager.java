@@ -6,6 +6,7 @@ import gamesmanager.ui.Helpers;
 
 import java.io.File;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -13,8 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-
-import javax.imageio.stream.FileImageInputStream;
 
 public class ClientManager {
 
@@ -24,7 +23,56 @@ public class ClientManager {
             + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String DELETE = "{? = call deleteclient(?)}";
     private static String FIND = "SELECT * FROM findclient(?)";
+    private static String EDITCREDIT = "{? = call addcredit(?, ?)}";
 
+    public static boolean editCredit(String clientid, BigDecimal amount){
+        if (clientid == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("clientid nulo");
+            } else {
+                return false;
+            }
+        }
+        if (clientid.equals("")) {
+            if (Helpers.DEBUG) {
+                throw new IllegalArgumentException("clientid vacio");
+            } else {
+                return false;
+            }
+        }
+        if(!(amount instanceof BigDecimal)){
+            if (Helpers.DEBUG) {
+                throw new IllegalArgumentException("cantidad incorrecta");
+            } else {
+                return false;
+            }
+        }
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return false;
+        }
+        try {
+            cs = conn.prepareCall(EDITCREDIT);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+
+            cs.setString(2, clientid);
+            cs.setBigDecimal(3, amount);
+
+            cs.execute();
+            return cs.getBoolean(1);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error updating credit: " + e.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return false;
+    }
+    
     public static boolean insertClient(Client c) {
         if (c == null) {
             if (Helpers.DEBUG) {

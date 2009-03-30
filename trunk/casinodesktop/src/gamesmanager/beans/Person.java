@@ -10,8 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.ImageIcon;
-
 public class Person {
 
     private String id;
@@ -242,7 +240,7 @@ public class Person {
     }
 
     public void setFotobin(byte[] fotobin) {
-        this.fotobin = fotobin;
+        this.fotobin = fotobin;        
     }
 
 }

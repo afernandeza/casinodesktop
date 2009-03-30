@@ -1,6 +1,6 @@
 package gamesmanager.ui;
 
-import gamesmanager.ui.forms.CheckMemberForm;
+import gamesmanager.ui.forms.CheckClientForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
 import gamesmanager.ui.forms.GameTypeForm;
 import gamesmanager.ui.forms.LoginForm;
@@ -47,7 +47,7 @@ public class GUI extends JFrame implements ActionListener {
     private JMenu admin;
     private JMenu help;
     private LoginForm loginForm;
-    private CheckMemberForm checkForm;
+    private CheckClientForm checkForm;
 
     public GUI() {
         super("Games Management System");
@@ -62,7 +62,7 @@ public class GUI extends JFrame implements ActionListener {
         this.setMenuBarEnabled(true);
         this.remove(this.loginForm);
 
-        checkForm = new CheckMemberForm();
+        checkForm = new CheckClientForm();
         this.add(checkForm, BorderLayout.CENTER);
         checkForm.setFocus();
 

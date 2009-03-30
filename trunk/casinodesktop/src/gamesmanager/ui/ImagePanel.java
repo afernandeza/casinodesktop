@@ -46,9 +46,9 @@ public class ImagePanel extends JPanel {
     }
 
     public void loadImage(byte[] array){
-        Image i = Toolkit.getDefaultToolkit().createImage(array);
-//        ImageIcon ii = new ImageIcon(array);
-//        Image i = ii.getImage();
+//        Image i = Toolkit.getDefaultToolkit().createImage(array);
+        ImageIcon ii = new ImageIcon(array);
+        Image i = ii.getImage();
         this.loadImage(i);
     }
     

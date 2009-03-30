@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import javax.imageio.stream.FileImageInputStream;
+
 public class ClientManager {
 
     private static String INSERT = "{? = call insertclient(?, ?, ?, ?, ?, ?, ?,"
@@ -49,6 +51,7 @@ public class ClientManager {
 
             File foto = c.getFoto();
             InputStream is = c.getFotoInputStream();
+            
             if (is != null) {
                 cs.setBinaryStream(8, is, (int) foto.length());
             } else {

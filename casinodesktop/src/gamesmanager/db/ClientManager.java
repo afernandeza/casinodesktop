@@ -55,7 +55,9 @@ public class ClientManager {
             if (is != null) {
                 cs.setBinaryStream(8, is, (int) foto.length());
             } else {
-                throw new NullPointerException("Foto es null");
+                if(Helpers.DEBUG){
+                    throw new NullPointerException("Foto es null");
+                }
             }
 
             cs.setString(9, c.getTelcasa());
@@ -176,7 +178,8 @@ public class ClientManager {
             c.setApmaterno(rs.getString(4));
             c.setSexo(rs.getString(5));
             c.setFechanac(rs.getDate(6));
-            c.setFotobin(rs.getBytes(7));
+            c.setFotoInputStream(rs.getBinaryStream(7));
+//            c.setFotobin(rs.getBytes(7));
             c.setTelcasa(rs.getString(8));
             c.setTelcel(rs.getString(9));
             c.setMembersince(rs.getString(10));

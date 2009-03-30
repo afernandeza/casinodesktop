@@ -23,7 +23,8 @@ public class Person {
     private Address address;
     private File foto;
     private byte[] fotobin;
-    
+    private InputStream fotoInputStream;
+
     public Person() {
 
     }
@@ -75,19 +76,6 @@ public class Person {
         this.id = id;
     }
 
-    public InputStream getFotoInputStream() {
-        InputStream fis = null;
-        try {
-            fis = new FileInputStream(this.foto);
-        } catch (FileNotFoundException e) {
-            System.out.println("photo not found");
-            if (Helpers.DEBUG) {
-                e.printStackTrace();
-            }
-        }
-        return fis;
-    }
-
     public File getFoto() {
         return foto;
     }
@@ -123,14 +111,14 @@ public class Person {
     public Character getSexo() {
         return sexo;
     }
-    
+
     public int getSexoIndex() {
-        if(this.sexo.equals('M')){
+        if (this.sexo.equals('M')) {
             return 0;
-        } else if (this.sexo.equals('F')){
+        } else if (this.sexo.equals('F')) {
             return 1;
         } else {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 throw new IllegalArgumentException("Sexo invalido");
             }
             return -1;
@@ -139,27 +127,27 @@ public class Person {
 
     public void setSexo(String sexo) {
         if (sexo == null || sexo.length() < 1) {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 throw new IllegalArgumentException("Sexo invalido");
             }
         }
         this.sexo = sexo.charAt(0);
     }
-    
+
     public void setSexo(int index) {
-        if(index == 0){
+        if (index == 0) {
             this.sexo = 'M';
-        } else if (index == 1){
+        } else if (index == 1) {
             this.sexo = 'F';
         } else {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 throw new IllegalArgumentException("Sexo invalido");
             }
         }
     }
 
     public void setSexo(Character sexo) {
-        if(sexo.equals('M') || sexo.equals('F')){
+        if (sexo.equals('M') || sexo.equals('F')) {
             this.sexo = sexo;
         } else {
             throw new IllegalArgumentException("Sexo invalido");
@@ -176,7 +164,7 @@ public class Person {
             this.fechanac = sdf.parse(fechanac);
         } catch (ParseException e) {
             System.out.println("wrong birthdate");
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 e.printStackTrace();
             }
         }
@@ -209,10 +197,10 @@ public class Person {
     public void setAddress(Address address) {
         this.address = address;
     }
-    
-    public String getFullName(){
-        return this.id + ": " + this.appaterno + " " + 
-               this.apmaterno + " " + this.nombres;
+
+    public String getFullName() {
+        return this.id + ": " + this.appaterno + " " + this.apmaterno + " "
+                + this.nombres;
     }
 
     public String toString() {
@@ -240,7 +228,23 @@ public class Person {
     }
 
     public void setFotobin(byte[] fotobin) {
-        this.fotobin = fotobin;        
+        this.fotobin = fotobin;
+    }
+
+    public InputStream getFotoInputStream() {
+        try {
+            this.fotoInputStream = new FileInputStream(this.foto);
+        } catch (FileNotFoundException e) {
+            System.out.println("photo not found");
+            if (Helpers.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        return this.fotoInputStream;
+    }
+
+    public void setFotoInputStream(InputStream fotoInputStream) {
+        this.fotoInputStream = fotoInputStream;
     }
 
 }

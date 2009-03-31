@@ -23,8 +23,39 @@ public class ClientManager {
             + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String DELETE = "{? = call deleteclient(?)}";
     private static String FIND = "SELECT * FROM findclient(?)";
-    private static String EDITCREDIT = "{? = call addcredit(?, ?)}";
+    private static String EDITCREDIT = "{? = call editcredit(?, ?)}";
 
+    public static boolean editCredit(String clientid, String amount){
+        BigDecimal bd = null;
+        try{
+            bd = new BigDecimal(amount);
+        } catch (NumberFormatException mfe){
+            if(Helpers.DEBUG){
+                mfe.printStackTrace();
+            } else {
+                return false;
+            }
+        }
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return editCredit(clientid, bd);
+        
+    }
+    
+    public static boolean editCredit(String clientid, double amount){
+        BigDecimal bd = null;
+        try{
+            bd = new BigDecimal(amount);
+        } catch (NumberFormatException mfe){
+            if(Helpers.DEBUG){
+                mfe.printStackTrace();
+            } else {
+                return false;
+            }
+        }
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return editCredit(clientid, bd);
+    }
+    
     public static boolean editCredit(String clientid, BigDecimal amount){
         if (clientid == null) {
             if (Helpers.DEBUG) {

@@ -39,7 +39,7 @@ public class Client extends Person {
     }
 
     public void setCredito(BigDecimal credito) {
-        this.credito = credito.setScale(2);
+        this.credito = credito.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
     
     public void setCredito(String credito) {

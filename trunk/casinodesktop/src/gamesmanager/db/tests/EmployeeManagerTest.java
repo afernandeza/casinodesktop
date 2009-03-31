@@ -3,9 +3,11 @@ package gamesmanager.db.tests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import gamesmanager.beans.Address;
+import gamesmanager.beans.Client;
 import gamesmanager.beans.Employee;
 import gamesmanager.beans.EmployeeType;
 import gamesmanager.beans.User;
+import gamesmanager.db.ClientManager;
 import gamesmanager.db.EmployeeManager;
 
 import java.io.File;
@@ -55,6 +57,39 @@ public class EmployeeManagerTest {
     @Test
     public void testFindEmployee2() {
         assertNotNull(EmployeeManager.findEmployee("SUCA_E17"));
+    }
+    
+    @Test
+    public void testUpdate() {
+        Employee c = new Employee();
+        c.setId("SUCA_E18");
+        c.setNombres("Bastard");
+        c.setAppaterno("Fern‡ndez");
+        c.setApmaterno("Acu–a");
+        c.setSexo("M");
+        c.setFechanac("1986-08-31");
+        c.setFoto(new File("/Users/afa/Desktop/pics/8423.729.486.jpg"));
+        c.setTelcasa("5536051150");
+        c.setTelcel("0445554534335");
+        
+        Address d = new Address();
+        d.setCallenum("memorial shit");
+        d.setNumint("mz 123");
+        d.setColonia("mit");
+        d.setMunicipio("mittermuni");
+        d.setCodigopostal("10710");
+        d.setEstado("MA");
+        d.setPais("USA");
+        
+        c.setAddress(d);
+        
+        User u = new User("afa3");
+        c.setUser(u);
+        
+        EmployeeType et = new EmployeeType(2);
+        c.setEmployeetype(et);
+        
+        Assert.assertTrue(EmployeeManager.updateEmployee(c));
     }
 
 }

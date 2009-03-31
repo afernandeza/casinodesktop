@@ -23,16 +23,9 @@ public class EmployeeManager {
     private static String INSERT = "{? = call insertemployee(?, ?, ?, ?, ?, ?, ?,"
         + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String UPDATE = "{? = call updateemployee(?, ?, ?, ?, ?, ?, ?,"
-        + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String DELETE = "{? = call deleteemployee(?)}";
     private static String FIND = "SELECT * FROM findemployee(?)";
-    
-//    select insertemployee('Ricardo', 'Fernandez', 'Mora', 
-//            'F', '1967-09-12', '01010101001', '55681214', 
-//            '044553738113', 'av santa teresa 1256',
-//            '140', 'col. santa teresa', 'magdalena contreras', '10710', 
-//            'Distrito Federal', 'Mexico', 'ric', 'ric', 2);
-
 
     public static boolean insertEmployee(Employee e) {
         if (e == null) {
@@ -183,5 +176,69 @@ public class EmployeeManager {
             DatabaseManager.close(conn);
         }
         return e;
+    }
+    
+    public static boolean updateEmployee(Employee e) {
+        if (e == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("Empleado nulo");
+            } else {
+                return false;
+            }
+        }
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return false;
+        }
+        try {
+            cs = conn.prepareCall(UPDATE);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+
+            cs.setString(2, e.getId());
+            cs.setString(3, e.getNombres());
+            cs.setString(4, e.getAppaterno());
+            cs.setString(5, e.getApmaterno());
+            cs.setString(6, e.getSexo() + "");
+            cs.setDate(7, new Date(e.getFechanac().getTime()));
+
+            File foto = e.getFoto();
+            InputStream is = e.getNewFotoInputStream();
+            if (is != null) {
+                cs.setBinaryStream(8, is, (int) foto.length());
+            } else {
+                throw new NullPointerException("Foto es null");
+            }
+
+            cs.setString(9, e.getTelcasa());
+            cs.setString(10, e.getTelcel());
+
+            Address d = e.getAddress();
+            cs.setString(11, d.getCallenum());
+            cs.setString(12, d.getNumint());
+            cs.setString(13, d.getColonia());
+            cs.setString(14, d.getMunicipio());
+            cs.setString(15, d.getCodigopostal());
+            cs.setString(16, d.getEstado());
+            cs.setString(17, d.getPais());
+            
+            User u = e.getUser();
+            cs.setString(18, u.getUsername());
+            
+            EmployeeType et = e.getEmployeetype();
+            cs.setInt(19, et.getTypeid());
+
+            cs.execute();
+            return cs.getBoolean(1);
+        } catch (SQLException sqle) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error updating employee: " + sqle.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return false;
     }
 }

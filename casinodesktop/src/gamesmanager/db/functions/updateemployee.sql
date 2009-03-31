@@ -1,31 +1,42 @@
--- Function: insertemployee(character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer)
+-- Function: updateemployee(character varying, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer)
 
--- DROP FUNCTION insertemployee(character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer);
+-- DROP FUNCTION updateemployee(character varying, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer);
 
-CREATE OR REPLACE FUNCTION insertemployee(nombres character varying, 
-appaterno character varying, apmaterno character varying, sexo character, 
-fechanac date, foto bytea, telcasa character varying, telcel character varying, 
-callenum character varying, numint character varying, colonia character varying, 
-municipio character varying, codigopostal character varying, estado character varying, 
-pais character varying, usuario character varying, passwd character varying, 
-tipoempleadoid integer)
+CREATE OR REPLACE FUNCTION updateemployee(eid character varying, n character varying, ap character varying, am character varying, s character, fn date, ft bytea, tc character varying, tl character varying, calle character varying, nint character varying, col character varying, mun character varying, cp character varying, edo character varying, ps character varying, usn character varying, tid integer)
   RETURNS boolean AS
 $BODY$
 declare
   addressid integer;
-  employeeid integer;
   userid integer;
-  success boolean;
 begin
-  update empleados values(addressid, nombres, appaterno, apmaterno,
-  sexo, fechanac, foto, userid, tipoempleadoid, telcasa, telcel, employeeid, current_date);
-  update direcciones values(addressid, callenum, numint, colonia,
-  municipio, codigopostal, estado, pais);
-  update usuarios values(userid, usuario, passwd);
-  success := true;
-  return success;
+  select into addressid direccionid from empleados where empleadoid = eid;
+  select into userid usuarioid from empleados where empleadoid = eid;
+  update empleados set 
+    nombres = n,
+    appaterno = ap,
+    apmaterno = am,
+    sexo = s,
+    fechanac = fn,
+    foto = ft,
+    telcasa = tc,
+    telcel = tl,
+    tipoempleadoid = tid
+    where empleadoid = eid;
+  update direcciones set 
+    callenum = calle,
+    numint = nint,
+    colonia = col,
+    municipio = mun,
+    codigopostal = cp,
+    estado = edo,
+    pais = ps
+    where direccionid = addressid;
+  update usuarios set
+    usuario = usn
+    where usuarioid = userid;
+   return true;
 end;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
-ALTER FUNCTION insertemployee(character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer) OWNER TO postgres;
+ALTER FUNCTION updateemployee(character varying, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer) OWNER TO postgres;

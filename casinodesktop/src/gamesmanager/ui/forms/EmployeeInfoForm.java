@@ -1,8 +1,11 @@
 package gamesmanager.ui.forms;
 
+import gamesmanager.beans.Address;
 import gamesmanager.beans.Employee;
 import gamesmanager.beans.EmployeeType;
+import gamesmanager.beans.User;
 import gamesmanager.db.DatabaseOperations;
+import gamesmanager.db.EmployeeManager;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
 import gamesmanager.ui.ImagePanel;
@@ -22,6 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -271,6 +275,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             c.gridwidth = 2;
             this.add(p, c);
         } else {
+            // existing employee
             JPanel p = new JPanel();
             savechanges = new JButton("Guardar cambios");
             savechanges.addActionListener(this);
@@ -281,6 +286,29 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             c.gridheight = 1;
             c.gridwidth = 2;
             this.add(p, c);
+            
+            this.nombre.setText(this.e.getNombres());
+            this.appat.setText(this.e.getAppaterno());
+            this.apmat.setText(this.e.getApmaterno());
+            this.sexo.setSelectedIndex(this.e.getSexoIndex());
+            this.telcasa.setText(this.e.getTelcasa());
+            this.telcel.setText(this.e.getTelcel());
+            this.fecha.setDate(this.e.getFechanac());
+
+            Address d = this.e.getAddress();
+            this.calle.setText(d.getCallenum());
+            this.num.setText(d.getNumint());
+            this.colonia.setText(d.getColonia());
+            this.municipio.setText(d.getMunicipio());
+            this.cp.setText(d.getCodigopostal());
+            this.estado.setSelectedItem(d.getEstado());
+            this.pais.setSelectedItem(d.getPais());
+            
+            User u = this.e.getUser();
+            this.username.setText(u.getUsername());
+            
+            EmployeeType et = this.e.getEmployeetype();
+            this.types.setSelectedItem(et);   
         }
 
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
@@ -296,6 +324,10 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         n.setVisible(true);
     }
 
+    private boolean validateForm() {
+        return true;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
@@ -323,17 +355,44 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         } else if (o == cancel) {
             this.dispose();
         } else if (o == savechanges) {
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            if (this.validateForm()) {
+                this.e.setNombres(nombre.getText().trim());
+                this.e.setAppaterno(appat.getText().trim());
+                this.e.setApmaterno(apmat.getText().trim());
+                this.e.setSexo(sexo.getSelectedIndex());
+                this.e.setFechanac(fecha.getDate());
+                this.e.setFoto(fc.getSelectedFile());
+                this.e.setTelcasa(telcasa.getText().trim());
+                this.e.setTelcel(telcel.getText().trim());
 
-                public Void doInBackground() {
-                    System.out.println("guardando cambios");
-                    return null;
-                }
+                Address d = this.e.getAddress();
+                d.setCallenum(calle.getText().trim());
+                d.setNumint(num.getText().trim());
+                d.setColonia(colonia.getText().trim());
+                d.setMunicipio(municipio.getText().trim());
+                d.setCodigopostal(cp.getText().trim());
+                d.setEstado(estado.getSelectedItem().toString());
+                d.setPais(pais.getSelectedItem());
+                
+                User u = this.e.getUser();
+                u.setUsername(this.username.getText().trim());
+                
+                EmployeeType et = (EmployeeType)this.types.getSelectedItem();
 
-                public void done() {
+                boolean updated = EmployeeManager.updateEmployee(this.e);
+                System.out.println("updated: " + updated);
+                if (updated) {
+                    JOptionPane.showMessageDialog(null,
+                            "Cambios guardados exitosamente.", "Informaci"
+                                    + Helpers.OACUTE + "n",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Los cambios no han sido guardados",
+                            "Informaci" + Helpers.OACUTE + "n",
+                            JOptionPane.ERROR_MESSAGE);
                 }
-            };
-            worker.execute();
+            }
         }
     }
 

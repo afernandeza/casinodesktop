@@ -1,11 +1,13 @@
 package gamesmanager.db;
 
 import gamesmanager.beans.Address;
+import gamesmanager.beans.Client;
 import gamesmanager.beans.Employee;
 import gamesmanager.beans.EmployeeType;
 import gamesmanager.beans.User;
 import gamesmanager.ui.Helpers;
 
+import java.io.File;
 import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -14,17 +16,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Types;
 
 public class EmployeeManager {
 
-    private static String INSERT = "{call insertemployee[(?, ?, ?, ?, ?, ?, ?,"
-            + "?, ?, ?, ?, ?, ?, ?, ?, ?)]}";
-    private static String UPDATE = "{call updateemployee[(?, ?, ?, ?, ?, ?, ?,"
-            + "?, ?, ?, ?, ?, ?, ?, ?, ?)]}";
-    private static String DELETE = "{call deleteemployee[(?)]}";
+    private static String INSERT = "{? = call insertemployee(?, ?, ?, ?, ?, ?, ?,"
+        + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+    private static String UPDATE = "{? = call updateemployee(?, ?, ?, ?, ?, ?, ?,"
+        + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+    private static String DELETE = "{? = call deleteemployee(?)}";
     private static String FIND = "SELECT * FROM findemployee(?)";
+    
+//    select insertemployee('Ricardo', 'Fernandez', 'Mora', 
+//            'F', '1967-09-12', '01010101001', '55681214', 
+//            '044553738113', 'av santa teresa 1256',
+//            '140', 'col. santa teresa', 'magdalena contreras', '10710', 
+//            'Distrito Federal', 'Mexico', 'ric', 'ric', 2);
+
 
     public static boolean insertEmployee(Employee e) {
+        if (e == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("Empleado nulo");
+            } else {
+                return false;
+            }
+        }
         Connection conn = DatabaseManager.connect();
         CallableStatement cs = null;
         if (conn == null) {
@@ -32,17 +49,23 @@ public class EmployeeManager {
         }
         try {
             cs = conn.prepareCall(INSERT);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+
             cs.setString(2, e.getNombres());
             cs.setString(3, e.getAppaterno());
             cs.setString(4, e.getApmaterno());
             cs.setString(5, e.getSexo() + "");
             cs.setDate(6, new Date(e.getFechanac().getTime()));
 
+            File foto = e.getFoto();
             InputStream is = e.getNewFotoInputStream();
+            
             if (is != null) {
-                cs.setBinaryStream(7, is);
+                cs.setBinaryStream(7, is, (int) foto.length());
             } else {
-                throw new NullPointerException("Foto es null");
+                if(Helpers.DEBUG){
+                    throw new NullPointerException("Foto es null");
+                }
             }
 
             cs.setString(8, e.getTelcasa());
@@ -56,19 +79,20 @@ public class EmployeeManager {
             cs.setString(14, d.getCodigopostal());
             cs.setString(15, d.getEstado());
             cs.setString(16, d.getPais());
+            
+            User u = e.getUser();
+            cs.setString(17, u.getUsername());
+            cs.setString(18, u.getPassword());
+            
+            EmployeeType et = e.getEmployeetype();
+            cs.setInt(19, et.getTypeid());
 
-            int rows = cs.executeUpdate();
-            if (rows == 1) {
-                return true;
-            } else {
-                return false;
-            }
-
+            cs.execute();
+            return cs.getBoolean(1);
         } catch (SQLException sqle) {
             if (Helpers.DEBUG) {
                 // e.printStackTrace();
-                System.out.println("Error inserting employee: "
-                        + sqle.getMessage());
+                System.out.println("Error inserting employee: " + sqle.getMessage());
             }
         } finally {
             DatabaseManager.close(cs);
@@ -78,6 +102,16 @@ public class EmployeeManager {
     }
 
     public static Employee findEmployee(String id) {
+        if (id == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("employeeid nulo");
+            }
+        }
+        if (id.equals("")) {
+            if (Helpers.DEBUG) {
+                throw new IllegalArgumentException("employeeid vacio");
+            }
+        }
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
             return null;
@@ -106,7 +140,7 @@ public class EmployeeManager {
                     e.setApmaterno(appaterno);
                 }
             }
-            e.setSexo(rs.getString(5).charAt(0));
+            e.setSexo(rs.getString(5));
             e.setFechanac(rs.getDate(6));
             // c.setFoto(cs.getBlob(7));
             e.setTelcasa(rs.getString(8));

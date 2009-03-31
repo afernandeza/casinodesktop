@@ -4,6 +4,11 @@ public class EmployeeType {
 
     private final int typeid;
     private final String type;
+    
+    public EmployeeType(int typeid){
+        this.typeid = typeid;
+        type = "";
+    }
 
     public EmployeeType(int typeid, String type) {
         this.typeid = typeid;

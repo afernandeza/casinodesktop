@@ -5,10 +5,17 @@ import gamesmanager.beans.Client;
 import gamesmanager.db.ClientManager;
 
 import java.io.File;
+
 import org.junit.Assert;
+import org.junit.Test;
 
 public class ClientManagerTest {
 
+    //@Test
+    public void testEditCredit(){
+        Assert.assertTrue(ClientManager.editCredit("SUCA_C168", 21.55));
+    }
+    
     //@Test
     public void testInsert() {
         Client c = new Client();

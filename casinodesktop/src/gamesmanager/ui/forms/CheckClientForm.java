@@ -75,7 +75,7 @@ public class CheckClientForm extends JPanel implements KeyListener {
                 System.out.println("member found");
                 
                 String s = (String)
-                JOptionPane.showInputDialog(null, INSTRUCTIONS, "",
+                JOptionPane.showInputDialog(null, INSTRUCTIONS, "Opciones",
                         JOptionPane.QUESTION_MESSAGE, null, OPTIONS, OPTIONS[0]);
 
                 if ((s != null) && (s.length() > 0)) {

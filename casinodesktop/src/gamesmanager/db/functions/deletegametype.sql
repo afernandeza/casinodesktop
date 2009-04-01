@@ -1,7 +1,14 @@
-CREATE FUNCTION deletegametype(IN id integer) RETURNS void AS
+-- Function: deletegametype(character varying)
+
+-- DROP FUNCTION deletegametype(character varying);
+
+CREATE OR REPLACE FUNCTION deletegametype(tj character varying)
+  RETURNS boolean AS
 $BODY$
-execute 'delete from tiposjuego where tipojuegoid = ' 
-|| quote_literal(id);
-$BODY$
-LANGUAGE 'sql' VOLATILE;
-ALTER FUNCTION deletegametype(IN integer) OWNER TO casindesktopapp;
+BEGIN
+DELETE FROM tiposjuego WHERE tipo = tj;
+return true;
+END;$BODY$
+  LANGUAGE 'plpgsql' VOLATILE
+  COST 100;
+ALTER FUNCTION deletegametype(character varying) OWNER TO casindesktopapp;

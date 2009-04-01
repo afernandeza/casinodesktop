@@ -1,9 +1,9 @@
 package gamesmanager.db;
 
 import gamesmanager.beans.Address;
-import gamesmanager.beans.Client;
 import gamesmanager.beans.Employee;
 import gamesmanager.beans.EmployeeType;
+import gamesmanager.beans.Type;
 import gamesmanager.beans.User;
 import gamesmanager.ui.Helpers;
 
@@ -14,9 +14,9 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.List;
 
 public class EmployeeManager {
 
@@ -26,7 +26,13 @@ public class EmployeeManager {
         + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String DELETE = "{? = call deleteemployee(?)}";
     private static String FIND = "SELECT * FROM findemployee(?)";
-
+    private static String GETEMPLOYEETYPES = "SELECT * FROM tipoempleados "
+        + "ORDER BY tipo";
+    
+    public static List<Type> getEmployeeTypes(){
+        return DatabaseOperations.getTypes(GETEMPLOYEETYPES);
+    }
+    
     public static boolean insertEmployee(Employee e) {
         if (e == null) {
             if (Helpers.DEBUG) {

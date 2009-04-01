@@ -3,6 +3,7 @@ package gamesmanager.ui.forms;
 import gamesmanager.beans.Address;
 import gamesmanager.beans.Employee;
 import gamesmanager.beans.EmployeeType;
+import gamesmanager.beans.Type;
 import gamesmanager.beans.User;
 import gamesmanager.db.DatabaseOperations;
 import gamesmanager.db.EmployeeManager;
@@ -124,7 +125,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         JLabel typel = new JLabel(labels[4], JLabel.TRAILING);
         memberform.add(typel);
         types = new JComboBox();
-        for (EmployeeType et : DatabaseOperations.getEmployeeTypes()) {
+        for (Type et : EmployeeManager.getEmployeeTypes()) {
             types.addItem(et.getType());
         }
         typel.setLabelFor(types);

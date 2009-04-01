@@ -1,37 +1,30 @@
 package gamesmanager.beans;
 
-public class EmployeeType {
+public class EmployeeType extends Type{
 
-    private final int typeid;
-    private final String type;
-    
     public EmployeeType(int typeid){
-        this.typeid = typeid;
-        type = "";
+        super(typeid);
+    }
+    
+    public EmployeeType(String type){
+        super(type);
     }
 
     public EmployeeType(int typeid, String type) {
-        this.typeid = typeid;
-        this.type = type;
+        super(typeid, type);
     }
-
-    public int getTypeid() {
-        return typeid;
-    }
-
-    public String getType() {
-        return type;
-    }
-
+    
+    @Override
     public String toString() {
         final String TAB = ", ";
 
         StringBuffer retValue = new StringBuffer();
 
-        retValue.append("EmployeeType ( ").append(super.toString()).append(TAB)
+        retValue.append("EmployeeType ( ")
                 .append("typeid = ").append(this.typeid).append(TAB).append(
                         "type = ").append(this.type).append(TAB).append(" )");
 
         return retValue.toString();
     }
+
 }

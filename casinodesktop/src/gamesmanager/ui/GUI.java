@@ -1,12 +1,13 @@
 package gamesmanager.ui;
 
 import gamesmanager.ui.forms.CheckClientForm;
+import gamesmanager.ui.forms.ClientInfoForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
 import gamesmanager.ui.forms.GameTypeForm;
 import gamesmanager.ui.forms.LoginForm;
-import gamesmanager.ui.forms.ClientInfoForm;
 import gamesmanager.ui.forms.SessionForm;
 import gamesmanager.ui.forms.TableInfoForm;
+import gamesmanager.ui.forms.ViewEmployees;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -239,6 +240,9 @@ public class GUI extends JFrame implements ActionListener {
         } else if (action.equals(NEWSESSION)) {
             SessionForm sessionform = new SessionForm();
             sessionform.setVisible(true);
+        } else if (action.equals(ADMINEMPLOYEES)) {
+            ViewEmployees gametypeform = new ViewEmployees();
+            gametypeform.setVisible(true);
         } else if (action.equals(ADMINGAMETYPES)) {
             GameTypeForm gametypeform = new GameTypeForm();
             gametypeform.setVisible(true);

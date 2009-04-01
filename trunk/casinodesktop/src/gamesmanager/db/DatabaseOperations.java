@@ -1,6 +1,6 @@
 package gamesmanager.db;
 
-import gamesmanager.beans.EmployeeType;
+import gamesmanager.beans.Type;
 import gamesmanager.beans.User;
 import gamesmanager.ui.Helpers;
 
@@ -13,18 +13,48 @@ import java.sql.Types;
 import java.util.LinkedList;
 import java.util.List;
 
-import sun.rmi.rmic.iiop.Type;
-
 public class DatabaseOperations {
 
     private final static String AUTH = "{ ? = call authenticate( ?, ? ) }";
-    private final static String GETEMPLOYEETYPES = "SELECT * FROM tipoempleados "
-            + "ORDER BY tipo";
     private final static String GETCOUNTRIES = "SELECT printable_name "
             + "FROM country ORDER BY printable_name";
     private final static String GETSTATES = "SELECT estado "
             + "FROM estadosmexico ORDER BY estado";
 
+    public static boolean manageType(Type et, String call){
+        if (et == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("Type nulo");
+            } else {
+                return false;
+            }
+        }
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return false;
+        }
+        try {
+            cs = conn.prepareCall(call);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+
+            cs.setString(2, et.getType());
+
+            cs.execute();
+            return cs.getBoolean(1);
+        } catch (SQLException sqle) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error inserting employee type: " 
+                        + sqle.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return false;
+    }
+    
     public static boolean login(User u) {
         boolean authorized = false;
 
@@ -62,25 +92,25 @@ public class DatabaseOperations {
         return getList(GETSTATES);
     }
 
-    public static List<EmployeeType> getEmployeeTypes() {
+    public static List<Type> getTypes(String sql) {
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
             return null;
         }
-        List<EmployeeType> types = new LinkedList<EmployeeType>();
+        List<Type> types = new LinkedList<Type>();
         PreparedStatement pstmt = null;
         try {
-            pstmt = conn.prepareStatement(GETEMPLOYEETYPES);
+            pstmt = conn.prepareStatement(sql);
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                types.add(new EmployeeType(rs.getInt(1), rs.getString(2)));
+                types.add(new Type(rs.getInt(1), rs.getString(2)));
             }
 
         } catch (SQLException sqle) {
             if (Helpers.DEBUG) {
                 sqle.printStackTrace();
-                System.out.println("Error getting employee types: "
+                System.out.println("Error getting types: "
                         + sqle.getMessage());
             }
         } finally {

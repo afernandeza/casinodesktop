@@ -1,12 +1,35 @@
 package gamesmanager.ui.forms;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import gamesmanager.beans.Type;
+import gamesmanager.db.GameTypeManager;
+
+import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /* ListDemo.java requires no other files. */
 public class GameTypeForm extends JFrame implements ListSelectionListener {
+
+    private static final long serialVersionUID = 1L;
     private JList list;
     private DefaultListModel listModel;
 
@@ -20,6 +43,10 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
         JPanel p = new JPanel(new BorderLayout());
 
         listModel = new DefaultListModel();
+        
+        for(Type t: GameTypeManager.getGameTypes()){
+            listModel.addElement(t.getType());
+        }
         // listModel.addElement("Debbie Scott");
         // listModel.addElement("Scott Hommel");
         // listModel.addElement("Sharon Zakhour");
@@ -78,7 +105,12 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
             // there's a valid selection
             // so go ahead and remove whatever's selected.
             int index = list.getSelectedIndex();
-            listModel.remove(index);
+
+            String ename = (String)list.getSelectedValue();
+            if(GameTypeManager.deleteGameType(ename)){
+                System.out.println("quitar tipo");
+                listModel.remove(index);
+            }
 
             int size = listModel.getSize();
 
@@ -125,7 +157,11 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
                 index++;
             }
 
-            listModel.insertElementAt(employeeName.getText(), index);
+            String ename = employeeName.getText();
+            if(GameTypeManager.insertGameType(ename)){
+                System.out.println("agregar tipo");
+                listModel.insertElementAt(ename, index);   
+            }
             // If we just wanted to add to the end, we'd do this:
             // listModel.addElement(employeeName.getText());
 

@@ -1,7 +1,6 @@
 package gamesmanager.ui.forms;
 
 import gamesmanager.beans.User;
-import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.GUI;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.layout.SpringUtilities;
@@ -75,9 +74,9 @@ public class LoginForm extends JPanel implements KeyListener, ActionListener {
     private void attemptLogin() {
         String username = this.username.getText();
         String password = new String(this.password.getPassword());
+        User u = new User(username, password);
         boolean login = true;
-        // boolean login = DatabaseOperations.login(new User(username,
-        // password));
+        // boolean login = DatabaseOperations.login(u);
         if (login) {
             this.mainwindow.startSession();
         }

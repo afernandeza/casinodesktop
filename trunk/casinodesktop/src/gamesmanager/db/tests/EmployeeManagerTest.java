@@ -14,8 +14,20 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class EmployeeManagerTest {
-
+    
     @Test
+    public void testGetEmployees(){
+        Object[][] o = EmployeeManager.getEmployees();
+        Assert.assertNotNull(o);
+        for(int i = 0; i < o.length; i++){
+            System.out.println("row");
+            for(int j = 0; j < o[0].length; j++){
+                System.out.println(o[i][j]);
+            }
+        }
+    }
+
+    //@Test
     public void testInsertEmployee() {
         Employee c = new Employee();
         c.setNombres("Bastard");
@@ -47,17 +59,17 @@ public class EmployeeManagerTest {
         Assert.assertTrue(EmployeeManager.insertEmployee(c));
     }
 
-    @Test
+    //@Test
     public void testFindEmployee() {
         assertNull(EmployeeManager.findEmployee("asdf"));
     }
 
-    @Test
+    //@Test
     public void testFindEmployee2() {
         assertNotNull(EmployeeManager.findEmployee("SUCA_E17"));
     }
     
-    @Test
+    //@Test
     public void testUpdate() {
         Employee c = new Employee();
         c.setId("SUCA_E18");

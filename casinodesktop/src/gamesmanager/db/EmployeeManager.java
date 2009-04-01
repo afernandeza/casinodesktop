@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.List;
 
@@ -28,29 +29,64 @@ public class EmployeeManager {
     private static String FIND = "SELECT * FROM findemployee(?)";
     private static String GETEMPLOYEETYPES = "SELECT * FROM tipoempleados "
         + "ORDER BY tipo";
-    public static String[] EMPLOYEECOLUMNS = {"col1", "col2", "col3", "col4", 
-        "col5", "col6", "col7", "col8", "col9", "col10",};
-    
+    public static String GETEMPSUMMARY = "SELECT * FROM employeessummary ORDER BY nombre";
+    public static String[] EMPLOYEECOLUMNS = {"ID", "Tipo", "Nombre", "Usuario", 
+        "Us. activo", "Fecha alta", "Tel. Casa", "Tel. Celular", "Despedido",};
+
     public static Object[][] getEmployees(){
-        Object[][] o= new Object[3][3];
-        o[0][0] = "adsf1";
-        o[0][1] = "adsf2";
-        o[0][2] = "adsf3";
-        
-        o[1][0] = "qwer1";
-        o[1][1] = "qwer2";
-        o[1][2] = "qwer3";
-        
-        o[2][0] = "zcxv1";
-        o[2][1] = "zcxv2";
-        o[2][2] = "zcxv3";
+        Connection conn = DatabaseManager.connect();
+        Statement st = null;
+        ResultSet rs = null;
+        Object[][] o = new Object[0][0];
+        if (conn == null) {
+            return o;
+        }
+        try {
+            Statement stc = conn.createStatement();
+            st = conn.createStatement();
+
+            ResultSet rsc = stc.executeQuery("SELECT COUNT(*) from employeessummary");
+            rs = st.executeQuery(GETEMPSUMMARY);
+
+            rsc.next();
+            int rows = rsc.getInt(1);
+            if(rows <= 0){
+                return null;
+            }
+
+            o = new Object[rows][EMPLOYEECOLUMNS.length];
+            int rown = 0;
+            while(rs.next()){
+                o[rown][0] = rs.getObject(1);
+                o[rown][1] = rs.getObject(2);
+                o[rown][2] = rs.getObject(3);
+                o[rown][3] = rs.getObject(4);
+                o[rown][4] = rs.getObject(5);
+                o[rown][5] = rs.getObject(6);
+                o[rown][6] = rs.getObject(7);
+                o[rown][7] = rs.getObject(8);
+                rown++;
+            }
+            return o;
+
+        } catch (SQLException sqle) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error getting employees summary: "
+                        + sqle.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(rs);
+            DatabaseManager.close(st);
+            DatabaseManager.close(conn);
+        }
         return o;
     }
-    
+
     public static List<Type> getEmployeeTypes(){
         return DatabaseOperations.getTypes(GETEMPLOYEETYPES);
     }
-    
+
     public static boolean insertEmployee(Employee e) {
         if (e == null) {
             if (Helpers.DEBUG) {
@@ -76,7 +112,7 @@ public class EmployeeManager {
 
             File foto = e.getFoto();
             InputStream is = e.getNewFotoInputStream();
-            
+
             if (is != null) {
                 cs.setBinaryStream(7, is, (int) foto.length());
             } else {
@@ -96,11 +132,11 @@ public class EmployeeManager {
             cs.setString(14, d.getCodigopostal());
             cs.setString(15, d.getEstado());
             cs.setString(16, d.getPais());
-            
+
             User u = e.getUser();
             cs.setString(17, u.getUsername());
             cs.setString(18, u.getPassword());
-            
+
             EmployeeType et = e.getEmployeetype();
             cs.setInt(19, et.getTypeid());
 
@@ -201,7 +237,7 @@ public class EmployeeManager {
         }
         return e;
     }
-    
+
     public static boolean updateEmployee(Employee e) {
         if (e == null) {
             if (Helpers.DEBUG) {
@@ -245,10 +281,10 @@ public class EmployeeManager {
             cs.setString(15, d.getCodigopostal());
             cs.setString(16, d.getEstado());
             cs.setString(17, d.getPais());
-            
+
             User u = e.getUser();
             cs.setString(18, u.getUsername());
-            
+
             EmployeeType et = e.getEmployeetype();
             cs.setInt(19, et.getTypeid());
 

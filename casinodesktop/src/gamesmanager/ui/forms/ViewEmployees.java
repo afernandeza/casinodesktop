@@ -22,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
 public class ViewEmployees extends JFrame implements ActionListener, KeyListener,
 MouseListener{
@@ -32,8 +33,9 @@ MouseListener{
     private static final int THEIGHT = 400;
     private GridBagConstraints c = new GridBagConstraints();
     private JTextField buscar;
-    private EmployeeTableModel etm;
     private JTable table;
+    private EmployeeTableModel etm;
+    private Object[][] emps = null;
 
     public ViewEmployees() {
         super("Administrar Empleados");
@@ -55,11 +57,13 @@ MouseListener{
         tablepanel.setLayout(new GridLayout(1,0));
 
         String[] columns = EmployeeManager.EMPLOYEECOLUMNS;
-        Object[][] emps = EmployeeManager.getEmployees();
+        emps = EmployeeManager.getEmployees();
         etm = new EmployeeTableModel(columns, emps);
         table = new JTable(etm);
         table.addMouseListener(this);
-
+        
+        this.setColumnWidths();
+        
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
 
@@ -80,6 +84,36 @@ MouseListener{
         this.setLocationRelativeTo(null);
     }
 
+    private void setColumnWidths(){
+        TableColumn column = null;
+        column = this.table.getColumnModel().getColumn(0);
+        column.setPreferredWidth(10);   
+        
+        column = this.table.getColumnModel().getColumn(1);
+        column.setPreferredWidth(10);   
+
+        column = this.table.getColumnModel().getColumn(2);
+        column.setPreferredWidth(120);   
+        
+        column = this.table.getColumnModel().getColumn(3);
+        column.setPreferredWidth(10);   
+        
+        column = this.table.getColumnModel().getColumn(4);
+        column.setPreferredWidth(10);   
+        
+        column = this.table.getColumnModel().getColumn(5);
+        column.setPreferredWidth(45);   
+        
+        column = this.table.getColumnModel().getColumn(6);
+        column.setPreferredWidth(40);   
+        
+        column = this.table.getColumnModel().getColumn(7);
+        column.setPreferredWidth(60);   
+        
+        column = this.table.getColumnModel().getColumn(8);
+        column.setPreferredWidth(10);   
+    }
+    
     public void search(){
         System.out.println("searching");
     }
@@ -114,7 +148,11 @@ MouseListener{
 
         public Object getValueAt(int row, int col) {
             if(row < this.data.length && col < this.data[row].length){
-                return data[row][col];
+                if(data[row][col] != null){
+                    return data[row][col];   
+                } else {
+                    return "N/A";
+                }
             } else {
                 if(Helpers.DEBUG){
                     //System.out.println("nothing there");

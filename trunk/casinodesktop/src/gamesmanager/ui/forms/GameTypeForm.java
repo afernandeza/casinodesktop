@@ -26,7 +26,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-/* ListDemo.java requires no other files. */
 public class GameTypeForm extends JFrame implements ListSelectionListener {
 
     private static final long serialVersionUID = 1L;

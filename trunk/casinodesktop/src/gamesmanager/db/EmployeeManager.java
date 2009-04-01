@@ -28,6 +28,24 @@ public class EmployeeManager {
     private static String FIND = "SELECT * FROM findemployee(?)";
     private static String GETEMPLOYEETYPES = "SELECT * FROM tipoempleados "
         + "ORDER BY tipo";
+    public static String[] EMPLOYEECOLUMNS = {"col1", "col2", "col3", "col4", 
+        "col5", "col6", "col7", "col8", "col9", "col10",};
+    
+    public static Object[][] getEmployees(){
+        Object[][] o= new Object[3][3];
+        o[0][0] = "adsf1";
+        o[0][1] = "adsf2";
+        o[0][2] = "adsf3";
+        
+        o[1][0] = "qwer1";
+        o[1][1] = "qwer2";
+        o[1][2] = "qwer3";
+        
+        o[2][0] = "zcxv1";
+        o[2][1] = "zcxv2";
+        o[2][2] = "zcxv3";
+        return o;
+    }
     
     public static List<Type> getEmployeeTypes(){
         return DatabaseOperations.getTypes(GETEMPLOYEETYPES);

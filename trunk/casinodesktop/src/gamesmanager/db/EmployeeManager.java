@@ -30,57 +30,30 @@ public class EmployeeManager {
     private static String GETEMPLOYEETYPES = "SELECT * FROM tipoempleados "
         + "ORDER BY tipo";
     public static String GETEMPSUMMARY = "SELECT * FROM employeessummary ORDER BY nombre";
+    public static String EMPSUMMARYCOUNT = "SELECT COUNT(*) from employeessummary";
+    public static String SEARCH = "SELECT * FROM employeessummary ORDER BY nombre";
     public static String[] EMPLOYEECOLUMNS = {"ID", "Tipo", "Nombre", "Usuario", 
         "Us. activo", "Fecha alta", "Tel. Casa", "Tel. Celular", "Despedido",};
-
-    public static Object[][] getEmployees(){
+    
+    public static Object[][] getEmployeesSummary(){
         Connection conn = DatabaseManager.connect();
-        Statement st = null;
-        ResultSet rs = null;
-        Object[][] o = new Object[0][0];
+        CallableStatement cs = null;
         if (conn == null) {
-            return o;
+            return new Object[0][0];
         }
+        PreparedStatement rowcount;
+        PreparedStatement query;
         try {
-            Statement stc = conn.createStatement();
-            st = conn.createStatement();
-
-            ResultSet rsc = stc.executeQuery("SELECT COUNT(*) from employeessummary");
-            rs = st.executeQuery(GETEMPSUMMARY);
-
-            rsc.next();
-            int rows = rsc.getInt(1);
-            if(rows <= 0){
-                return null;
+            rowcount = conn.prepareStatement(EMPSUMMARYCOUNT);
+            query = conn.prepareStatement(GETEMPSUMMARY);
+        } catch (SQLException e) {
+            if(Helpers.DEBUG){
+                e.printStackTrace();
             }
-
-            o = new Object[rows][EMPLOYEECOLUMNS.length];
-            int rown = 0;
-            while(rs.next()){
-                o[rown][0] = rs.getObject(1);
-                o[rown][1] = rs.getObject(2);
-                o[rown][2] = rs.getObject(3);
-                o[rown][3] = rs.getObject(4);
-                o[rown][4] = rs.getObject(5);
-                o[rown][5] = rs.getObject(6);
-                o[rown][6] = rs.getObject(7);
-                o[rown][7] = rs.getObject(8);
-                rown++;
-            }
-            return o;
-
-        } catch (SQLException sqle) {
-            if (Helpers.DEBUG) {
-                // e.printStackTrace();
-                System.out.println("Error getting employees summary: "
-                        + sqle.getMessage());
-            }
-        } finally {
-            DatabaseManager.close(rs);
-            DatabaseManager.close(st);
-            DatabaseManager.close(conn);
+            return new Object[0][0];
         }
-        return o;
+        
+        return DatabaseOperations.getResults(rowcount, query);
     }
 
     public static List<Type> getEmployeeTypes(){

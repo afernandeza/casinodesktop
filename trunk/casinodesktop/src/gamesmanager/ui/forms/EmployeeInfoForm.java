@@ -379,7 +379,8 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 u.setUsername(this.username.getText().trim());
                 
                 EmployeeType et = (EmployeeType)this.types.getSelectedItem();
-
+                this.e.setEmployeetype(et);
+                
                 boolean updated = EmployeeManager.updateEmployee(this.e);
                 System.out.println("updated: " + updated);
                 if (updated) {

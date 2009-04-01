@@ -7,7 +7,6 @@ import gamesmanager.db.ClientManager;
 import java.io.File;
 
 import org.junit.Assert;
-import org.junit.Test;
 
 public class ClientManagerTest {
 

@@ -3,11 +3,9 @@ package gamesmanager.db.tests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import gamesmanager.beans.Address;
-import gamesmanager.beans.Client;
 import gamesmanager.beans.Employee;
 import gamesmanager.beans.EmployeeType;
 import gamesmanager.beans.User;
-import gamesmanager.db.ClientManager;
 import gamesmanager.db.EmployeeManager;
 
 import java.io.File;

@@ -17,7 +17,7 @@ public class EmployeeManagerTest {
     
     @Test
     public void testGetEmployees(){
-        Object[][] o = EmployeeManager.getEmployees();
+        Object[][] o = EmployeeManager.getEmployeesSummary();
         Assert.assertNotNull(o);
         for(int i = 0; i < o.length; i++){
             System.out.println("row");

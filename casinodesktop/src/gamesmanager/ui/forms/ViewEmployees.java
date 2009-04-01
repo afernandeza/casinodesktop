@@ -57,7 +57,7 @@ MouseListener{
         tablepanel.setLayout(new GridLayout(1,0));
 
         String[] columns = EmployeeManager.EMPLOYEECOLUMNS;
-        emps = EmployeeManager.getEmployees();
+        emps = EmployeeManager.getEmployeesSummary();
         etm = new EmployeeTableModel(columns, emps);
         table = new JTable(etm);
         table.addMouseListener(this);
@@ -116,6 +116,8 @@ MouseListener{
     
     public void search(){
         System.out.println("searching");
+        //this.emps = EmployeeManager.search();
+        this.etm.fireTableDataChanged();
     }
 
     @Override

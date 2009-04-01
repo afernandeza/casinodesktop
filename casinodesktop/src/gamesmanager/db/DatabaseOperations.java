@@ -8,7 +8,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,9 +19,55 @@ public class DatabaseOperations {
 
     private final static String AUTH = "{ ? = call authenticate( ?, ? ) }";
     private final static String GETCOUNTRIES = "SELECT printable_name "
-            + "FROM country ORDER BY printable_name";
+        + "FROM country ORDER BY printable_name";
     private final static String GETSTATES = "SELECT estado "
-            + "FROM estadosmexico ORDER BY estado";
+        + "FROM estadosmexico ORDER BY estado";
+
+    public static Object[][] getResults(PreparedStatement rowcount, 
+            PreparedStatement query){
+        Connection conn = DatabaseManager.connect();
+        Statement st = null;
+        ResultSet rs = null;
+        Object[][] o = new Object[0][0];
+        if (conn == null) {
+            return o;
+        }
+        try {
+            ResultSet rsc = rowcount.executeQuery();
+            rs = query.executeQuery();
+
+            rsc.next();
+            int rows = rsc.getInt(1);
+            if(rows <= 0){
+                return null;
+            }
+            
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int ncols = rsmd.getColumnCount();
+
+            o = new Object[rows][ncols];
+            int rown = 0;
+            while(rs.next()){
+                for(int i = 0; i < ncols; i++){
+                    o[rown][i] = rs.getObject(i+1);
+                }
+                rown++;
+            }
+            return o;
+
+        } catch (SQLException sqle) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error getting objects: "
+                        + sqle.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(rs);
+            DatabaseManager.close(st);
+            DatabaseManager.close(conn);
+        }
+        return o;
+    }
 
     public static boolean manageType(Type et, String call){
         if (et == null) {
@@ -54,7 +102,7 @@ public class DatabaseOperations {
         }
         return false;
     }
-    
+
     public static boolean login(User u) {
         boolean authorized = false;
 

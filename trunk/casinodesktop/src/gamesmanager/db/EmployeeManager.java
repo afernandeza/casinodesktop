@@ -2,7 +2,6 @@ package gamesmanager.db;
 
 import gamesmanager.beans.Address;
 import gamesmanager.beans.Employee;
-import gamesmanager.beans.EmployeeType;
 import gamesmanager.beans.Type;
 import gamesmanager.beans.User;
 import gamesmanager.ui.Helpers;
@@ -15,7 +14,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.List;
 
@@ -37,7 +35,6 @@ public class EmployeeManager {
     
     public static Object[][] getEmployeesSummary(){
         Connection conn = DatabaseManager.connect();
-        CallableStatement cs = null;
         if (conn == null) {
             return new Object[0][0];
         }
@@ -110,7 +107,7 @@ public class EmployeeManager {
             cs.setString(17, u.getUsername());
             cs.setString(18, u.getPassword());
 
-            EmployeeType et = e.getEmployeetype();
+            Type et = e.getEmployeetype();
             cs.setInt(19, et.getTypeid());
 
             cs.execute();
@@ -190,10 +187,11 @@ public class EmployeeManager {
             a.setPais(rs.getString(19));
 
             e.setAddress(a);
-            User u = new User(rs.getInt(20), rs.getString(21), rs.getString(22));
+            User u = new User(rs.getInt(20), rs.getString(21), 
+                    rs.getString(22), rs.getBoolean(23));
             e.setUser(u);
 
-            EmployeeType et = new EmployeeType(rs.getInt(23), rs.getString(24));
+            Type et = new Type(rs.getInt(24), rs.getString(25));
             e.setEmployeetype(et);
 
             System.out.println(e);
@@ -258,7 +256,7 @@ public class EmployeeManager {
             User u = e.getUser();
             cs.setString(18, u.getUsername());
 
-            EmployeeType et = e.getEmployeetype();
+            Type et = e.getEmployeetype();
             cs.setInt(19, et.getTypeid());
 
             cs.execute();

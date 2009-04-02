@@ -5,6 +5,7 @@ public class User {
     private int userid;
     private String username;
     private String password;
+    private boolean active;
 
     public User(String username) {
         this.username = username;
@@ -16,11 +17,12 @@ public class User {
         this.password = password;
     }
 
-    public User(int userid, String username, String password) {
+    public User(int userid, String username, String password, boolean active) {
         super();
         this.userid = userid;
         this.username = username;
         this.password = password;
+        this.active = active;
     }
 
     public int getUserid() {
@@ -46,6 +48,11 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public void setPassword(char[] password) {
+        String s = new String(password);
+        this.password = s.trim();
+    }
 
     public String toString() {
         final String TAB = ", ";
@@ -58,6 +65,14 @@ public class User {
                 "password = ").append(this.password).append(TAB).append(" )");
 
         return retValue.toString();
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 }

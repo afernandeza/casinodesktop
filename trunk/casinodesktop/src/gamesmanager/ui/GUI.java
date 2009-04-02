@@ -58,8 +58,8 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public void startSession() {
-        System.out.println("session started");
-
+        //session started
+        
         this.setMenuBarEnabled(true);
         this.remove(this.loginForm);
 
@@ -73,8 +73,8 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public void stopSession() {
-        System.out.println("session ended");
-
+        //session ended
+        
         this.setMenuBarEnabled(false);
         if (this.checkForm != null) {
             this.remove(checkForm);

@@ -38,13 +38,14 @@ MouseListener{
     private JTable table;
     private EmployeeTableModel etm;
     private Object[][] emps = null;
-    
+
     public String[] OPTIONS = {"Desactivar cuenta de usuario",
             "Dar baja temporal", "Dar baja definitiva",
             "Cambiar contrase"+Helpers.NTILDE+"a",
             "Actualizar informaci" + Helpers.OACUTE + "n personal"};
     public String INSTRUCTIONS = "Seleccione qu"+ Helpers.EACUTE + 
     " desea hacer con el empleado:";
+    private String NULLSTRING = "N/A";
 
     public ViewEmployees() {
         super("Administrar Empleados");
@@ -70,9 +71,9 @@ MouseListener{
         etm = new EmployeeTableModel(columns, emps);
         table = new JTable(etm);
         table.addMouseListener(this);
-        
+
         this.setColumnWidths();
-        
+
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
 
@@ -97,44 +98,55 @@ MouseListener{
         TableColumn column = null;
         column = this.table.getColumnModel().getColumn(0);
         column.setPreferredWidth(10);   
-        
+
         column = this.table.getColumnModel().getColumn(1);
         column.setPreferredWidth(10);   
 
         column = this.table.getColumnModel().getColumn(2);
         column.setPreferredWidth(120);   
-        
+
         column = this.table.getColumnModel().getColumn(3);
         column.setPreferredWidth(10);   
-        
+
         column = this.table.getColumnModel().getColumn(4);
         column.setPreferredWidth(10);   
-        
+
         column = this.table.getColumnModel().getColumn(5);
         column.setPreferredWidth(45);   
-        
+
         column = this.table.getColumnModel().getColumn(6);
         column.setPreferredWidth(40);   
-        
+
         column = this.table.getColumnModel().getColumn(7);
         column.setPreferredWidth(60);   
-        
+
         column = this.table.getColumnModel().getColumn(8);
         column.setPreferredWidth(10);   
     }
-    
+
     public void search(){
         System.out.println("searching");
         this.emps = EmployeeManager.getEmployeesSummary();
-        System.out.println("data found: " + emps);
-        this.etm.fireTableDataChanged();
+        System.out.println("data found: ");
+        for(int i = 0; i < emps.length; i++){
+            for(int j = 0; j < emps[0].length; j++){
+                System.out.print(emps[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
-    
+
     public void refreshData(){
         System.out.println("refreshing");
         this.emps = EmployeeManager.getEmployeesSummary();
-        System.out.println("data refreshed: " + emps);
-        this.etm.fireTableDataChanged();
+        System.out.println("data refreshed: ");
+        for(int i = 0; i < emps.length; i++){
+            for(int j = 0; j < emps[0].length; j++){
+                System.out.print(emps[i][j] + " ");
+                this.etm.setValueAt(emps[i][j], i, j);
+            }
+            System.out.println();
+        }
     }
 
     @Override
@@ -170,7 +182,7 @@ MouseListener{
                 if(data[row][col] != null){
                     return data[row][col];   
                 } else {
-                    return "N/A";
+                    return NULLSTRING;
                 }
             } else {
                 if(Helpers.DEBUG){
@@ -193,8 +205,21 @@ MouseListener{
         }
 
         public void setValueAt(Object value, int row, int col) {
+            if(row < this.data.length && col < this.data[row].length){
+                if(value != null){
+                    if (Helpers.DEBUG) {
+                        System.out.println("Setting value at " + row + "," + col
+                                + " to " + value + " (an instance of "
+                                + value.getClass() + ")");
+                    }
+                    data[row][col] = value;
+                    this.fireTableCellUpdated(row, col);
+                } else {
+                    data[row][col] = NULLSTRING;
+                    this.fireTableCellUpdated(row, col);
+                }
+            }
         }
-
     }
 
     @Override
@@ -222,7 +247,7 @@ MouseListener{
                         null, OPTIONS, OPTIONS[0]);
 
                 String employeeid = emps[selindex][0].toString();
-                
+
                 if ((opt != null) && (opt.length() > 0)) {
                     if (opt.equals(OPTIONS[0])) {
                         // Desactivar cuenta del usuario

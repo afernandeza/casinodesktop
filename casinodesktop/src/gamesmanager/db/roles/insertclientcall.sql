@@ -1,0 +1,7 @@
+-- Role: "casindesktopapp"
+
+-- DROP ROLE casindesktopapp;
+
+CREATE ROLE casindesktopapp LOGIN
+  ENCRYPTED PASSWORD 'md5af02c27407ba87a4dcb6fa4d68e77cf8'
+  NOSUPERUSER NOINHERIT NOCREATEDB NOCREATEROLE;

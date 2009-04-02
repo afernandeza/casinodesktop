@@ -1,5 +1,6 @@
 package gamesmanager.ui.forms;
 
+import gamesmanager.beans.Employee;
 import gamesmanager.db.EmployeeManager;
 import gamesmanager.ui.Helpers;
 
@@ -116,7 +117,15 @@ MouseListener{
     
     public void search(){
         System.out.println("searching");
-        //this.emps = EmployeeManager.search();
+        this.emps = EmployeeManager.getEmployeesSummary();
+        System.out.println("data found: " + emps);
+        this.etm.fireTableDataChanged();
+    }
+    
+    public void refreshData(){
+        System.out.println("refreshing");
+        this.emps = EmployeeManager.getEmployeesSummary();
+        System.out.println("data refreshed: " + emps);
         this.etm.fireTableDataChanged();
     }
 
@@ -157,7 +166,7 @@ MouseListener{
                 }
             } else {
                 if(Helpers.DEBUG){
-                    //System.out.println("nothing there");
+                    System.out.println("nothing there");
                 }
                 return "";
             }
@@ -198,7 +207,14 @@ MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getClickCount() == 2){
-            System.out.println("double clicked");
+            int selindex = table.getSelectedRow();
+            if(selindex != -1){
+                String s = emps[selindex][0].toString();
+                Employee editemp = EmployeeManager.findEmployee(s);
+                EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
+                eif.setEmployeeViewer(this);
+                eif.setVisible(true);   
+            }
         }
     }
 

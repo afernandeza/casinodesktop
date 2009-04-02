@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Employee extends Person {
 
-    private EmployeeType employeetype;
+    private Type employeetype;
     private User user;
     private Date hired;
     private Date fired;
@@ -36,11 +36,11 @@ public class Employee extends Person {
         this.user = user;
     }
 
-    public EmployeeType getEmployeetype() {
+    public Type getEmployeetype() {
         return employeetype;
     }
 
-    public void setEmployeetype(EmployeeType employeetype) {
+    public void setEmployeetype(Type employeetype) {
         this.employeetype = employeetype;
     }
 

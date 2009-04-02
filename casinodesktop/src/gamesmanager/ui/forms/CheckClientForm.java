@@ -22,12 +22,13 @@ public class CheckClientForm extends JPanel implements KeyListener {
     private JTextField memberid;
     private JProgressBar syncpb;
     private GridBagConstraints c = new GridBagConstraints();
-    public String[] OPTIONS = {"Actualizar informaci"+Helpers.OACUTE+"n personal",
-            "Administrar fichas", "Dar de baja"};
-    public String INSTRUCTIONS = "Cliente encontrado, " +
-    		"seleccione qu"+Helpers.EACUTE+" desea hacer:";
-    public String DELETE_CONFIRMATION = Helpers.OQUESTIONM+"Est"+Helpers.AACUTE+
-            " seguro que desea borrar al miembro ";
+    public String[] OPTIONS = {
+            "Actualizar informaci" + Helpers.OACUTE + "n personal",
+            "Administrar fichas", "Dar de baja" };
+    public String INSTRUCTIONS = "Cliente encontrado, " + "seleccione qu"
+    + Helpers.EACUTE + " desea hacer:";
+    public String DELETE_CONFIRMATION = Helpers.OQUESTIONM + "Est"
+    + Helpers.AACUTE + " seguro que desea borrar al miembro ";
 
     public CheckClientForm() {
         super(new GridBagLayout());
@@ -67,53 +68,54 @@ public class CheckClientForm extends JPanel implements KeyListener {
     }
 
     public void findMember() {
-        if (!this.memberid.getText().equals("")) {
-            System.out.println("finding member");
+        if (!this.memberid.getText().trim().equals("")) {
             Client client = ClientManager.findClient(this.memberid.getText());
             if (client != null) {
-                System.out.println("member found");
-                
-                String s = (String)
-                JOptionPane.showInputDialog(null, INSTRUCTIONS, "Opciones",
-                        JOptionPane.QUESTION_MESSAGE, null, OPTIONS, OPTIONS[0]);
+                // member found
+                String s = (String) JOptionPane.showInputDialog(null,
+                        INSTRUCTIONS, "Opciones", JOptionPane.QUESTION_MESSAGE,
+                        null, OPTIONS, OPTIONS[0]);
 
                 if ((s != null) && (s.length() > 0)) {
-                    if(s.equals(OPTIONS[0])){
-                        System.out.println("actualizar");
-                      ClientInfoForm form = new ClientInfoForm(client);
-                      form.setVisible(true);
-                    } else if(s.equals(OPTIONS[1])){
-                        System.out.println("admin fichas");
+                    if (s.equals(OPTIONS[0])) {
+                        // Actualizar
+                        ClientInfoForm form = new ClientInfoForm(client);
+                        form.setVisible(true);
+                    } else if (s.equals(OPTIONS[1])) {
+                        // Administrar fichas
                         ChipManager cm = new ChipManager(client);
                         cm.setVisible(true);
-                    } else if(s.equals(OPTIONS[2])){
-                        System.out.println("dar baja");
-                        int n = JOptionPane.showConfirmDialog(
-                                null,
-                                DELETE_CONFIRMATION + client.getFullName() +
-                                Helpers.CQUESTIONM,
-                                "Confirmar",
+                    } else if (s.equals(OPTIONS[2])) {
+                        // Dar de baja
+                        int n = JOptionPane.showConfirmDialog(null,
+                                DELETE_CONFIRMATION + client.getFullName()
+                                + Helpers.CQUESTIONM, "Confirmar",
                                 JOptionPane.YES_NO_OPTION);
-                        System.out.println("n: " + n ); 
-                        if(n == 0){
-                            if(ClientManager.deleteClient(client.getId())){
-                                JOptionPane.showMessageDialog(null,
-                                        client.getFullName() + " borrado.",
-                                        "Informaci"+Helpers.OACUTE+"n",
+                        if (n == 0) {
+                            // confirmar
+                            if (ClientManager.deleteClient(client.getId())) {
+                                JOptionPane.showMessageDialog(null, client
+                                        .getFullName()
+                                        + " borrado.", "Informaci"
+                                        + Helpers.OACUTE + "n",
                                         JOptionPane.INFORMATION_MESSAGE);
                             } else {
-                                JOptionPane.showMessageDialog(null,
-                                        client.getFullName() + " no ha sido borrado.",
-                                        "Informaci"+Helpers.OACUTE+"n",
+                                //cancelar
+                                JOptionPane.showMessageDialog(null, client
+                                        .getFullName()
+                                        + " no ha sido borrado.", "Informaci"
+                                        + Helpers.OACUTE + "n",
                                         JOptionPane.ERROR_MESSAGE);
                             }
-                        } 
+                        }
                     }
-                    
                     return;
-                }      
+                }
             } else {
-                System.out.println("member not found");
+                JOptionPane.showMessageDialog(null,
+                        "El miembro buscado no existe.", "Informaci"
+                        + Helpers.OACUTE + "n",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }

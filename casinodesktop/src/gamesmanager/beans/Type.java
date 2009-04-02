@@ -27,5 +27,20 @@ public class Type {
     public String getType() {
         return type;
     }
+    
+    @Override
+    public String toString(){
+        return this.type;
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        if(o == null)
+            return false;
+        if(!(o instanceof Type))
+            return false;
+        Type t = (Type)o;
+        return this.type.equals(t.getType()) && this.typeid == t.getTypeid();
+    }
 
 }

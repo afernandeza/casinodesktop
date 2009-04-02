@@ -17,6 +17,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -37,6 +38,13 @@ MouseListener{
     private JTable table;
     private EmployeeTableModel etm;
     private Object[][] emps = null;
+    
+    public String[] OPTIONS = {"Desactivar cuenta de usuario",
+            "Dar baja temporal", "Dar baja definitiva",
+            "Cambiar contrase"+Helpers.NTILDE+"a",
+            "Actualizar informaci" + Helpers.OACUTE + "n personal"};
+    public String INSTRUCTIONS = "Seleccione qu"+ Helpers.EACUTE + 
+    " desea hacer con el empleado:";
 
     public ViewEmployees() {
         super("Administrar Empleados");
@@ -209,11 +217,33 @@ MouseListener{
         if(e.getClickCount() == 2){
             int selindex = table.getSelectedRow();
             if(selindex != -1){
-                String s = emps[selindex][0].toString();
-                Employee editemp = EmployeeManager.findEmployee(s);
-                EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
-                eif.setEmployeeViewer(this);
-                eif.setVisible(true);   
+                String opt = (String) JOptionPane.showInputDialog(null,
+                        INSTRUCTIONS, "Opciones", JOptionPane.QUESTION_MESSAGE,
+                        null, OPTIONS, OPTIONS[0]);
+
+                String employeeid = emps[selindex][0].toString();
+                
+                if ((opt != null) && (opt.length() > 0)) {
+                    if (opt.equals(OPTIONS[0])) {
+                        // Desactivar cuenta del usuario
+                        System.out.println("desactivar");
+                    } else if (opt.equals(OPTIONS[1])) {
+                        // Dar baja temporal
+                        System.out.println("baja temp");
+                    } else if (opt.equals(OPTIONS[2])) {
+                        // Dar baja definitiva
+                        System.out.println("baja def");
+                    } else if (opt.equals(OPTIONS[3])) {
+                        // Cambiar password
+                        System.out.println("camb passwd");
+                    } else if (opt.equals(OPTIONS[4])) {
+                        // Actualizar information personal
+                        Employee editemp = EmployeeManager.findEmployee(employeeid);
+                        EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
+                        eif.setEmployeeViewer(this);
+                        eif.setVisible(true);  
+                    }
+                } 
             }
         }
     }

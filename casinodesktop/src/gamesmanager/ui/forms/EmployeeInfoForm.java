@@ -63,6 +63,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     private JButton cancel;
     private Employee e;
     private ViewEmployees employeeviewer;
+    private int selindex;
 
     private JComboBox types;
     private JTextField username;
@@ -320,8 +321,9 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
     }
     
-    public void setEmployeeViewer(ViewEmployees ve){
+    public void setEmployeeViewer(ViewEmployees ve, int selindex){
         this.employeeviewer = ve;
+        this.selindex = selindex;
     }
 
     private boolean validateForm() {
@@ -415,7 +417,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 boolean updated = EmployeeManager.updateEmployee(this.e);
                 if (updated) {
                     if(employeeviewer != null){
-                        this.employeeviewer.refreshData();
+                        this.employeeviewer.refreshData(this.selindex);
                     }
                     JOptionPane.showMessageDialog(null,
                             "Cambios guardados exitosamente.", "Informaci"

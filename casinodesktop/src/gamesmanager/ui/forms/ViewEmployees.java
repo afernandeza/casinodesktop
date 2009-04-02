@@ -130,22 +130,16 @@ MouseListener{
         System.out.println("data found: ");
         for(int i = 0; i < emps.length; i++){
             for(int j = 0; j < emps[0].length; j++){
-                System.out.print(emps[i][j] + " ");
+                this.etm.setValueAt(emps[i][j], i, j);
             }
-            System.out.println();
         }
     }
 
-    public void refreshData(){
-        System.out.println("refreshing");
+    public void refreshData(int selindex){
         this.emps = EmployeeManager.getEmployeesSummary();
         System.out.println("data refreshed: ");
-        for(int i = 0; i < emps.length; i++){
-            for(int j = 0; j < emps[0].length; j++){
-                System.out.print(emps[i][j] + " ");
-                this.etm.setValueAt(emps[i][j], i, j);
-            }
-            System.out.println();
+        for(int j = 0; j < emps[0].length; j++){
+            this.etm.setValueAt(emps[selindex][j], selindex, j);
         }
     }
 
@@ -265,7 +259,7 @@ MouseListener{
                         // Actualizar information personal
                         Employee editemp = EmployeeManager.findEmployee(employeeid);
                         EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
-                        eif.setEmployeeViewer(this);
+                        eif.setEmployeeViewer(this, selindex);
                         eif.setVisible(true);  
                     }
                 } 

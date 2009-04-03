@@ -81,6 +81,7 @@ public class CheckClientForm extends JPanel implements KeyListener {
                         // Actualizar
                         ClientInfoForm form = new ClientInfoForm(client);
                         form.setVisible(true);
+                        form.loadCurrentImage();
                     } else if (s.equals(OPTIONS[1])) {
                         // Administrar fichas
                         ChipManager cm = new ChipManager(client);

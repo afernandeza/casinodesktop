@@ -10,6 +10,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
+
 public class Person {
 
     private String id;
@@ -22,7 +24,9 @@ public class Person {
     private String telcel;
     private Address address;
     private File foto;
+    private ImageIcon ii;
     private InputStream fotoInputStream;
+    private byte[] fotoarray;
 
     public Person() {
 
@@ -75,10 +79,22 @@ public class Person {
         this.id = id;
     }
 
-    public File getFoto() {
+    public File getSelectedFoto() {
         return foto;
     }
 
+    public void setFoto(byte[] array){
+        this.fotoarray = array;
+    }
+    
+    public ImageIcon getFotoImageIcon(){
+        this.ii = new ImageIcon(this.fotoarray);
+        if(this.ii == null){
+            throw new NullPointerException("Foto no ha sido creado");
+        }
+        return this.ii;
+    }
+    
     public void setFoto(File foto) {
         this.foto = foto;
     }
@@ -224,6 +240,9 @@ public class Person {
 
     public InputStream getNewFotoInputStream() {
         try {
+            if(this.foto == null){
+                System.out.println("foto nula");
+            }
             this.fotoInputStream = new FileInputStream(this.foto);
         } catch (FileNotFoundException e) {
             System.out.println("photo not found");

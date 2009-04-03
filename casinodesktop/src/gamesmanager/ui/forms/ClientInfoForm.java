@@ -276,7 +276,7 @@ public class ClientInfoForm extends JFrame implements ActionListener,
             this.estado.setText(d.getEstado());
             this.pais.setSelectedItem(d.getPais());
 
-//            this.image.loadImage(this.client.getCurrentFotoInputStream());
+            // this.image.loadImage(this.client.getFotoImageIcon());
         }
 
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
@@ -284,6 +284,14 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         this.setSize(this.getWidth() + Helpers.XOFFSET, this.getHeight()
                 + Helpers.YOFFSET);
         this.setLocationRelativeTo(null);
+    }
+
+    public void loadCurrentImage() {
+        if (this.client.getFotoImageIcon() != null) {
+            this.image.loadImage(this.client.getFotoImageIcon());
+        } else {
+            throw new NullPointerException("Imagen nula");
+        }
     }
 
     public static void main(String args[]) {
@@ -347,12 +355,12 @@ public class ClientInfoForm extends JFrame implements ActionListener,
 
                 c.setAddress(d);
                 boolean inserted = ClientManager.insertClient(c);
-                System.out.println("inserted: " + inserted);
                 if (inserted) {
                     JOptionPane.showMessageDialog(null,
                             "Nuevo miembro insertado.", "Informaci"
                                     + Helpers.OACUTE + "n",
                             JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null,
                             "El nuevo miembro no ha sido insertado.",
@@ -389,10 +397,13 @@ public class ClientInfoForm extends JFrame implements ActionListener,
                             "Cambios guardados exitosamente.", "Informaci"
                                     + Helpers.OACUTE + "n",
                             JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null,
-                            "Los cambios no han sido guardados",
-                            "Informaci" + Helpers.OACUTE + "n",
+                            "Los cambios no han sido guardados.\n" +
+                            "Vuelva a intentar.",
+                            "Informaci"
+                                    + Helpers.OACUTE + "n",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }

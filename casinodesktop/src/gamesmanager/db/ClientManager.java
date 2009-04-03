@@ -128,7 +128,7 @@ public class ClientManager {
             cs.setString(6, c.getSexo() + "");
             cs.setDate(7, new Date(c.getFechanac().getTime()));
 
-            File foto = c.getFoto();
+            File foto = c.getSelectedFoto();
             InputStream is = c.getNewFotoInputStream();
             
             if (is != null) {
@@ -190,7 +190,7 @@ public class ClientManager {
             cs.setString(7, c.getSexo() + "");
             cs.setDate(8, new Date(c.getFechanac().getTime()));
 
-            File foto = c.getFoto();
+            File foto = c.getSelectedFoto();
             InputStream is = c.getNewFotoInputStream();
             if (is != null) {
                 cs.setBinaryStream(9, is, (int) foto.length());
@@ -257,7 +257,9 @@ public class ClientManager {
             c.setApmaterno(rs.getString(4));
             c.setSexo(rs.getString(5));
             c.setFechanac(rs.getDate(6));
-            c.setFotoInputStream(rs.getBinaryStream(7));
+            
+            c.setFoto(rs.getBytes(7));
+            
             c.setTelcasa(rs.getString(8));
             c.setTelcel(rs.getString(9));
             c.setMembersince(rs.getString(10));

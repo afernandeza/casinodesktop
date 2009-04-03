@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class ImagePanel extends JPanel {
@@ -41,6 +42,10 @@ public class ImagePanel extends JPanel {
 
     public ImagePanel() {
         super();
+    }
+    
+    public void loadImage(ImageIcon ii){
+        loadImage(ii.getImage());
     }
 
     public void loadImage(InputStream is){

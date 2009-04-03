@@ -80,7 +80,7 @@ public class EmployeeManager {
             cs.setString(5, e.getSexo() + "");
             cs.setDate(6, new Date(e.getFechanac().getTime()));
 
-            File foto = e.getFoto();
+            File foto = e.getSelectedFoto();
             InputStream is = e.getNewFotoInputStream();
 
             if (is != null) {
@@ -233,7 +233,7 @@ public class EmployeeManager {
             cs.setString(6, e.getSexo() + "");
             cs.setDate(7, new Date(e.getFechanac().getTime()));
 
-            File foto = e.getFoto();
+            File foto = e.getSelectedFoto();
             InputStream is = e.getNewFotoInputStream();
             if (is != null) {
                 cs.setBinaryStream(8, is, (int) foto.length());

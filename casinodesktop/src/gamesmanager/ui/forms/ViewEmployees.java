@@ -3,6 +3,7 @@ package gamesmanager.ui.forms;
 import gamesmanager.beans.Employee;
 import gamesmanager.db.EmployeeManager;
 import gamesmanager.ui.Helpers;
+import gamesmanager.ui.session.Session;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -40,7 +41,8 @@ MouseListener{
     private Object[][] emps = null;
 
     public String[] OPTIONS = {"Desactivar cuenta de usuario",
-            "Dar baja temporal", "Dar baja definitiva",
+            "Reactivar cuenta de usuario", "Dar baja temporal", 
+            "Recontratar empleado", "Dar baja definitiva",
             "Cambiar contrase"+Helpers.NTILDE+"a",
             "Actualizar informaci" + Helpers.OACUTE + "n personal"};
     public String INSTRUCTIONS = "Seleccione qu"+ Helpers.EACUTE + 
@@ -235,26 +237,58 @@ MouseListener{
             if(selindex != -1){
                 String opt = (String) JOptionPane.showInputDialog(null,
                         INSTRUCTIONS, "Opciones", JOptionPane.QUESTION_MESSAGE,
-                        null, OPTIONS, OPTIONS[4]);
+                        null, OPTIONS, OPTIONS[6]);
 
                 String employeeid = emps[selindex][0].toString();
 
                 if ((opt != null) && (opt.length() > 0)) {
                     if (opt.equals(OPTIONS[0])) {
                         // Desactivar cuenta del usuario
+                        System.out.println("desactivar cuenta: ");
+                        if(Session.mayDeactivateAccount(employeeid)){
+                            System.out.println("si puede");
+                        }
                     } else if (opt.equals(OPTIONS[1])) {
-                        // Dar baja temporal
+                        // Reactivar cuenta de usuario
+                        System.out.println("reactiva cuenta: ");
+                        if(Session.mayActivateAccount()){
+                            System.out.println("si puede");
+                        }
                     } else if (opt.equals(OPTIONS[2])) {
-                        // Dar baja definitiva
+                        // Dar baja temporal
+                        System.out.println("fire temp: ");
+                        if(Session.mayTemporarilyFire()){
+                            System.out.println("si puede");
+                        }
                     } else if (opt.equals(OPTIONS[3])) {
-                        // Cambiar password
+                        // Recontratar empleado
+                        System.out.println("re hire: ");
+                        if(Session.mayHire()){
+                            System.out.println("si puede");
+                        }
                     } else if (opt.equals(OPTIONS[4])) {
+                        // Dar baja definitiva
+                        System.out.println("delete forever: ");
+                        if(Session.mayPermanentlyFire()){
+                            System.out.println("si puede");
+                        }
+                    } else if (opt.equals(OPTIONS[5])) {
+                        // Cambiar password
+                        System.out.println("change passwd: ");
+                        if(Session.mayChangePasswordFor(employeeid)){
+                            System.out.println("si puede");
+                        }
+                    } else if (opt.equals(OPTIONS[6])) {
                         // Actualizar information personal
-                        Employee editemp = EmployeeManager.findEmployee(employeeid);
-                        EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
-                        eif.loadCurrentImage();
-                        eif.setEmployeeViewer(this, selindex);
-                        eif.setVisible(true);  
+                        System.out.println("actualizar info: ");
+                        if(Session.mayChangePersonalInfoFor(employeeid)){
+                            System.out.println("si puede");
+                            Employee editemp = EmployeeManager.findEmployee(employeeid);
+                            EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
+                            eif.loadCurrentImage();
+                            eif.setEmployeeViewer(this, selindex);
+                            eif.setVisible(true);  
+                        }
                     }
                 } 
             }

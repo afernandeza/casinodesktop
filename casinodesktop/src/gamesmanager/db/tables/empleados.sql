@@ -24,3 +24,13 @@ CREATE TABLE empleados
 )
 WITH (OIDS=FALSE);
 ALTER TABLE empleados OWNER TO casindesktopapp;
+
+-- Index: empleadoidindex
+
+-- DROP INDEX empleadoidindex;
+
+CREATE INDEX empleadoidindex
+  ON empleados
+  USING btree
+  (empleadoid);
+

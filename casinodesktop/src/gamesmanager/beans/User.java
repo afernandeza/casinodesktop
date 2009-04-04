@@ -6,6 +6,7 @@ public class User {
     private String username;
     private String password;
     private boolean active;
+    private boolean externo;
 
     public User(String username) {
         this.username = username;
@@ -73,6 +74,14 @@ public class User {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public boolean isExterno() {
+        return externo;
+    }
+
+    public void setExterno(boolean externo) {
+        this.externo = externo;
     }
 
 }

@@ -191,9 +191,10 @@ public class EmployeeManager {
             e.setAddress(a);
             User u = new User(rs.getInt(20), rs.getString(21), 
                     rs.getString(22), rs.getBoolean(23));
+            u.setExterno(rs.getBoolean(24));
             e.setUser(u);
 
-            Type et = new Type(rs.getInt(24), rs.getString(25));
+            Type et = new Type(rs.getInt(25), rs.getString(26));
             e.setEmployeetype(et);
 
             System.out.println(e);

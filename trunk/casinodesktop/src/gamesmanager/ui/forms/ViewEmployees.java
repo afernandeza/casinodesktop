@@ -125,9 +125,7 @@ MouseListener{
     }
 
     public void search(){
-        System.out.println("searching");
         this.emps = EmployeeManager.getEmployeesSummary();
-        System.out.println("data found: ");
         for(int i = 0; i < emps.length; i++){
             for(int j = 0; j < emps[0].length; j++){
                 this.etm.setValueAt(emps[i][j], i, j);
@@ -137,7 +135,6 @@ MouseListener{
 
     public void refreshData(int selindex){
         this.emps = EmployeeManager.getEmployeesSummary();
-        System.out.println("data refreshed: ");
         for(int j = 0; j < emps[0].length; j++){
             this.etm.setValueAt(emps[selindex][j], selindex, j);
         }
@@ -201,11 +198,11 @@ MouseListener{
         public void setValueAt(Object value, int row, int col) {
             if(row < this.data.length && col < this.data[row].length){
                 if(value != null){
-                    if (Helpers.DEBUG) {
-                        System.out.println("Setting value at " + row + "," + col
-                                + " to " + value + " (an instance of "
-                                + value.getClass() + ")");
-                    }
+//                    if (Helpers.DEBUG) {
+//                        System.out.println("Setting value at " + row + "," + col
+//                                + " to " + value + " (an instance of "
+//                                + value.getClass() + ")");
+//                    }
                     data[row][col] = value;
                     this.fireTableCellUpdated(row, col);
                 } else {
@@ -238,27 +235,24 @@ MouseListener{
             if(selindex != -1){
                 String opt = (String) JOptionPane.showInputDialog(null,
                         INSTRUCTIONS, "Opciones", JOptionPane.QUESTION_MESSAGE,
-                        null, OPTIONS, OPTIONS[0]);
+                        null, OPTIONS, OPTIONS[4]);
 
                 String employeeid = emps[selindex][0].toString();
 
                 if ((opt != null) && (opt.length() > 0)) {
                     if (opt.equals(OPTIONS[0])) {
                         // Desactivar cuenta del usuario
-                        System.out.println("desactivar");
                     } else if (opt.equals(OPTIONS[1])) {
                         // Dar baja temporal
-                        System.out.println("baja temp");
                     } else if (opt.equals(OPTIONS[2])) {
                         // Dar baja definitiva
-                        System.out.println("baja def");
                     } else if (opt.equals(OPTIONS[3])) {
                         // Cambiar password
-                        System.out.println("camb passwd");
                     } else if (opt.equals(OPTIONS[4])) {
                         // Actualizar information personal
                         Employee editemp = EmployeeManager.findEmployee(employeeid);
                         EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
+                        eif.loadCurrentImage();
                         eif.setEmployeeViewer(this, selindex);
                         eif.setVisible(true);  
                     }

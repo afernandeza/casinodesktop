@@ -326,6 +326,14 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         this.selindex = selindex;
     }
 
+    public void loadCurrentImage() {
+        if (this.e.getFotoImageIcon() != null) {
+            this.image.loadImage(this.e.getFotoImageIcon());
+        } else {
+            throw new NullPointerException("Imagen nula");
+        }
+    }
+    
     private boolean validateForm() {
         return true;
     }

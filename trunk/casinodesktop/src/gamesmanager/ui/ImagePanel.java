@@ -26,7 +26,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -48,18 +47,6 @@ public class ImagePanel extends JPanel {
         loadImage(ii.getImage());
     }
 
-    public void loadImage(InputStream is){
-        try {
-            Image i = ImageIO.read(is);
-            this.loadImage(i);
-        } catch (IOException e) {
-            if(Helpers.DEBUG){
-                System.out.println("error reading image");
-                e.printStackTrace();
-            }
-        }    
-    }
-    
     public void loadImage(File f){
         if(f == null){
             if(Helpers.DEBUG){

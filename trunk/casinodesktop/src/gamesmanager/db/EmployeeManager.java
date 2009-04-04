@@ -233,10 +233,9 @@ public class EmployeeManager {
             cs.setString(6, e.getSexo() + "");
             cs.setDate(7, new Date(e.getFechanac().getTime()));
 
-            File foto = e.getSelectedFoto();
             InputStream is = e.getNewFotoInputStream();
             if (is != null) {
-                cs.setBinaryStream(8, is, (int) foto.length());
+                cs.setBinaryStream(8, is, e.getFotoSize());
             } else {
                 throw new NullPointerException("Foto es null");
             }

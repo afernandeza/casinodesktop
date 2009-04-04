@@ -276,7 +276,6 @@ public class ClientInfoForm extends JFrame implements ActionListener,
             this.estado.setText(d.getEstado());
             this.pais.setSelectedItem(d.getPais());
 
-            // this.image.loadImage(this.client.getFotoImageIcon());
         }
 
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);

@@ -2,6 +2,7 @@ package gamesmanager.beans;
 
 import gamesmanager.ui.Helpers;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -237,13 +238,23 @@ public class Person {
 
         return retValue.toString();
     }
+    
+    public int getFotoSize(){
+        if (this.foto != null){
+            return (int)this.foto.length();
+        } else {
+            return this.fotoarray.length;
+        }
+    }
 
     public InputStream getNewFotoInputStream() {
         try {
             if(this.foto == null){
                 System.out.println("foto nula");
+                this.fotoInputStream = new ByteArrayInputStream(this.fotoarray);
+            } else {
+                this.fotoInputStream = new FileInputStream(this.foto);
             }
-            this.fotoInputStream = new FileInputStream(this.foto);
         } catch (FileNotFoundException e) {
             System.out.println("photo not found");
             if (Helpers.DEBUG) {

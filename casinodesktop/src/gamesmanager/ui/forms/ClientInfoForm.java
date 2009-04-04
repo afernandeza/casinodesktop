@@ -293,12 +293,6 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         }
     }
 
-    public static void main(String args[]) {
-        ClientInfoForm n = new ClientInfoForm(null);
-        n.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        n.setVisible(true);
-    }
-
     private boolean validateForm() {
         return true;
     }

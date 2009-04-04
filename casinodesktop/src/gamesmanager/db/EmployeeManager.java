@@ -165,7 +165,9 @@ public class EmployeeManager {
             }
             e.setSexo(rs.getString(5));
             e.setFechanac(rs.getDate(6));
-            // c.setFoto(cs.getBlob(7));
+            
+            e.setFoto(rs.getBytes(7));
+            
             e.setTelcasa(rs.getString(8));
             e.setTelcel(rs.getString(9));
             e.setHired(rs.getDate(10));

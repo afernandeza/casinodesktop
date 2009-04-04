@@ -1,5 +1,6 @@
 package gamesmanager.ui;
 
+import gamesmanager.db.DatabaseManager;
 import gamesmanager.ui.forms.CheckClientForm;
 import gamesmanager.ui.forms.ClientInfoForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
@@ -23,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GUI extends JFrame implements ActionListener {
@@ -194,8 +196,16 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public static void main(String args[]) {
-        GUI g = new GUI();
-        g.setVisible(true);
+        if(DatabaseManager.databaseAvailable()){
+            GUI g = new GUI();
+            g.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "No se tiene acceso a la base de datos.\n" +
+                    "La aplicaci"+Helpers.OACUTE +"n se cerrar"+Helpers.AACUTE,
+                    "Error grave",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private class ImagePanel extends JPanel {

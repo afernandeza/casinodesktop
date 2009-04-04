@@ -288,6 +288,12 @@ MouseListener{
                             eif.loadCurrentImage();
                             eif.setEmployeeViewer(this, selindex);
                             eif.setVisible(true);  
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "Usted no cuenta con los permisos suficientes " +
+                                    "para realizar la operaci"+Helpers.OACUTE+"n.",
+                                    "Error grave",
+                                    JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 } 

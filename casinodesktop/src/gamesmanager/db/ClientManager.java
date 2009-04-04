@@ -190,10 +190,10 @@ public class ClientManager {
             cs.setString(7, c.getSexo() + "");
             cs.setDate(8, new Date(c.getFechanac().getTime()));
 
-            File foto = c.getSelectedFoto();
+            
             InputStream is = c.getNewFotoInputStream();
             if (is != null) {
-                cs.setBinaryStream(9, is, (int) foto.length());
+                cs.setBinaryStream(9, is, c.getFotoSize());
             } else {
                 throw new NullPointerException("Foto es null");
             }

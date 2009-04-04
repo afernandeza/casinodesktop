@@ -3,6 +3,7 @@ package gamesmanager.db;
 import gamesmanager.beans.Type;
 import gamesmanager.beans.User;
 import gamesmanager.ui.Helpers;
+import gamesmanager.ui.session.Session;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -22,7 +23,71 @@ public class DatabaseOperations {
         + "FROM country ORDER BY printable_name";
     private final static String GETSTATES = "SELECT estado "
         + "FROM estadosmexico ORDER BY estado";
+    private final static String SESSIONINFO = "SELECT empleadoid, usuario, externo, " +
+    		"tipoempleadoid, tipo FROM employeesdata WHERE usuario = ?";
+    
+    public static Session getSessionInfo(String usuario){
+        Connection conn = DatabaseManager.connect();
+        if (conn == null) {
+            return null;
+        }
+        PreparedStatement query;
+        Session session = null;
+        try {
+            query = conn.prepareStatement(SESSIONINFO);
+            query.setString(1, usuario);
+            Object[] o = getResult(query);
+            User u = new User(o[1].toString());
+            u.setExterno((Boolean)o[2]);
+            Type et = new Type((Integer)o[3], o[4].toString());
+            session = new Session(o[0].toString(), u, et);
+            
+        } catch (SQLException e) {
+            if(Helpers.DEBUG){
+                e.printStackTrace();
+            }
+            return null;
+        }
+        
+        return session;
+    }
+    
+    public static Object[] getResult(PreparedStatement query){
+        Connection conn = DatabaseManager.connect();
+        Statement st = null;
+        ResultSet rs = null;
+        Object[] o = new Object[0];
+        if (conn == null) {
+            return o;
+        }
+        try {
+            rs = query.executeQuery();
+            
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int ncols = rsmd.getColumnCount();
+            o = new Object[ncols];
 
+            if(rs.next()){
+                for(int i = 0; i < ncols; i++){
+                    o[i] = rs.getObject(i+1);
+                }
+            }
+            return o;
+
+        } catch (SQLException sqle) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error getting objects: "
+                        + sqle.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(rs);
+            DatabaseManager.close(st);
+            DatabaseManager.close(conn);
+        }
+        return o;
+    }
+    
     public static Object[][] getResults(PreparedStatement rowcount, 
             PreparedStatement query){
         Connection conn = DatabaseManager.connect();

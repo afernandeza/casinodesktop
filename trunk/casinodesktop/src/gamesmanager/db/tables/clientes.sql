@@ -22,3 +22,13 @@ CREATE TABLE clientes
 )
 WITH (OIDS=FALSE);
 ALTER TABLE clientes OWNER TO casindesktopapp;
+
+-- Index: clientidindex
+
+-- DROP INDEX clientidindex;
+
+CREATE INDEX clientidindex
+  ON clientes
+  USING btree
+  (clienteid);
+

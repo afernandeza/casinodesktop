@@ -16,3 +16,13 @@ CREATE TABLE direcciones
 )
 WITH (OIDS=FALSE);
 ALTER TABLE direcciones OWNER TO casindesktopapp;
+
+-- Index: direccionidindex
+
+-- DROP INDEX direccionidindex;
+
+CREATE INDEX direccionidindex
+  ON direcciones
+  USING btree
+  (direccionid);
+

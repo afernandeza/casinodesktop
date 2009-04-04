@@ -1,9 +1,9 @@
 package gamesmanager.db;
 
-import java.util.List;
-
 import gamesmanager.beans.EmployeeType;
 import gamesmanager.beans.Type;
+
+import java.util.List;
 
 public class GameTypeManager {
     

@@ -9,6 +9,7 @@ import gamesmanager.ui.forms.LoginForm;
 import gamesmanager.ui.forms.SessionForm;
 import gamesmanager.ui.forms.TableInfoForm;
 import gamesmanager.ui.forms.ViewEmployees;
+import gamesmanager.ui.session.Session;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -51,6 +52,7 @@ public class GUI extends JFrame implements ActionListener {
     private JMenu help;
     private LoginForm loginForm;
     private CheckClientForm checkForm;
+    private JMenuItem newEmployee;
 
     public GUI() {
         super("Games Management System");
@@ -63,6 +65,8 @@ public class GUI extends JFrame implements ActionListener {
         //session started
         
         this.setMenuBarEnabled(true);
+        newEmployee.setEnabled(Session.mayHire());
+        
         this.remove(this.loginForm);
 
         checkForm = new CheckClientForm();
@@ -138,7 +142,7 @@ public class GUI extends JFrame implements ActionListener {
         newMember.addActionListener(this);
         file.add(newMember);
 
-        JMenuItem newEmployee = new JMenuItem(NEWEMPLOYEE);
+        newEmployee = new JMenuItem(NEWEMPLOYEE);
         newEmployee.addActionListener(this);
         file.add(newEmployee);
 

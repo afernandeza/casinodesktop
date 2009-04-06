@@ -17,4 +17,4 @@ end;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
-ALTER FUNCTION reactivateaccount(character varying) OWNER TO postgres;
+ALTER FUNCTION reactivateaccount(character varying) OWNER TO casindesktopapp;

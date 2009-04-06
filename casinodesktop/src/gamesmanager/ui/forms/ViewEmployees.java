@@ -84,6 +84,7 @@ MouseListener{
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         tablepanel.add(scrollPane);
 
         c.gridy++;
@@ -173,6 +174,13 @@ MouseListener{
         public Object getValueAt(int row, int col) {
             if(row < this.data.length && col < this.data[row].length){
                 if(data[row][col] != null){
+                    if(data[row][col] instanceof Boolean ){
+                        if((Boolean)data[row][col]){
+                            return "SI";
+                        } else {
+                            return "NO";
+                        }
+                    }
                     return data[row][col];   
                 } else {
                     return NULLSTRING;
@@ -185,9 +193,9 @@ MouseListener{
             }
         }
 
-        public Class<?> getColumnClass(int c) {
-            return getValueAt(0, c).getClass();
-        }
+//        public Class<?> getColumnClass(int c) {
+//            return getValueAt(0, c).getClass();
+//        }
 
         public boolean isCellEditable(int row, int col) {
             return false;
@@ -200,11 +208,11 @@ MouseListener{
         public void setValueAt(Object value, int row, int col) {
             if(row < this.data.length && col < this.data[row].length){
                 if(value != null){
-//                    if (Helpers.DEBUG) {
-//                        System.out.println("Setting value at " + row + "," + col
-//                                + " to " + value + " (an instance of "
-//                                + value.getClass() + ")");
-//                    }
+                    //                    if (Helpers.DEBUG) {
+                    //                        System.out.println("Setting value at " + row + "," + col
+                    //                                + " to " + value + " (an instance of "
+                    //                                + value.getClass() + ")");
+                    //                    }
                     data[row][col] = value;
                     this.fireTableCellUpdated(row, col);
                 } else {
@@ -244,61 +252,99 @@ MouseListener{
                 if ((opt != null) && (opt.length() > 0)) {
                     if (opt.equals(OPTIONS[0])) {
                         // Desactivar cuenta del usuario
-                        System.out.println("desactivar cuenta: ");
                         if(Session.mayDeactivateAccount(employeeid)){
-                            System.out.println("si puede");
+                            if(EmployeeManager.deactivateAccount(employeeid)){
+                                this.successMessage("Cuenta de usuario desactivada.");
+                                this.refreshData(selindex);
+                            } else {
+                                this.criticalErrorMessage("No se pudo desactivar la" +
+                                " cuenta del usuario seleccionado.");
+                            }
+                        } else {
+                            permissionsError();
                         }
                     } else if (opt.equals(OPTIONS[1])) {
                         // Reactivar cuenta de usuario
-                        System.out.println("reactiva cuenta: ");
                         if(Session.mayActivateAccount()){
-                            System.out.println("si puede");
+                            if(EmployeeManager.reactivateAccount(employeeid)){
+                                this.successMessage("Cuenta de usuario reactivada.");
+                                this.refreshData(selindex);
+                            } else {
+                                this.criticalErrorMessage("No se pudo reactivar la" +
+                                " cuenta del usuario seleccionado.");
+                            }                        
+                        } else {
+                            permissionsError();
                         }
                     } else if (opt.equals(OPTIONS[2])) {
                         // Dar baja temporal
-                        System.out.println("fire temp: ");
                         if(Session.mayTemporarilyFire()){
-                            System.out.println("si puede");
+                            if(EmployeeManager.fireTemporarily(employeeid)){
+                                this.successMessage("Empleado dado de baja temporal.");
+                                this.refreshData(selindex);
+                            } else {
+                                this.criticalErrorMessage("No se pudo dar de " +
+                                "baja temporal al empleado seleccionado.");
+                            }      
+                        } else {
+                            permissionsError();
                         }
                     } else if (opt.equals(OPTIONS[3])) {
                         // Recontratar empleado
-                        System.out.println("re hire: ");
                         if(Session.mayHire()){
-                            System.out.println("si puede");
+                            if(EmployeeManager.rehire(employeeid)){
+                                this.successMessage("Empleado recontratado.");
+                                this.refreshData(selindex);
+                            } else {
+                                this.criticalErrorMessage("No se pudo recontratar " +
+                                "el empleado seleccionado.");
+                            }     
+                        } else {
+                            permissionsError();
                         }
                     } else if (opt.equals(OPTIONS[4])) {
                         // Dar baja definitiva
-                        System.out.println("delete forever: ");
                         if(Session.mayPermanentlyFire()){
-                            System.out.println("si puede");
+                        } else {
+                            permissionsError();
                         }
                     } else if (opt.equals(OPTIONS[5])) {
                         // Cambiar password
-                        System.out.println("change passwd: ");
                         if(Session.mayChangePasswordFor(employeeid)){
-                            System.out.println("si puede");
+                        } else {
+                            permissionsError();
                         }
                     } else if (opt.equals(OPTIONS[6])) {
                         // Actualizar information personal
-                        System.out.println("actualizar info: ");
                         if(Session.mayChangePersonalInfoFor(employeeid)){
-                            System.out.println("si puede");
                             Employee editemp = EmployeeManager.findEmployee(employeeid);
                             EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
                             eif.loadCurrentImage();
                             eif.setEmployeeViewer(this, selindex);
                             eif.setVisible(true);  
                         } else {
-                            JOptionPane.showMessageDialog(null,
-                                    "Usted no cuenta con los permisos suficientes " +
-                                    "para realizar la operaci"+Helpers.OACUTE+"n.",
-                                    "Error grave",
-                                    JOptionPane.ERROR_MESSAGE);
+                            permissionsError();
                         }
                     }
                 } 
             }
         }
+    }
+
+    public void permissionsError(){
+        String m = "Usted no cuenta con los permisos suficientes " +
+        "para realizar la operaci"+Helpers.OACUTE+"n deseada.";
+        criticalErrorMessage(m);
+    }
+
+    public void criticalErrorMessage(String msg){
+        JOptionPane.showMessageDialog(null, msg, "Error grave",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void successMessage(String msg){
+        JOptionPane.showMessageDialog(null, msg, "Informaci"+Helpers.OACUTE+"n",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override

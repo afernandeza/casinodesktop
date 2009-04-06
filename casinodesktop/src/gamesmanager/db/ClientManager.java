@@ -304,40 +304,6 @@ public class ClientManager {
     }
 
     public static boolean deleteClient(String clientid) {
-        if (clientid == null) {
-            if (Helpers.DEBUG) {
-                throw new NullPointerException("clientid nulo");
-            } else {
-                return false;
-            }
-        }
-        if (clientid.equals("")) {
-            if (Helpers.DEBUG) {
-                throw new IllegalArgumentException("clientid vacio");
-            } else {
-                return false;
-            }
-        }
-        Connection conn = DatabaseManager.connect();
-        CallableStatement cs = null;
-        if (conn == null) {
-            return false;
-        }
-        try {
-            cs = conn.prepareCall(DELETE);
-            cs.registerOutParameter(1, Types.BOOLEAN);
-            cs.setString(2, clientid);
-            cs.execute();
-            return cs.getBoolean(1);
-        } catch (SQLException e) {
-            if (Helpers.DEBUG) {
-                // e.printStackTrace();
-                System.out.println("Error deleting client: " + e.getMessage());
-            }
-        } finally {
-            DatabaseManager.close(cs);
-            DatabaseManager.close(conn);
-        }
-        return false;
+        return DatabaseOperations.runStoredProcedure(clientid, DELETE);
     }
 }

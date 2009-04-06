@@ -25,7 +25,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GUI extends JFrame implements ActionListener {
@@ -62,11 +61,11 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public void startSession() {
-        //session started
-        
+        // session started
+
         this.setMenuBarEnabled(true);
         newEmployee.setEnabled(Session.mayHire());
-        
+
         this.remove(this.loginForm);
 
         checkForm = new CheckClientForm();
@@ -79,8 +78,8 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public void stopSession() {
-        //session ended
-        
+        // session ended
+
         this.setMenuBarEnabled(false);
         if (this.checkForm != null) {
             this.remove(checkForm);
@@ -200,15 +199,16 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public static void main(String args[]) {
-        if(DatabaseManager.databaseAvailable()){
+        if (DatabaseManager.databaseAvailable()) {
             GUI g = new GUI();
             g.setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(null,
-                    "No se tiene acceso a la base de datos.\n" +
-                    "La aplicaci"+Helpers.OACUTE +"n se cerrar"+Helpers.AACUTE,
-                    "Error grave",
-                    JOptionPane.ERROR_MESSAGE);
+            GuiDialogs
+                    .showErrorMessage("No se tiene acceso a la base de datos.\n"
+                            + "La aplicaci"
+                            + Helpers.OACUTE
+                            + "n se cerrar"
+                            + Helpers.AACUTE);
         }
     }
 

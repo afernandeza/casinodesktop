@@ -42,8 +42,8 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
         JPanel p = new JPanel(new BorderLayout());
 
         listModel = new DefaultListModel();
-        
-        for(Type t: GameTypeManager.getGameTypes()){
+
+        for (Type t : GameTypeManager.getGameTypes()) {
             listModel.addElement(t.getType());
         }
         // listModel.addElement("Debbie Scott");
@@ -105,8 +105,8 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
             // so go ahead and remove whatever's selected.
             int index = list.getSelectedIndex();
 
-            String ename = (String)list.getSelectedValue();
-            if(GameTypeManager.deleteGameType(ename)){
+            String ename = (String) list.getSelectedValue();
+            if (GameTypeManager.deleteGameType(ename)) {
                 System.out.println("quitar tipo");
                 listModel.remove(index);
             }
@@ -139,7 +139,7 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
 
         // Required by ActionListener.
         public void actionPerformed(ActionEvent e) {
-            String name = employeeName.getText();
+            String name = employeeName.getText().trim();
 
             // User didn't type in a unique name...
             if (name.equals("") || alreadyInList(name)) {
@@ -157,9 +157,9 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
             }
 
             String ename = employeeName.getText();
-            if(GameTypeManager.insertGameType(ename)){
+            if (GameTypeManager.insertGameType(ename)) {
                 System.out.println("agregar tipo");
-                listModel.insertElementAt(ename, index);   
+                listModel.insertElementAt(ename, index);
             }
             // If we just wanted to add to the end, we'd do this:
             // listModel.addElement(employeeName.getText());

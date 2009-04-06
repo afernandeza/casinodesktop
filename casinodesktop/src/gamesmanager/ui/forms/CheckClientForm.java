@@ -3,6 +3,7 @@ package gamesmanager.ui.forms;
 import gamesmanager.beans.Client;
 import gamesmanager.db.ClientManager;
 import gamesmanager.db.SynchronizeMembers;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 
 import java.awt.GridBagConstraints;
@@ -11,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
@@ -72,9 +72,7 @@ public class CheckClientForm extends JPanel implements KeyListener {
             Client client = ClientManager.findClient(this.memberid.getText());
             if (client != null) {
                 // member found
-                String s = (String) JOptionPane.showInputDialog(null,
-                        INSTRUCTIONS, "Opciones", JOptionPane.QUESTION_MESSAGE,
-                        null, OPTIONS, OPTIONS[0]);
+                String s = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS, 0);
 
                 if ((s != null) && (s.length() > 0)) {
                     if (s.equals(OPTIONS[0])) {
@@ -88,35 +86,28 @@ public class CheckClientForm extends JPanel implements KeyListener {
                         cm.setVisible(true);
                     } else if (s.equals(OPTIONS[2])) {
                         // Dar de baja
-                        int n = JOptionPane.showConfirmDialog(null,
-                                DELETE_CONFIRMATION + client.getFullName()
-                                + Helpers.CQUESTIONM, "Confirmar",
-                                JOptionPane.YES_NO_OPTION);
+                        int n = GuiDialogs
+                        .showConfirmDialog(DELETE_CONFIRMATION
+                                + client.getFullName()
+                                + Helpers.CQUESTIONM);
                         if (n == 0) {
                             // confirmar
                             if (ClientManager.deleteClient(client.getId())) {
-                                JOptionPane.showMessageDialog(null, client
+                                GuiDialogs.showSuccessMessage(client
                                         .getFullName()
-                                        + " borrado.", "Informaci"
-                                        + Helpers.OACUTE + "n",
-                                        JOptionPane.INFORMATION_MESSAGE);
+                                        + " borrado.");
                             } else {
-                                //cancelar
-                                JOptionPane.showMessageDialog(null, client
+                                // cancelar
+                                GuiDialogs.showSuccessMessage(client
                                         .getFullName()
-                                        + " no ha sido borrado.", "Informaci"
-                                        + Helpers.OACUTE + "n",
-                                        JOptionPane.ERROR_MESSAGE);
+                                        + "no ha sido borrado.");
                             }
                         }
                     }
                     return;
                 }
             } else {
-                JOptionPane.showMessageDialog(null,
-                        "El miembro buscado no existe.", "Informaci"
-                        + Helpers.OACUTE + "n",
-                        JOptionPane.ERROR_MESSAGE);
+                GuiDialogs.showErrorMessage("El miembro buscado no existe.");
             }
         }
     }

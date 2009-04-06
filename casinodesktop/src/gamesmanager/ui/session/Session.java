@@ -4,20 +4,20 @@ import gamesmanager.beans.Type;
 import gamesmanager.beans.User;
 
 public class Session {
-    
+
     private static Session session;
-    
+
     private final String empid;
     private final User u;
     private final Type et;
-    
-    public Session(String empid, User u, Type et){
+
+    public Session(String empid, User u, Type et) {
         this.empid = empid;
         this.u = u;
         this.et = et;
     }
-    
-    public boolean belongsTo(String empid){
+
+    public boolean belongsTo(String empid) {
         return this.empid.equals(empid);
     }
 
@@ -28,79 +28,77 @@ public class Session {
     public Type getEt() {
         return et;
     }
-    
-    public static void setCurrentSession(Session s){
+
+    public static void setCurrentSession(Session s) {
         Session.session = s;
     }
 
-    public String toString(){
+    public String toString() {
         final String TAB = ", ";
-        
+
         StringBuffer retValue = new StringBuffer();
-        
-        retValue.append("Session ( ")
-            .append(super.toString()).append(TAB)
-            .append("empid = ").append(this.empid).append(TAB)
-            .append("u = ").append(this.u).append(TAB)
-            .append("et = ").append(this.et).append(TAB)
-            .append(" )");
-        
+
+        retValue.append("Session ( ").append(super.toString()).append(TAB)
+                .append("empid = ").append(this.empid).append(TAB).append(
+                        "u = ").append(this.u).append(TAB).append("et = ")
+                .append(this.et).append(TAB).append(" )");
+
         return retValue.toString();
     }
-    
-    public static boolean mayDeactivateAccount(String empid){
+
+    public static boolean mayDeactivateAccount(String empid) {
         // administradores, gerentes y duenio
-        if(session.et.getTypeid() <= 2 || session.empid.equals(empid)){
+        if (session.et.getTypeid() <= 2 || session.empid.equals(empid)) {
             return true;
         } else {
             return false;
         }
     }
-    
-    public static boolean mayActivateAccount(){
+
+    public static boolean mayActivateAccount() {
         // administradores, gerentes
-        if(session.et.getTypeid() <= 2){
+        if (session.et.getTypeid() <= 2) {
             return true;
         } else {
             return false;
         }
     }
-    
-    public static boolean mayTemporarilyFire(){
+
+    public static boolean mayTemporarilyFire() {
         // administradores y gerentes
-        if(session.et.getTypeid() <= 2){
+        if (session.et.getTypeid() <= 2) {
             return true;
         } else {
             return false;
         }
     }
-    
-    public static boolean mayPermanentlyFire(){
+
+    public static boolean mayPermanentlyFire() {
         // Solo administradores
         return session.et.getTypeid() == 1;
     }
-    
-    public static boolean mayChangePasswordFor(String empid){
+
+    public static boolean mayChangePasswordFor(String empid) {
         // administradores, gerentes y el duenio
-        if(session.et.getTypeid() <= 2 || session.empid.equals(empid)){
+        if (session.et.getTypeid() <= 2 || session.empid.equals(empid)) {
             return true;
         } else {
             return false;
         }
     }
-    
-    public static boolean mayChangePersonalInfoFor(String empid){
+
+    public static boolean mayChangePersonalInfoFor(String empid) {
         // administradores, gerentes y el duenio
-        if(session.et.getTypeid() <= 2 || session.empid.equals(empid)){
+        if (session.et.getTypeid() <= 2 || session.empid.equals(empid)) {
             return true;
         } else {
             return false;
         }
     }
-    
-    public static boolean mayHire(){
+
+    public static boolean mayHire() {
         // administradores y gerentes
-        if(session.et.getTypeid() <= 2){
+        if (session.et.getTypeid() <= 2) {
             return true;
         } else {
             return false;

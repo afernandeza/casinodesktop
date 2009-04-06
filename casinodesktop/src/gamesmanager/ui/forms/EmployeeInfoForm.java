@@ -6,6 +6,7 @@ import gamesmanager.beans.Type;
 import gamesmanager.beans.User;
 import gamesmanager.db.DatabaseOperations;
 import gamesmanager.db.EmployeeManager;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
 import gamesmanager.ui.ImagePanel;
@@ -25,7 +26,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -149,7 +149,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 "<html><b>N" + Helpers.UACUTE + "mero interior:</b></html>",
                 "<html><b>Colonia:</b></html>",
                 "<html><b>Municipio o delegaci" + Helpers.OACUTE
-                        + "n:</b></html>",
+                + "n:</b></html>",
                 "<html><b>C" + Helpers.OACUTE + "digo postal:</b></html>",
                 "<html><b>Estado:</b></html>",
                 "<html><b>Pa" + Helpers.IACUTE + "s:</b></html>",
@@ -184,7 +184,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         fecha = new JDateChooser();
         fecha.setLocale(Locale.getDefault());
         JTextFieldDateEditor editor = (JTextFieldDateEditor) fecha
-                .getDateEditor();
+        .getDateEditor();
         editor.setEditable(false);
         editor.setFocusable(false);
         fecha.setDateFormatString("yyyy-MM-dd");
@@ -289,7 +289,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             c.gridheight = 1;
             c.gridwidth = 2;
             this.add(p, c);
-            
+
             this.nombre.setText(this.e.getNombres());
             this.appat.setText(this.e.getAppaterno());
             this.apmat.setText(this.e.getApmaterno());
@@ -306,10 +306,10 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             this.cp.setText(d.getCodigopostal());
             this.estado.setSelectedItem(d.getEstado());
             this.pais.setSelectedItem(d.getPais());
-            
+
             User u = this.e.getUser();
             this.username.setText(u.getUsername());
-            
+
             Type et = this.e.getEmployeetype();
             this.types.setSelectedItem(et);
         }
@@ -320,8 +320,8 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 + Helpers.YOFFSET);
         this.setLocationRelativeTo(null);
     }
-    
-    public void setEmployeeViewer(ViewEmployees ve, int selindex){
+
+    public void setEmployeeViewer(ViewEmployees ve, int selindex) {
         this.employeeviewer = ve;
         this.selindex = selindex;
     }
@@ -333,11 +333,11 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             throw new NullPointerException("Imagen nula");
         }
     }
-    
+
     private boolean validateForm() {
         return true;
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
@@ -347,7 +347,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 File file = fc.getSelectedFile();
                 this.image.loadImage(file.getAbsolutePath());
             } else {
-//                System.out.println("Open command cancelled by user.");
+                // System.out.println("Open command cancelled by user.");
             }
         } else if (o == newemployee) {
             if (this.validateForm()) {
@@ -370,27 +370,21 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 d.setEstado(estado.getSelectedItem().toString());
                 d.setPais(pais.getSelectedItem());
                 this.e.setAddress(d);
-                
+
                 User u = new User(this.username.getText().trim());
                 u.setPassword(this.password.getPassword());
                 this.e.setUser(u);
-                
-                Type et = (Type)this.types.getSelectedItem();
+
+                Type et = (Type) this.types.getSelectedItem();
                 this.e.setEmployeetype(et);
-                
+
                 boolean inserted = EmployeeManager.insertEmployee(this.e);
                 if (inserted) {
-                    JOptionPane.showMessageDialog(null,
-                            "Nuevo empleado insertado.", "Informaci"
-                                    + Helpers.OACUTE + "n",
-                            JOptionPane.INFORMATION_MESSAGE);
+                    GuiDialogs.showSuccessMessage("Nuevo empleado insertado.");
                     this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "El nuevo empleado no ha sido insertado.\n" +
-                            "Vuelva a intentar.",
-                            "Informaci" + Helpers.OACUTE + "n",
-                            JOptionPane.ERROR_MESSAGE);
+                    GuiDialogs
+                    .showErrorMessage("El nuevo empleado no ha sido insertado.");
                 }
             }
         } else if (o == cancel) {
@@ -414,29 +408,24 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 d.setCodigopostal(cp.getText().trim());
                 d.setEstado(estado.getSelectedItem().toString());
                 d.setPais(pais.getSelectedItem());
-                
+
                 User u = this.e.getUser();
                 u.setUsername(this.username.getText().trim());
-                
-                Type et = (Type)this.types.getSelectedItem();
+
+                Type et = (Type) this.types.getSelectedItem();
                 this.e.setEmployeetype(et);
-                
+
                 boolean updated = EmployeeManager.updateEmployee(this.e);
                 if (updated) {
-                    if(employeeviewer != null){
+                    if (employeeviewer != null) {
                         this.employeeviewer.refreshData(this.selindex);
                     }
-                    JOptionPane.showMessageDialog(null,
-                            "Cambios guardados exitosamente.", "Informaci"
-                                    + Helpers.OACUTE + "n",
-                            JOptionPane.INFORMATION_MESSAGE);
+                    GuiDialogs
+                    .showSuccessMessage("Cambios guardados exitosamente.");
                     this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "Los cambios no han sido guardados.\n" +
-                            "Vuelva a intentar.",
-                            "Informaci" + Helpers.OACUTE + "n",
-                            JOptionPane.ERROR_MESSAGE);
+                    GuiDialogs
+                    .showErrorMessage("Los cambios no han sido guardados.");
                 }
             }
         }

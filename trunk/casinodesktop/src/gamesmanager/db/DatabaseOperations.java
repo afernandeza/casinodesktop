@@ -26,6 +26,44 @@ public class DatabaseOperations {
     private final static String SESSIONINFO = "SELECT empleadoid, usuario, externo, " +
     		"tipoempleadoid, tipo FROM employeesdata WHERE usuario = ?";
     
+    public static boolean runStoredProcedure(String id, String query){
+        if (id == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("id nulo");
+            } else {
+                return false;
+            }
+        }
+        if (id.equals("")) {
+            if (Helpers.DEBUG) {
+                throw new IllegalArgumentException("id vacio");
+            } else {
+                return false;
+            }
+        }
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return false;
+        }
+        try {
+            cs = conn.prepareCall(query);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+            cs.setString(2, id);
+            cs.execute();
+            return cs.getBoolean(1);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error running procedure: " + e.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return false;
+    }
+    
     public static Session getSessionInfo(String usuario){
         Connection conn = DatabaseManager.connect();
         if (conn == null) {

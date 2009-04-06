@@ -25,6 +25,12 @@ public class EmployeeManager {
         + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String DELETE = "{? = call deleteemployee(?)}";
     private static String FIND = "SELECT * FROM findemployee(?)";
+    
+    private static String DEACTIVATEACCOUNT = "{? = call deactivateaccount(?)}";
+    private static String REACTIVATEACCOUNT = "{? = call reactivateaccount(?)}";
+    private static String FIRETEMPORARILY = "{? = call firetemporarily(?)}";
+    private static String REHIRE = "{? = call rehire(?)}";
+    
     private static String GETEMPLOYEETYPES = "SELECT * FROM tipoempleados "
         + "ORDER BY tipo";
     public static String GETEMPSUMMARY = "SELECT * FROM employeessummary ORDER BY nombre";
@@ -32,6 +38,22 @@ public class EmployeeManager {
     public static String SEARCH = "SELECT * FROM employeessummary ORDER BY nombre";
     public static String[] EMPLOYEECOLUMNS = {"ID", "Tipo", "Nombre", "Usuario", 
         "Us. activo", "Fecha alta", "Tel. Casa", "Tel. Celular", "Despedido",};
+    
+    public static boolean deactivateAccount(String eid){
+        return DatabaseOperations.runStoredProcedure(eid, DEACTIVATEACCOUNT);
+    }
+    
+    public static boolean reactivateAccount(String eid){
+        return DatabaseOperations.runStoredProcedure(eid, REACTIVATEACCOUNT);
+    }
+    
+    public static boolean fireTemporarily(String eid){
+        return DatabaseOperations.runStoredProcedure(eid, FIRETEMPORARILY);
+    }
+    
+    public static boolean rehire(String eid){
+        return DatabaseOperations.runStoredProcedure(eid, REHIRE);
+    }
     
     public static Object[][] getEmployeesSummary(){
         Connection conn = DatabaseManager.connect();

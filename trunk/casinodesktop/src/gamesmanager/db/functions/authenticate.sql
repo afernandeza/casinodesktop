@@ -20,4 +20,4 @@ end;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
-ALTER FUNCTION authenticate(character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION authenticate(character varying, character varying) OWNER TO casindesktopapp;

@@ -132,11 +132,12 @@ KeyListener, MouseListener {
     }
 
     public void search() {
-        this.emps = EmployeeManager.searchEmployees(this.buscar.getText().trim());
+        this.emps = EmployeeManager.searchEmployees(this.buscar.getText()
+                .trim());
         this.etm.setData(this.emps);
     }
 
-    public void refreshData(int selindex) {
+    public void refreshData() {
         this.emps = EmployeeManager.getEmployeesSummary();
         this.etm.setData(this.emps);
     }
@@ -202,8 +203,8 @@ KeyListener, MouseListener {
         public void initializeArray(int rows, int cols) {
             this.data = new Object[rows][cols];
         }
-        
-        public void setData(Object[][] o ){
+
+        public void setData(Object[][] o) {
             this.data = o;
             this.fireTableDataChanged();
         }
@@ -211,11 +212,6 @@ KeyListener, MouseListener {
         public void setValueAt(Object value, int row, int col) {
             if (row < this.data.length && col < this.data[row].length) {
                 if (value != null) {
-                    // if (Helpers.DEBUG) {
-                    // System.out.println("Setting value at " + row + "," + col
-                    // + " to " + value + " (an instance of "
-                    // + value.getClass() + ")");
-                    // }
                     data[row][col] = value;
                     this.fireTableDataChanged();
                 } else {
@@ -259,7 +255,7 @@ KeyListener, MouseListener {
                             if (EmployeeManager.deactivateAccount(employeeid)) {
                                 GuiDialogs
                                 .showSuccessMessage("Cuenta de usuario desactivada.");
-                                this.refreshData(selindex);
+                                this.search();
                             } else {
                                 GuiDialogs
                                 .showErrorMessage("No se pudo desactivar la"
@@ -274,7 +270,7 @@ KeyListener, MouseListener {
                             if (EmployeeManager.reactivateAccount(employeeid)) {
                                 GuiDialogs
                                 .showSuccessMessage("Cuenta de usuario reactivada.");
-                                this.refreshData(selindex);
+                                this.search();
                             } else {
                                 GuiDialogs
                                 .showErrorMessage("No se pudo reactivar la"
@@ -289,7 +285,7 @@ KeyListener, MouseListener {
                             if (EmployeeManager.fireTemporarily(employeeid)) {
                                 GuiDialogs
                                 .showSuccessMessage("Empleado dado de baja temporal.");
-                                this.refreshData(selindex);
+                                this.search();
                             } else {
                                 GuiDialogs
                                 .showErrorMessage("No se pudo dar de "
@@ -304,7 +300,7 @@ KeyListener, MouseListener {
                             if (EmployeeManager.rehire(employeeid)) {
                                 GuiDialogs
                                 .showSuccessMessage("Empleado recontratado.");
-                                this.refreshData(selindex);
+                                this.search();
                             } else {
                                 GuiDialogs
                                 .showErrorMessage("No se pudo recontratar "

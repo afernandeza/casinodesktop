@@ -418,7 +418,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 boolean updated = EmployeeManager.updateEmployee(this.e);
                 if (updated) {
                     if (employeeviewer != null) {
-                        this.employeeviewer.refreshData(this.selindex);
+                        employeeviewer.search();
                     }
                     GuiDialogs
                     .showSuccessMessage("Cambios guardados exitosamente.");

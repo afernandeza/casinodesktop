@@ -27,7 +27,7 @@ public class HelpWindow extends JFrame implements HyperlinkListener {
             try {
                 editorPane.setPage(url);
             } catch (IOException ioe) {
-                if(Helpers.DEBUG){
+                if (Helpers.DEBUG) {
                     System.err.println("Bad URL: " + url);
                     ioe.printStackTrace();
                 }
@@ -59,7 +59,7 @@ public class HelpWindow extends JFrame implements HyperlinkListener {
                 try {
                     pane.setPage(e.getURL());
                 } catch (Throwable t) {
-                    if(Helpers.DEBUG){
+                    if (Helpers.DEBUG) {
                         t.printStackTrace();
                     }
                 }

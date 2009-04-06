@@ -42,14 +42,14 @@ public class ImagePanel extends JPanel {
     public ImagePanel() {
         super();
     }
-    
-    public void loadImage(ImageIcon ii){
+
+    public void loadImage(ImageIcon ii) {
         loadImage(ii.getImage());
     }
 
-    public void loadImage(File f){
-        if(f == null){
-            if(Helpers.DEBUG){
+    public void loadImage(File f) {
+        if (f == null) {
+            if (Helpers.DEBUG) {
                 throw new NullPointerException("archivo nulo");
             }
             return;
@@ -64,7 +64,7 @@ public class ImagePanel extends JPanel {
         }
         this.loadImage(image);
     }
-    
+
     private void loadImage(Image image) {
         this.image = image;
         imageWidth = image.getWidth(this);

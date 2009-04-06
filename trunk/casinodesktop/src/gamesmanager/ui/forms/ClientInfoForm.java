@@ -4,6 +4,7 @@ import gamesmanager.beans.Address;
 import gamesmanager.beans.Client;
 import gamesmanager.db.ClientManager;
 import gamesmanager.db.DatabaseOperations;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
 import gamesmanager.ui.ImagePanel;
@@ -25,7 +26,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -35,7 +35,7 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 public class ClientInfoForm extends JFrame implements ActionListener,
-        MouseListener {
+MouseListener {
 
     private static final long serialVersionUID = 1L;
     private static final int FIELDSIZE = 15;
@@ -77,7 +77,7 @@ public class ClientInfoForm extends JFrame implements ActionListener,
                 "<html><b>Fotograf" + Helpers.IACUTE + "a:</b></html>",
                 "<html><b>Apellido paterno:</b></html>",
                 "<html><b>Apellido materno:</b></html>",
-                "<html><b>Nombre(s):</b></html>" };
+        "<html><b>Nombre(s):</b></html>" };
 
         int numPairs = labels.length;
 
@@ -135,7 +135,7 @@ public class ClientInfoForm extends JFrame implements ActionListener,
                 "<html><b>N" + Helpers.UACUTE + "mero interior:</b></html>",
                 "<html><b>Colonia:</b></html>",
                 "<html><b>Municipio o delegaci" + Helpers.OACUTE
-                        + "n:</b></html>",
+                + "n:</b></html>",
                 "<html><b>C" + Helpers.OACUTE + "digo postal:</b></html>",
                 "<html><b>Estado:</b></html>",
                 "<html><b>Pa" + Helpers.IACUTE + "s:</b></html>",
@@ -168,7 +168,7 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         fecha = new JDateChooser();
         fecha.setLocale(Locale.getDefault());
         JTextFieldDateEditor editor = (JTextFieldDateEditor) fecha
-                .getDateEditor();
+        .getDateEditor();
         editor.setEditable(false);
         editor.setFocusable(false);
         fecha.setDateFormatString("yyyy-MM-dd");
@@ -324,7 +324,6 @@ public class ClientInfoForm extends JFrame implements ActionListener,
             };
             worker.execute();
         } else if (o == newmember) {
-            System.out.println("agregando");
             if (this.validateForm()) {
                 Client c = new Client();
                 c.setCredito("0");
@@ -349,16 +348,11 @@ public class ClientInfoForm extends JFrame implements ActionListener,
                 c.setAddress(d);
                 boolean inserted = ClientManager.insertClient(c);
                 if (inserted) {
-                    JOptionPane.showMessageDialog(null,
-                            "Nuevo miembro insertado.", "Informaci"
-                                    + Helpers.OACUTE + "n",
-                            JOptionPane.INFORMATION_MESSAGE);
+                    GuiDialogs.showSuccessMessage("Nuevo miembro insertado.");
                     this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "El nuevo miembro no ha sido insertado.",
-                            "Informaci" + Helpers.OACUTE + "n",
-                            JOptionPane.ERROR_MESSAGE);
+                    GuiDialogs
+                    .showErrorMessage("El nuevo miembro no ha sido insertado.");
                 }
             }
         } else if (o == cancel) {
@@ -384,20 +378,13 @@ public class ClientInfoForm extends JFrame implements ActionListener,
                 d.setPais(pais.getSelectedItem());
 
                 boolean updated = ClientManager.updateClient(this.client);
-                System.out.println("updated: " + updated);
                 if (updated) {
-                    JOptionPane.showMessageDialog(null,
-                            "Cambios guardados exitosamente.", "Informaci"
-                                    + Helpers.OACUTE + "n",
-                            JOptionPane.INFORMATION_MESSAGE);
+                    GuiDialogs
+                    .showSuccessMessage("Cambios guardados exitosamente.");
                     this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "Los cambios no han sido guardados.\n" +
-                            "Vuelva a intentar.",
-                            "Informaci"
-                                    + Helpers.OACUTE + "n",
-                            JOptionPane.ERROR_MESSAGE);
+                    GuiDialogs
+                    .showErrorMessage("Los cambios no han sido guardados.");
                 }
             }
         }
@@ -408,10 +395,9 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         String sc = (String) pais.getSelectedItem();
         if (sc.equals("Mexico")) {
             Object[] possibilities = DatabaseOperations.getStates().toArray();
-            String s = (String) JOptionPane.showInputDialog(null,
+            String s = GuiDialogs.showInputDialog(
                     "Seleccione el estado de la Rep" + Helpers.UACUTE
-                            + "blica:\n", "", JOptionPane.QUESTION_MESSAGE,
-                    null, possibilities, "Distrito Federal");
+                    + "blica:\n", possibilities, "Distrito Federal");
 
             if ((s != null) && (s.length() > 0)) {
                 estado.setText(s);

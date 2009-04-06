@@ -2,6 +2,7 @@ package gamesmanager.ui.forms;
 
 import gamesmanager.beans.Employee;
 import gamesmanager.db.EmployeeManager;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.session.Session;
 
@@ -27,8 +28,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-public class ViewEmployees extends JFrame implements ActionListener, KeyListener,
-MouseListener{
+public class ViewEmployees extends JFrame implements ActionListener,
+KeyListener, MouseListener {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,13 +41,13 @@ MouseListener{
     private EmployeeTableModel etm;
     private Object[][] emps = null;
 
-    public String[] OPTIONS = {"Desactivar cuenta de usuario",
-            "Reactivar cuenta de usuario", "Dar baja temporal", 
+    public String[] OPTIONS = { "Desactivar cuenta de usuario",
+            "Reactivar cuenta de usuario", "Dar baja temporal",
             "Recontratar empleado", "Dar baja definitiva",
-            "Cambiar contrase"+Helpers.NTILDE+"a",
-            "Actualizar informaci" + Helpers.OACUTE + "n personal"};
-    public String INSTRUCTIONS = "Seleccione qu"+ Helpers.EACUTE + 
-    " desea hacer con el empleado:";
+            "Cambiar contrase" + Helpers.NTILDE + "a",
+            "Actualizar informaci" + Helpers.OACUTE + "n personal" };
+    public String INSTRUCTIONS = "Seleccione qu" + Helpers.EACUTE
+    + " desea hacer con el empleado:";
     private String NULLSTRING = "N/A";
 
     public ViewEmployees() {
@@ -66,7 +67,7 @@ MouseListener{
         this.add(buscarp);
 
         JPanel tablepanel = new JPanel();
-        tablepanel.setLayout(new GridLayout(1,0));
+        tablepanel.setLayout(new GridLayout(1, 0));
 
         String[] columns = EmployeeManager.EMPLOYEECOLUMNS;
         emps = EmployeeManager.getEmployeesSummary();
@@ -79,12 +80,16 @@ MouseListener{
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
 
-        table.setPreferredScrollableViewportSize(new Dimension(TWIDTH, THEIGHT));
+        table
+        .setPreferredScrollableViewportSize(new Dimension(TWIDTH,
+                THEIGHT));
         table.setFillsViewportHeight(true);
 
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane
+        .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane
+        .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         tablepanel.add(scrollPane);
 
         c.gridy++;
@@ -97,48 +102,48 @@ MouseListener{
         this.setLocationRelativeTo(null);
     }
 
-    private void setColumnWidths(){
+    private void setColumnWidths() {
         TableColumn column = null;
         column = this.table.getColumnModel().getColumn(0);
-        column.setPreferredWidth(10);   
+        column.setPreferredWidth(10);
 
         column = this.table.getColumnModel().getColumn(1);
-        column.setPreferredWidth(10);   
+        column.setPreferredWidth(10);
 
         column = this.table.getColumnModel().getColumn(2);
-        column.setPreferredWidth(120);   
+        column.setPreferredWidth(120);
 
         column = this.table.getColumnModel().getColumn(3);
-        column.setPreferredWidth(10);   
+        column.setPreferredWidth(10);
 
         column = this.table.getColumnModel().getColumn(4);
-        column.setPreferredWidth(10);   
+        column.setPreferredWidth(10);
 
         column = this.table.getColumnModel().getColumn(5);
-        column.setPreferredWidth(45);   
+        column.setPreferredWidth(45);
 
         column = this.table.getColumnModel().getColumn(6);
-        column.setPreferredWidth(40);   
+        column.setPreferredWidth(40);
 
         column = this.table.getColumnModel().getColumn(7);
-        column.setPreferredWidth(60);   
+        column.setPreferredWidth(60);
 
         column = this.table.getColumnModel().getColumn(8);
-        column.setPreferredWidth(10);   
+        column.setPreferredWidth(10);
     }
 
-    public void search(){
+    public void search() {
         this.emps = EmployeeManager.getEmployeesSummary();
-        for(int i = 0; i < emps.length; i++){
-            for(int j = 0; j < emps[0].length; j++){
+        for (int i = 0; i < emps.length; i++) {
+            for (int j = 0; j < emps[0].length; j++) {
                 this.etm.setValueAt(emps[i][j], i, j);
             }
         }
     }
 
-    public void refreshData(int selindex){
+    public void refreshData(int selindex) {
         this.emps = EmployeeManager.getEmployeesSummary();
-        for(int j = 0; j < emps[0].length; j++){
+        for (int j = 0; j < emps[0].length; j++) {
             this.etm.setValueAt(emps[selindex][j], selindex, j);
         }
     }
@@ -172,47 +177,47 @@ MouseListener{
         }
 
         public Object getValueAt(int row, int col) {
-            if(row < this.data.length && col < this.data[row].length){
-                if(data[row][col] != null){
-                    if(data[row][col] instanceof Boolean ){
-                        if((Boolean)data[row][col]){
+            if (row < this.data.length && col < this.data[row].length) {
+                if (data[row][col] != null) {
+                    if (data[row][col] instanceof Boolean) {
+                        if ((Boolean) data[row][col]) {
                             return "SI";
                         } else {
                             return "NO";
                         }
                     }
-                    return data[row][col];   
+                    return data[row][col];
                 } else {
                     return NULLSTRING;
                 }
             } else {
-                if(Helpers.DEBUG){
+                if (Helpers.DEBUG) {
                     System.out.println("nothing there");
                 }
                 return "";
             }
         }
 
-//        public Class<?> getColumnClass(int c) {
-//            return getValueAt(0, c).getClass();
-//        }
+        // public Class<?> getColumnClass(int c) {
+        // return getValueAt(0, c).getClass();
+        // }
 
         public boolean isCellEditable(int row, int col) {
             return false;
         }
 
-        public void initializeArray(int rows, int cols){
+        public void initializeArray(int rows, int cols) {
             this.data = new Object[rows][cols];
         }
 
         public void setValueAt(Object value, int row, int col) {
-            if(row < this.data.length && col < this.data[row].length){
-                if(value != null){
-                    //                    if (Helpers.DEBUG) {
-                    //                        System.out.println("Setting value at " + row + "," + col
-                    //                                + " to " + value + " (an instance of "
-                    //                                + value.getClass() + ")");
-                    //                    }
+            if (row < this.data.length && col < this.data[row].length) {
+                if (value != null) {
+                    // if (Helpers.DEBUG) {
+                    // System.out.println("Setting value at " + row + "," + col
+                    // + " to " + value + " (an instance of "
+                    // + value.getClass() + ")");
+                    // }
                     data[row][col] = value;
                     this.fireTableCellUpdated(row, col);
                 } else {
@@ -231,7 +236,7 @@ MouseListener{
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             this.search();
-        }        
+        }
     }
 
     @Override
@@ -240,111 +245,103 @@ MouseListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getClickCount() == 2){
+        if (e.getClickCount() == 2) {
             int selindex = table.getSelectedRow();
-            if(selindex != -1){
-                String opt = (String) JOptionPane.showInputDialog(null,
-                        INSTRUCTIONS, "Opciones", JOptionPane.QUESTION_MESSAGE,
-                        null, OPTIONS, OPTIONS[6]);
+            if (selindex != -1) {
+                String opt = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS,
+                        6);
 
                 String employeeid = emps[selindex][0].toString();
 
                 if ((opt != null) && (opt.length() > 0)) {
                     if (opt.equals(OPTIONS[0])) {
                         // Desactivar cuenta del usuario
-                        if(Session.mayDeactivateAccount(employeeid)){
-                            if(EmployeeManager.deactivateAccount(employeeid)){
-                                this.successMessage("Cuenta de usuario desactivada.");
+                        if (Session.mayDeactivateAccount(employeeid)) {
+                            if (EmployeeManager.deactivateAccount(employeeid)) {
+                                GuiDialogs
+                                .showSuccessMessage("Cuenta de usuario desactivada.");
                                 this.refreshData(selindex);
                             } else {
-                                this.criticalErrorMessage("No se pudo desactivar la" +
-                                " cuenta del usuario seleccionado.");
+                                GuiDialogs
+                                .showErrorMessage("No se pudo desactivar la"
+                                        + " cuenta del usuario seleccionado.");
                             }
                         } else {
-                            permissionsError();
+                            GuiDialogs.showPermissionsError();
                         }
                     } else if (opt.equals(OPTIONS[1])) {
                         // Reactivar cuenta de usuario
-                        if(Session.mayActivateAccount()){
-                            if(EmployeeManager.reactivateAccount(employeeid)){
-                                this.successMessage("Cuenta de usuario reactivada.");
+                        if (Session.mayActivateAccount()) {
+                            if (EmployeeManager.reactivateAccount(employeeid)) {
+                                GuiDialogs
+                                .showSuccessMessage("Cuenta de usuario reactivada.");
                                 this.refreshData(selindex);
                             } else {
-                                this.criticalErrorMessage("No se pudo reactivar la" +
-                                " cuenta del usuario seleccionado.");
-                            }                        
+                                GuiDialogs
+                                .showErrorMessage("No se pudo reactivar la"
+                                        + " cuenta del usuario seleccionado.");
+                            }
                         } else {
-                            permissionsError();
+                            GuiDialogs.showPermissionsError();
                         }
                     } else if (opt.equals(OPTIONS[2])) {
                         // Dar baja temporal
-                        if(Session.mayTemporarilyFire()){
-                            if(EmployeeManager.fireTemporarily(employeeid)){
-                                this.successMessage("Empleado dado de baja temporal.");
+                        if (Session.mayTemporarilyFire()) {
+                            if (EmployeeManager.fireTemporarily(employeeid)) {
+                                GuiDialogs
+                                .showSuccessMessage("Empleado dado de baja temporal.");
                                 this.refreshData(selindex);
                             } else {
-                                this.criticalErrorMessage("No se pudo dar de " +
-                                "baja temporal al empleado seleccionado.");
-                            }      
+                                GuiDialogs
+                                .showErrorMessage("No se pudo dar de "
+                                        + "baja temporal al empleado seleccionado.");
+                            }
                         } else {
-                            permissionsError();
+                            GuiDialogs.showPermissionsError();
                         }
                     } else if (opt.equals(OPTIONS[3])) {
                         // Recontratar empleado
-                        if(Session.mayHire()){
-                            if(EmployeeManager.rehire(employeeid)){
-                                this.successMessage("Empleado recontratado.");
+                        if (Session.mayHire()) {
+                            if (EmployeeManager.rehire(employeeid)) {
+                                GuiDialogs
+                                .showSuccessMessage("Empleado recontratado.");
                                 this.refreshData(selindex);
                             } else {
-                                this.criticalErrorMessage("No se pudo recontratar " +
-                                "el empleado seleccionado.");
-                            }     
+                                GuiDialogs
+                                .showErrorMessage("No se pudo recontratar "
+                                        + "el empleado seleccionado.");
+                            }
                         } else {
-                            permissionsError();
+                            GuiDialogs.showPermissionsError();
                         }
                     } else if (opt.equals(OPTIONS[4])) {
                         // Dar baja definitiva
-                        if(Session.mayPermanentlyFire()){
+                        if (Session.mayPermanentlyFire()) {
                         } else {
-                            permissionsError();
+                            GuiDialogs.showPermissionsError();
                         }
                     } else if (opt.equals(OPTIONS[5])) {
                         // Cambiar password
-                        if(Session.mayChangePasswordFor(employeeid)){
+                        if (Session.mayChangePasswordFor(employeeid)) {
                         } else {
-                            permissionsError();
+                            GuiDialogs.showPermissionsError();
                         }
                     } else if (opt.equals(OPTIONS[6])) {
                         // Actualizar information personal
-                        if(Session.mayChangePersonalInfoFor(employeeid)){
-                            Employee editemp = EmployeeManager.findEmployee(employeeid);
+                        if (Session.mayChangePersonalInfoFor(employeeid)) {
+                            Employee editemp = EmployeeManager
+                            .findEmployee(employeeid);
                             EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
                             eif.loadCurrentImage();
                             eif.setEmployeeViewer(this, selindex);
-                            eif.setVisible(true);  
+                            eif.setVisible(true);
                         } else {
-                            permissionsError();
+                            GuiDialogs.showPermissionsError();
                         }
                     }
-                } 
+                }
             }
         }
-    }
-
-    public void permissionsError(){
-        String m = "Usted no cuenta con los permisos suficientes " +
-        "para realizar la operaci"+Helpers.OACUTE+"n deseada.";
-        criticalErrorMessage(m);
-    }
-
-    public void criticalErrorMessage(String msg){
-        JOptionPane.showMessageDialog(null, msg, "Error grave",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
-    public void successMessage(String msg){
-        JOptionPane.showMessageDialog(null, msg, "Informaci"+Helpers.OACUTE+"n",
-                JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override

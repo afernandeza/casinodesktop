@@ -2,6 +2,7 @@ package gamesmanager.ui.forms;
 
 import gamesmanager.beans.Client;
 import gamesmanager.db.ClientManager;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 
 import java.awt.GridBagConstraints;
@@ -13,7 +14,6 @@ import java.math.BigDecimal;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class ChipManager extends JFrame implements ActionListener {
@@ -93,12 +93,11 @@ public class ChipManager extends JFrame implements ActionListener {
         if (this.validateForm()) {
             Object o = e.getSource();
             if (sumar.equals(o) || restar.equals(o)) {
-                int n = JOptionPane.showConfirmDialog(null, EDIT_CONFIRMATION,
-                        "Confirmar", JOptionPane.YES_NO_OPTION);
+                int n = GuiDialogs.showConfirmDialog(EDIT_CONFIRMATION);
                 System.out.println("n: " + n);
                 if (n == 0) {
                     boolean result = false;
-                    if(sumar.equals(o)){
+                    if (sumar.equals(o)) {
                         result = ClientManager.editCredit(this.client.getId(),
                                 this.validatedAmount);
                     } else {
@@ -106,18 +105,13 @@ public class ChipManager extends JFrame implements ActionListener {
                                 this.validatedAmount.negate());
                     }
                     if (result) {
-                        JOptionPane.showMessageDialog(null, "Cr"
-                                + Helpers.EACUTE + "dito de "
-                                + client.getFullName() + " editado.",
-                                "Informaci" + Helpers.OACUTE + "n",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        GuiDialogs.showSuccessMessage("Cr" + Helpers.EACUTE
+                                + "dito de " + client.getFullName()
+                                + " editado.");
                     } else {
-                        JOptionPane.showMessageDialog(null,
-                                "Cr" + Helpers.EACUTE + "dito de "
-                                + client.getFullName()
-                                + " no ha sido editado.", "Informaci"
-                                + Helpers.OACUTE + "n",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        GuiDialogs.showErrorMessage("Cr" + Helpers.EACUTE
+                                + "dito de " + client.getFullName()
+                                + " no ha sido editado.");
                     }
                 }
             }

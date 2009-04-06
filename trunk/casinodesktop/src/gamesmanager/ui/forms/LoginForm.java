@@ -3,6 +3,7 @@ package gamesmanager.ui.forms;
 import gamesmanager.beans.User;
 import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.GUI;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.layout.SpringUtilities;
 import gamesmanager.ui.session.Session;
@@ -16,7 +17,6 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -80,13 +80,12 @@ public class LoginForm extends JPanel implements KeyListener, ActionListener {
         User u = new User(username, password);
         boolean login = DatabaseOperations.login(u);
         if (login) {
-            Session.setCurrentSession(DatabaseOperations.getSessionInfo(username));
+            Session.setCurrentSession(DatabaseOperations
+                    .getSessionInfo(username));
             this.mainwindow.startSession();
         } else {
-            JOptionPane.showMessageDialog(null,
-                    "Usuario o contrase" + Helpers.NTILDE + "a incorrecta.",
-                    "Error grave",
-                    JOptionPane.ERROR_MESSAGE);
+            GuiDialogs.showErrorMessage("Usuario o contrase" + Helpers.NTILDE
+                    + "a incorrecta.");
         }
     }
 

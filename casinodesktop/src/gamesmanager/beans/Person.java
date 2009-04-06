@@ -250,7 +250,6 @@ public class Person {
     public InputStream getNewFotoInputStream() {
         try {
             if(this.foto == null){
-                System.out.println("foto nula");
                 this.fotoInputStream = new ByteArrayInputStream(this.fotoarray);
             } else {
                 this.fotoInputStream = new FileInputStream(this.foto);

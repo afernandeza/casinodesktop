@@ -132,19 +132,13 @@ KeyListener, MouseListener {
     }
 
     public void search() {
-        this.emps = EmployeeManager.getEmployeesSummary();
-        for (int i = 0; i < emps.length; i++) {
-            for (int j = 0; j < emps[0].length; j++) {
-                this.etm.setValueAt(emps[i][j], i, j);
-            }
-        }
+        this.emps = EmployeeManager.searchEmployees(this.buscar.getText().trim());
+        this.etm.setData(this.emps);
     }
 
     public void refreshData(int selindex) {
         this.emps = EmployeeManager.getEmployeesSummary();
-        for (int j = 0; j < emps[0].length; j++) {
-            this.etm.setValueAt(emps[selindex][j], selindex, j);
-        }
+        this.etm.setData(this.emps);
     }
 
     @Override
@@ -208,6 +202,11 @@ KeyListener, MouseListener {
         public void initializeArray(int rows, int cols) {
             this.data = new Object[rows][cols];
         }
+        
+        public void setData(Object[][] o ){
+            this.data = o;
+            this.fireTableDataChanged();
+        }
 
         public void setValueAt(Object value, int row, int col) {
             if (row < this.data.length && col < this.data[row].length) {
@@ -218,10 +217,10 @@ KeyListener, MouseListener {
                     // + value.getClass() + ")");
                     // }
                     data[row][col] = value;
-                    this.fireTableCellUpdated(row, col);
+                    this.fireTableDataChanged();
                 } else {
                     data[row][col] = NULLSTRING;
-                    this.fireTableCellUpdated(row, col);
+                    this.fireTableDataChanged();
                 }
             }
         }
@@ -240,6 +239,7 @@ KeyListener, MouseListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+        this.search();
     }
 
     @Override

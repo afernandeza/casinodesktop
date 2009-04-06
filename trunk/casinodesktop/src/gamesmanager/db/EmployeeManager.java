@@ -33,9 +33,13 @@ public class EmployeeManager {
     
     private static String GETEMPLOYEETYPES = "SELECT * FROM tipoempleados "
         + "ORDER BY tipo";
+    
     public static String GETEMPSUMMARY = "SELECT * FROM employeessummary ORDER BY nombre";
     public static String EMPSUMMARYCOUNT = "SELECT COUNT(*) from employeessummary";
-    public static String SEARCH = "SELECT * FROM employeessummary ORDER BY nombre";
+    
+    public static String SEARCH = "SELECT * from searchemployees(?)";
+    public static String SEARCHCOUNT = "SELECT COUNT(*) from searchemployees(?)";
+    
     public static String[] EMPLOYEECOLUMNS = {"ID", "Tipo", "Nombre", "Usuario", 
         "Us. activo", "Fecha alta", "Tel. Casa", "Tel. Celular", "Despedido",};
     
@@ -53,6 +57,28 @@ public class EmployeeManager {
     
     public static boolean rehire(String eid){
         return DatabaseOperations.runStoredProcedure(eid, REHIRE);
+    }
+
+    public static Object[][] searchEmployees(String s){
+        Connection conn = DatabaseManager.connect();
+        if (conn == null) {
+            return new Object[0][0];
+        }
+        PreparedStatement rowcount;
+        PreparedStatement query;
+        try {
+            rowcount = conn.prepareStatement(SEARCHCOUNT);
+            rowcount.setString(1, s);
+            query = conn.prepareStatement(SEARCH);
+            query.setString(1, s);
+        } catch (SQLException e) {
+            if(Helpers.DEBUG){
+                e.printStackTrace();
+            }
+            return new Object[0][0];
+        }
+        
+        return DatabaseOperations.getResults(rowcount, query);
     }
     
     public static Object[][] getEmployeesSummary(){
@@ -218,9 +244,6 @@ public class EmployeeManager {
 
             Type et = new Type(rs.getInt(25), rs.getString(26));
             e.setEmployeetype(et);
-
-            System.out.println(e);
-
         } catch (SQLException sqle) {
             if (Helpers.DEBUG) {
                 sqle.printStackTrace();

@@ -142,7 +142,7 @@ public class DatabaseOperations {
             rsc.next();
             int rows = rsc.getInt(1);
             if(rows <= 0){
-                return null;
+                return o;
             }
             
             ResultSetMetaData rsmd = rs.getMetaData();

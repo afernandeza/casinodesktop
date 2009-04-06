@@ -63,7 +63,6 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     private JButton cancel;
     private Employee e;
     private ViewEmployees employeeviewer;
-    private int selindex;
 
     private JComboBox types;
     private JTextField username;
@@ -323,7 +322,6 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
 
     public void setEmployeeViewer(ViewEmployees ve, int selindex) {
         this.employeeviewer = ve;
-        this.selindex = selindex;
     }
 
     public void loadCurrentImage() {

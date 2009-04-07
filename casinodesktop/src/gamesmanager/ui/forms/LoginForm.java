@@ -3,6 +3,7 @@ package gamesmanager.ui.forms;
 import gamesmanager.beans.User;
 import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.GUI;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.layout.SpringUtilities;
 import gamesmanager.ui.session.Session;
@@ -94,7 +95,7 @@ public class LoginForm extends JPanel implements KeyListener, ActionListener {
                     .getSessionInfo(username));
             this.mainwindow.startSession();
         } else {
-            Toolkit.getDefaultToolkit().beep();
+            GuiDialogs.errorBeep();
             errormsg.setForeground(Color.RED);
         }
     }

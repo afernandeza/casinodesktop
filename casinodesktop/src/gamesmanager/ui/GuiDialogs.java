@@ -18,13 +18,18 @@ public class GuiDialogs {
     private static final String PERM_ERROR = "Usted no cuenta con los permisos suficientes "
         + "para realizar la operaci" + Helpers.OACUTE + "n deseada.";
 
+    public static void errorBeep(){
+        Toolkit.getDefaultToolkit().beep();
+    }
+    
     public static void showFormErrorMessage(String msg) {
+        errorBeep();
         JOptionPane.showMessageDialog(null, msg, "Error al introducir datos",
                 JOptionPane.ERROR_MESSAGE, ERROR);
     }
 
     public static void showErrorMessage(String msg) {
-        Toolkit.getDefaultToolkit().beep();
+        errorBeep();
         JOptionPane.showMessageDialog(null, msg, "Error grave",
                 JOptionPane.ERROR_MESSAGE, ERROR);
     }
@@ -61,7 +66,6 @@ public class GuiDialogs {
     }
 
     public static void showPermissionsError() {
-        Toolkit.getDefaultToolkit().beep();
         showErrorMessage(PERM_ERROR);
     }
 }

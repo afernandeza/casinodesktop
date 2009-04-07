@@ -2,6 +2,7 @@ package gamesmanager.ui.forms;
 
 import gamesmanager.beans.Type;
 import gamesmanager.db.GameTypeManager;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 
 import java.awt.BorderLayout;
@@ -144,7 +145,7 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
 
             // User didn't type in a unique name...
             if (name.equals("") || alreadyInList(name)) {
-                Toolkit.getDefaultToolkit().beep();
+                GuiDialogs.errorBeep();
                 employeeName.requestFocusInWindow();
                 employeeName.selectAll();
                 return;

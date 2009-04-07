@@ -117,6 +117,7 @@ public class CheckClientForm extends JPanel implements KeyListener {
                     return;
                 }
             } else {
+                GuiDialogs.errorBeep();
                 this.errormsg.setForeground(Color.RED);
             }
         }

@@ -1,5 +1,7 @@
 package gamesmanager.ui;
 
+import java.awt.Toolkit;
+
 import javax.swing.JOptionPane;
 
 public class GuiDialogs {
@@ -13,6 +15,7 @@ public class GuiDialogs {
     }
 
     public static void showErrorMessage(String msg) {
+        Toolkit.getDefaultToolkit().beep();
         JOptionPane.showMessageDialog(null, msg, "Error grave",
                 JOptionPane.ERROR_MESSAGE);
     }
@@ -49,6 +52,7 @@ public class GuiDialogs {
     }
 
     public static void showPermissionsError() {
+        Toolkit.getDefaultToolkit().beep();
         showErrorMessage(PERM_ERROR);
     }
 }

@@ -6,6 +6,7 @@ import gamesmanager.db.SynchronizeMembers;
 import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
@@ -20,6 +21,7 @@ public class CheckClientForm extends JPanel implements KeyListener {
 
     private static final long serialVersionUID = 1L;
     private JTextField memberid;
+    private JLabel errormsg;
     private JProgressBar syncpb;
     private GridBagConstraints c = new GridBagConstraints();
     public String[] OPTIONS = {
@@ -35,6 +37,13 @@ public class CheckClientForm extends JPanel implements KeyListener {
         c.gridx = 0;
         c.gridy = 0;
 
+        this.errormsg = new JLabel("El miembro buscado no existe.");
+        this.errormsg.setForeground(Helpers.LIGHTBLUE);
+        this.c.gridwidth = 2;
+        this.add(errormsg, c);
+        this.c.gridy++;
+        this.c.gridwidth = 1;
+        
         this.add(new JLabel("<html><b>Miembro #: </b></html>"), c);
         c.gridx++;
 
@@ -71,6 +80,7 @@ public class CheckClientForm extends JPanel implements KeyListener {
         if (!this.memberid.getText().trim().equals("")) {
             Client client = ClientManager.findClient(this.memberid.getText());
             if (client != null) {
+                this.errormsg.setForeground(Helpers.LIGHTBLUE);
                 // member found
                 String s = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS, 0);
 
@@ -107,7 +117,7 @@ public class CheckClientForm extends JPanel implements KeyListener {
                     return;
                 }
             } else {
-                GuiDialogs.showErrorMessage("El miembro buscado no existe.");
+                this.errormsg.setForeground(Color.RED);
             }
         }
     }

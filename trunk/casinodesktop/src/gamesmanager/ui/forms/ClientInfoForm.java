@@ -241,6 +241,7 @@ MouseListener {
             newmember.addActionListener(this);
             p.add(newmember);
             p.add(cancel);
+            p.setOpaque(false);
             c.gridy = 2;
             c.gridx = 0;
             c.gridheight = 1;
@@ -253,6 +254,7 @@ MouseListener {
             register.addActionListener(this);
             p.add(register);
             p.add(cancel);
+            p.setOpaque(false);
             c.gridy = 2;
             c.gridx = 0;
             c.gridheight = 1;

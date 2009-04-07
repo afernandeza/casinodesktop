@@ -269,6 +269,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             newemployee.addActionListener(this);
             p.add(newemployee);
             p.add(cancel);
+            p.setOpaque(false);
             c.gridy = 2;
             c.gridx = 0;
             c.gridheight = 1;
@@ -283,6 +284,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             savechanges.addActionListener(this);
             p.add(savechanges);
             p.add(cancel);
+            p.setOpaque(false);
             c.gridy = 2;
             c.gridx = 0;
             c.gridheight = 1;

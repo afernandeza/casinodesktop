@@ -26,6 +26,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class GUI extends JFrame implements ActionListener {
 
@@ -202,8 +204,32 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public static void main(String args[]) {
+        try {
+            UIManager.setLookAndFeel(
+                UIManager.getSystemLookAndFeelClassName());
+        } 
+        catch (UnsupportedLookAndFeelException e) {
+           if(Helpers.DEBUG){
+               e.printStackTrace();
+           }
+        }
+        catch (ClassNotFoundException e) {
+            if(Helpers.DEBUG){
+                e.printStackTrace();
+            }
+        }
+        catch (InstantiationException e) {
+            if(Helpers.DEBUG){
+                e.printStackTrace();
+            }
+        }
+        catch (IllegalAccessException e) {
+            if(Helpers.DEBUG){
+                e.printStackTrace();
+            }
+        }
+        GUI g = new GUI();
         if (DatabaseManager.databaseAvailable()) {
-            GUI g = new GUI();
             g.setVisible(true);
         } else {
             GuiDialogs
@@ -212,6 +238,7 @@ public class GUI extends JFrame implements ActionListener {
                             + Helpers.OACUTE
                             + "n se cerrar"
                             + Helpers.AACUTE);
+            System.exit(0);
         }
     }
 

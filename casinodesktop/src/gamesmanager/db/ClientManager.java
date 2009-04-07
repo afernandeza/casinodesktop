@@ -276,9 +276,6 @@ public class ClientManager {
             c.setAddress(a);
 
             c.setCredito(rs.getBigDecimal(19));
-
-            System.out.println(c);
-
         } catch (SQLException e) {
             if (Helpers.DEBUG) {
                 // e.printStackTrace();

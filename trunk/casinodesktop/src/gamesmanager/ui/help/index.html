@@ -13,18 +13,26 @@
 
 <h2>1. Sesiones de usuario</h2>
 <h3>1.1 Iniciar sesi&oacute;n</h3>
-asdfas sdfa adsf fdsa fdsaadfs
+Para iniciar sesi&oacute;n es necesario contar con una cuenta de usuario activa. Al iniciar sesi&oacute;n el programa reconoce autom&aacute;ticamente el nivel de privilegios del usuario y s&oacute;lo le permitir&aacute; ejecutar aquellas funciones para las que est&aacute; autorizado. A continuaci&oacute;n se muestra la pantalla para iniciar sesi&oacute;n:
+<br><img src="screens/login.png" /><br>
+Mientras utiliza el sistema, puede que ocurran errores de permisos. Esto significa que usted est&aacute; intentando realizar una operaci&oacute;n para la que no tiene permisos suficientes. Cuando ocurra dicho error, se mostrar&aacute; la siguiente pantalla:
+<br><img src="screens/permerror.png" /><br>
 <h3>1.2 Cerrar sesi&oacute;n</h3>
-asfdasfd a dfssdfa sadfasdf
-Asdfasdfasdf fsad fsa fsda fsda sdfa fdsa fdsa
-<br> 
+En caso de que
+un diferente empleado quiera tener acceso a las funcionalidades del sistema, el usuario actual deber&aacute; cerrar su sesi&oacute;n y el nuevo empleado iniciar la suya. Cerrar la sesi&oacute;n significa cerrar la aplicaci&oacute;n hasta que otro empleado con un usuario activo inicie sesi&oacute;n. Para cerrar una sesi&oacute;n vaya al men&uacute; Archivo / Cerrar sesi&oacute;n.<br> 
 
 <h2>2. Administraci&oacute;n de clientes</h2>
 <h3>2.1 Dar de alta</h3>
-asdfas sdfa adsf fdsa fdsaadfs
+Para dar de alta un empleado vaya al men&uacute; Archivo / Nuevo miembro... Deber&aacute; ver una pantalla como la que se muestra a continuaci&oacute;n:
+<br><img src="screens/newmember.png" /><br>
+La forma se validar&aacute; al momento de dar clic en el bot&oacute;n de Agregar. En caso de que exista alg&uacute;n error al llenar la forma, se le indicar&aacute; para su correcci&oacute;n. Cuando usted selecciona M&eacute;xico como pa&iacute;s, la forma autom&aacute;ticamente desplegar&aacute; la lista de estados de la Rep&uacute;blica para que usted elija el apropiado. La aplicaci&oacute;n mostrar&aacute; pantallas de &eacute;xito o de error seg&uacute;n sea el caso. 
 <h3>2.2 Buscar</h3>
-asfdasfd a dfssdfa sadfasdf
-Asdfasdfasdf fsad fsa fsda fsda sdfa fdsa fdsa
+La &uacute;nica forma de buscar a un cliente es por su n&uacute;mero de identificaci&oacute;n. La manera est&aacute;ndar de lectura de n&uacute;meros de identificaci&oacute;n es a trav&eacute;s del lector de barras leyendo la credencial de cada miembro. La aplicaci&oacute;n buscar&aacute; al miembro en la base de datos de la sucursal local y en la informaci&oacute;n que se tenga sincronizada del resto de las sucursales. En caso de que el miembro sea local, se tendr&aacute; acceso a toda su informaci&oacute;n y se podr&aacute; modificar como sea necesario. Sin embargo, si se trata de un cliente externo, &uacute;nicamente se podr&aacute; ver a qu&eacute; sucursal pertenece y su fotograf&iacute;a. A continuaci&oacute;n se muestra la pantalla de b&uacute;squeda de miembros, en el cuadro de texto deber&aacute; teclearse o leerse con el scanner de c&oacute;digos de barras el n&uacute;mero de identificaci&oacute;n del cliente.
+<br><img src="screens/memberid.png" width="419" height="266" /><br>
+En caso de que el cliente no se haya encontrado localmente o en otra de las sucursales, se mostrar&aacute; la siguiente pantalla:
+<br><img src="screens/wrongmemberid.png" width="419" height="266" /><br>
+Si el miembro existe en la base de datos se le mostrar&aacute; una lista de acciones posibles para ese miembro como la que se muestra a continuaci&oacute;n:
+<br><img src="screens/memberoptions.png" width="521" height="247" /><br>
 <h3>2.3 Actualizar informaci&oacute;n personal</h3>
 asfdasfd a dfssdfa sadfasdf
 <h3>2.4 Administrar fichas</h3>
@@ -76,5 +84,7 @@ asfdasfd a dfssdfa sadfasdf
 <h2>7. Sincronizaci&oacute;n</h2>
 <br> 
 
+<br>
+(c) Copyright Alfredo Fern&aacute;ndez Acu&ntilde;a (alfredofernandeza@gmail.com)
 </body>
 </html>

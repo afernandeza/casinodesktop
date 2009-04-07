@@ -71,6 +71,7 @@ public class ChipManager extends JFrame implements ActionListener {
         this.add(restar, c);
 
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
+        Helpers.setIcon(this);
         this.pack();
         this.setSize(this.getWidth() + Helpers.XOFFSET, this.getHeight()
                 + Helpers.YOFFSET);

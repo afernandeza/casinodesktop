@@ -78,7 +78,9 @@ public class CheckClientForm extends JPanel implements KeyListener {
 
     public void findMember() {
         if (!this.memberid.getText().trim().equals("")) {
-            Client client = ClientManager.findClient(this.memberid.getText());
+            String id = this.memberid.getText().toUpperCase();
+            this.memberid.setText(id);
+            Client client = ClientManager.findClient(id);
             if (client != null) {
                 this.errormsg.setForeground(Helpers.LIGHTBLUE);
                 // member found

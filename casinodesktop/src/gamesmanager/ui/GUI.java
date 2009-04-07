@@ -204,30 +204,6 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public static void main(String args[]) {
-        try {
-            UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName());
-        } 
-        catch (UnsupportedLookAndFeelException e) {
-           if(Helpers.DEBUG){
-               e.printStackTrace();
-           }
-        }
-        catch (ClassNotFoundException e) {
-            if(Helpers.DEBUG){
-                e.printStackTrace();
-            }
-        }
-        catch (InstantiationException e) {
-            if(Helpers.DEBUG){
-                e.printStackTrace();
-            }
-        }
-        catch (IllegalAccessException e) {
-            if(Helpers.DEBUG){
-                e.printStackTrace();
-            }
-        }
         GUI g = new GUI();
         if (DatabaseManager.databaseAvailable()) {
             g.setVisible(true);

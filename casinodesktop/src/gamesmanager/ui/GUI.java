@@ -125,7 +125,6 @@ public class GUI extends JFrame implements ActionListener {
         file.setEnabled(enabled);
         services.setEnabled(enabled);
         admin.setEnabled(enabled);
-        help.setEnabled(enabled);
     }
 
     private void setMenuBar() {
@@ -184,6 +183,7 @@ public class GUI extends JFrame implements ActionListener {
 
         help = new JMenu("Ayuda");
         menubar.add(help);
+        help.setEnabled(true);
 
         JMenuItem manual = new JMenuItem(MANUAL);
         manual.addActionListener(this);

@@ -3,13 +3,14 @@ package gamesmanager.ui.forms;
 import gamesmanager.beans.User;
 import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.GUI;
-import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 import gamesmanager.ui.layout.SpringUtilities;
 import gamesmanager.ui.session.Session;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -30,6 +31,7 @@ public class LoginForm extends JPanel implements KeyListener, ActionListener {
     private GUI mainwindow;
     private JTextField username;
     private JPasswordField password;
+    private JLabel errormsg;
 
     public LoginForm(GUI mainwindow) {
         super();
@@ -39,6 +41,13 @@ public class LoginForm extends JPanel implements KeyListener, ActionListener {
         centerc.gridx = 0;
         centerc.gridy = 0;
 
+        errormsg = new JLabel("Usuario o contrase" + Helpers.NTILDE
+                + "a incorrecta.");
+        errormsg.setForeground(Helpers.LIGHTBLUE);
+
+        centerc.gridy++;
+        this.add(errormsg);
+        
         JPanel loginform = new JPanel(new SpringLayout());
         String[] labels = { "<html><b>Usuario:</b></html>",
                 "<html><b>Contrase" + Helpers.NTILDE + "a:</b></html>" };
@@ -63,6 +72,7 @@ public class LoginForm extends JPanel implements KeyListener, ActionListener {
                 6, 6, // initX, initY
                 6, 6); // xPad, yPad
         loginform.setBackground(Helpers.LIGHTBLUE);
+        centerc.gridy++;
         this.add(loginform, centerc);
 
         JButton loginbutton = new JButton("Login");
@@ -84,8 +94,8 @@ public class LoginForm extends JPanel implements KeyListener, ActionListener {
                     .getSessionInfo(username));
             this.mainwindow.startSession();
         } else {
-            GuiDialogs.showErrorMessage("Usuario o contrase" + Helpers.NTILDE
-                    + "a incorrecta.");
+            Toolkit.getDefaultToolkit().beep();
+            errormsg.setForeground(Color.RED);
         }
     }
 

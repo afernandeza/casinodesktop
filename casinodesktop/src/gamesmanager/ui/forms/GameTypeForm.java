@@ -2,6 +2,7 @@ package gamesmanager.ui.forms;
 
 import gamesmanager.beans.Type;
 import gamesmanager.db.GameTypeManager;
+import gamesmanager.ui.Helpers;
 
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
@@ -91,7 +92,7 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
 
         p.setOpaque(true); // content panes must be opaque
         this.setContentPane(p);
-
+        Helpers.setIcon(this);
         this.pack();
         this.setSize(this.getWidth(), this.getHeight() + 30);
         this.setLocationRelativeTo(null);

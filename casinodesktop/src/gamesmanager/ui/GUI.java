@@ -41,6 +41,9 @@ public class GUI extends JFrame implements ActionListener {
     private static final String ABOUT = "Acerca de";
     private static final String LOGOUT = "Cerrar sesi" + Helpers.OACUTE + "n";
     private static final String EXIT = "Salir";
+    
+    private static final int USERMANUALWIDTH = 800;
+    private static final int USERMANUALHEIGHT = 400;
 
     static final long serialVersionUID = 1L;
 
@@ -261,7 +264,7 @@ public class GUI extends JFrame implements ActionListener {
             GameTypeForm gametypeform = new GameTypeForm();
             gametypeform.setVisible(true);
         } else if (action.equals(MANUAL)) {
-            HelpWindow h = new HelpWindow("help/index.html", 500, 450);
+            HelpWindow h = new HelpWindow("help/index.html", USERMANUALWIDTH, USERMANUALHEIGHT);
             h.setVisible(true);
         } else if (action.equals(ABOUT)) {
             HelpWindow h = new HelpWindow("about/index.html", 420, 250);

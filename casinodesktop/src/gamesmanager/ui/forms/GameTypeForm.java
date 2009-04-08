@@ -6,7 +6,6 @@ import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 
 import java.awt.BorderLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

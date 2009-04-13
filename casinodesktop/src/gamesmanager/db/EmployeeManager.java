@@ -23,7 +23,6 @@ public class EmployeeManager {
         + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String UPDATE = "{? = call updateemployee(?, ?, ?, ?, ?, ?, ?,"
         + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
-    private static String DELETE = "{? = call deleteemployee(?)}";
     private static String FIND = "SELECT * FROM findemployee(?)";
     
     private static String DEACTIVATEACCOUNT = "{? = call deactivateaccount(?)}";

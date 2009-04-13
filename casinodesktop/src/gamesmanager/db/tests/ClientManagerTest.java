@@ -72,7 +72,7 @@ public class ClientManagerTest {
     
     //@Test
     public void testFind(){
-        Assert.assertNotNull(ClientManager.findClient("SUCA_C166"));
+        Assert.assertNotNull(ClientManager.getClient("SUCA_C166"));
     }
     
     //@Test

@@ -43,7 +43,7 @@ KeyListener, MouseListener {
 
     public String[] OPTIONS = { "Desactivar cuenta de usuario",
             "Reactivar cuenta de usuario", "Dar baja temporal",
-            "Recontratar empleado", "Dar baja definitiva",
+            "Recontratar empleado",
             "Cambiar contrase" + Helpers.NTILDE + "a",
             "Actualizar informaci" + Helpers.OACUTE + "n personal" };
     public String INSTRUCTIONS = "Seleccione qu" + Helpers.EACUTE
@@ -245,7 +245,7 @@ KeyListener, MouseListener {
             int selindex = table.getSelectedRow();
             if (selindex != -1) {
                 String opt = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS,
-                        6);
+                        5);
 
                 String employeeid = emps[selindex][0].toString();
 
@@ -254,9 +254,9 @@ KeyListener, MouseListener {
                         // Desactivar cuenta del usuario
                         if (Session.mayDeactivateAccount(employeeid)) {
                             if (EmployeeManager.deactivateAccount(employeeid)) {
+                                this.search();
                                 GuiDialogs
                                 .showSuccessMessage("Cuenta de usuario desactivada.");
-                                this.search();
                             } else {
                                 GuiDialogs
                                 .showErrorMessage("No se pudo desactivar la"
@@ -269,9 +269,9 @@ KeyListener, MouseListener {
                         // Reactivar cuenta de usuario
                         if (Session.mayActivateAccount()) {
                             if (EmployeeManager.reactivateAccount(employeeid)) {
+                                this.search();
                                 GuiDialogs
                                 .showSuccessMessage("Cuenta de usuario reactivada.");
-                                this.search();
                             } else {
                                 GuiDialogs
                                 .showErrorMessage("No se pudo reactivar la"
@@ -284,9 +284,9 @@ KeyListener, MouseListener {
                         // Dar baja temporal
                         if (Session.mayTemporarilyFire()) {
                             if (EmployeeManager.fireTemporarily(employeeid)) {
+                                this.search();
                                 GuiDialogs
                                 .showSuccessMessage("Empleado dado de baja temporal.");
-                                this.search();
                             } else {
                                 GuiDialogs
                                 .showErrorMessage("No se pudo dar de "
@@ -299,9 +299,9 @@ KeyListener, MouseListener {
                         // Recontratar empleado
                         if (Session.mayHire()) {
                             if (EmployeeManager.rehire(employeeid)) {
+                                this.search();
                                 GuiDialogs
                                 .showSuccessMessage("Empleado recontratado.");
-                                this.search();
                             } else {
                                 GuiDialogs
                                 .showErrorMessage("No se pudo recontratar "
@@ -311,18 +311,12 @@ KeyListener, MouseListener {
                             GuiDialogs.showPermissionsError();
                         }
                     } else if (opt.equals(OPTIONS[4])) {
-                        // Dar baja definitiva
-                        if (Session.mayPermanentlyFire()) {
-                        } else {
-                            GuiDialogs.showPermissionsError();
-                        }
-                    } else if (opt.equals(OPTIONS[5])) {
                         // Cambiar password
                         if (Session.mayChangePasswordFor(employeeid)) {
                         } else {
                             GuiDialogs.showPermissionsError();
                         }
-                    } else if (opt.equals(OPTIONS[6])) {
+                    } else if (opt.equals(OPTIONS[5])) {
                         // Actualizar information personal
                         if (Session.mayChangePersonalInfoFor(employeeid)) {
                             Employee editemp = EmployeeManager

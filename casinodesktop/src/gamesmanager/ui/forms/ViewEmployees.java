@@ -31,6 +31,7 @@ public class ViewEmployees extends JFrame implements ActionListener,
 KeyListener, MouseListener {
 
     private static final long serialVersionUID = 1L;
+    private static String NULLSTRING = "N/A";
 
     private static final int TWIDTH = 800;
     private static final int THEIGHT = 400;
@@ -47,7 +48,6 @@ KeyListener, MouseListener {
             "Actualizar informaci" + Helpers.OACUTE + "n personal" };
     public String INSTRUCTIONS = "Seleccione qu" + Helpers.EACUTE
     + " desea hacer con el empleado:";
-    private String NULLSTRING = "N/A";
 
     public ViewEmployees() {
         super("Administrar Empleados");

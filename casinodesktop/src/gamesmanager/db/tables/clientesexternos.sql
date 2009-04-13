@@ -4,7 +4,7 @@
 
 CREATE TABLE clientesexternos
 (
-  casinoid integer NOT NULL,
+  casinoid character varying(100) NOT NULL,
   clienteid character varying(100) NOT NULL,
   CONSTRAINT clientesexternos_pkey PRIMARY KEY (casinoid, clienteid)
 )

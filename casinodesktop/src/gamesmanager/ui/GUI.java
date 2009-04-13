@@ -7,7 +7,7 @@ import gamesmanager.ui.forms.EmployeeInfoForm;
 import gamesmanager.ui.forms.GameTypeForm;
 import gamesmanager.ui.forms.LoginForm;
 import gamesmanager.ui.forms.SessionForm;
-import gamesmanager.ui.forms.TableInfoForm;
+import gamesmanager.ui.forms.ViewGameTables;
 import gamesmanager.ui.forms.ViewEmployees;
 import gamesmanager.ui.session.Session;
 
@@ -251,7 +251,7 @@ public class GUI extends JFrame implements ActionListener {
             EmployeeInfoForm employeeform = new EmployeeInfoForm(null);
             employeeform.setVisible(true);
         } else if (action.equals(ADMINTABLES)) {
-            TableInfoForm tableform = new TableInfoForm();
+            ViewGameTables tableform = new ViewGameTables();
             tableform.setVisible(true);
         } else if (action.equals(SYNC)) {
             checkForm.startSync();

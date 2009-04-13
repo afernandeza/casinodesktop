@@ -67,6 +67,14 @@ public class Client extends Person {
         }
     }
 
+    public boolean isLocal(){
+        return true;
+    }
+    
+    public String getSucursal(){
+        return "Local";
+    }
+    
     public String toString() {
         final String TAB = ", ";
 

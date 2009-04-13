@@ -43,7 +43,7 @@ public class CheckClientForm extends JPanel implements KeyListener {
         this.add(errormsg, c);
         this.c.gridy++;
         this.c.gridwidth = 1;
-        
+
         this.add(new JLabel("<html><b>Miembro #: </b></html>"), c);
         c.gridx++;
 
@@ -82,41 +82,48 @@ public class CheckClientForm extends JPanel implements KeyListener {
             this.memberid.setText(id);
             Client client = ClientManager.findClient(id);
             if (client != null) {
-                this.errormsg.setForeground(Helpers.LIGHTBLUE);
-                // member found
-                String s = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS, 0);
+                if (client.isLocal()) {
+                    this.errormsg.setForeground(Helpers.LIGHTBLUE);
+                    // member found
+                    String s = GuiDialogs.showInputDialog(INSTRUCTIONS,
+                            OPTIONS, 0);
 
-                if ((s != null) && (s.length() > 0)) {
-                    if (s.equals(OPTIONS[0])) {
-                        // Actualizar
-                        ClientInfoForm form = new ClientInfoForm(client);
-                        form.setVisible(true);
-                        form.loadCurrentImage();
-                    } else if (s.equals(OPTIONS[1])) {
-                        // Administrar fichas
-                        ChipManager cm = new ChipManager(client);
-                        cm.setVisible(true);
-                    } else if (s.equals(OPTIONS[2])) {
-                        // Dar de baja
-                        int n = GuiDialogs
-                        .showConfirmDialog(DELETE_CONFIRMATION
-                                + client.getFullName()
-                                + Helpers.CQUESTIONM);
-                        if (n == 0) {
-                            // confirmar
-                            if (ClientManager.deleteClient(client.getId())) {
-                                GuiDialogs.showSuccessMessage(client
-                                        .getFullName()
-                                        + " borrado.");
-                            } else {
-                                // cancelar
-                                GuiDialogs.showSuccessMessage(client
-                                        .getFullName()
-                                        + "no ha sido borrado.");
+                    if ((s != null) && (s.length() > 0)) {
+                        if (s.equals(OPTIONS[0])) {
+                            // Actualizar
+                            ClientInfoForm form = new ClientInfoForm(client);
+                            form.setVisible(true);
+                            form.loadCurrentImage();
+                        } else if (s.equals(OPTIONS[1])) {
+                            // Administrar fichas
+                            ChipManager cm = new ChipManager(client);
+                            cm.setVisible(true);
+                        } else if (s.equals(OPTIONS[2])) {
+                            // Dar de baja
+                            int n = GuiDialogs
+                            .showConfirmDialog(DELETE_CONFIRMATION
+                                    + client.getFullName()
+                                    + Helpers.CQUESTIONM);
+                            if (n == 0) {
+                                // confirmar
+                                if (ClientManager.deleteClient(client.getId())) {
+                                    GuiDialogs.showSuccessMessage(client
+                                            .getFullName()
+                                            + " borrado.");
+                                } else {
+                                    // cancelar
+                                    GuiDialogs.showSuccessMessage(client
+                                            .getFullName()
+                                            + "no ha sido borrado.");
+                                }
                             }
                         }
+                        return;
                     }
-                    return;
+                } else {
+                    GuiDialogs
+                    .showSuccessMessage("El cliente ha sido encontrado y pertenece a la sucursal "
+                            + client.getSucursal());
                 }
             } else {
                 GuiDialogs.errorBeep();

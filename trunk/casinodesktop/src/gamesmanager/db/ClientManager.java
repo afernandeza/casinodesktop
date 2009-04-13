@@ -2,6 +2,7 @@ package gamesmanager.db;
 
 import gamesmanager.beans.Address;
 import gamesmanager.beans.Client;
+import gamesmanager.beans.ExternalClient;
 import gamesmanager.ui.Helpers;
 
 import java.io.File;
@@ -23,8 +24,85 @@ public class ClientManager {
             + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String DELETE = "{? = call deleteclient(?)}";
     private static String FIND = "SELECT * FROM findclient(?)";
+    private static String FINDEXTERNALCLIENT = "SELECT * FROM findexternalclient(?)";
     private static String EDITCREDIT = "{? = call editcredit(?, ?)}";
+    private static String CLIENTTYPE = "{? = call clienttype(?)}";
 
+    private static ExternalClient getExternalClient(String cid){
+        Connection conn = DatabaseManager.connect();
+        PreparedStatement pstmt = null;
+        if (conn == null) {
+            return null;
+        }
+        ExternalClient c = null;
+        ResultSet rs = null;
+        try {
+            pstmt = conn.prepareStatement(FINDEXTERNALCLIENT);
+            pstmt.setString(1, cid);
+            rs = pstmt.executeQuery();
+            rs.next();
+            String casinoid = rs.getString(1);
+            if(casinoid == null){
+                return null;
+            }            
+            c = new ExternalClient(casinoid, rs.getString(2));
+            
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error finding external client: " + e.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(rs);
+            DatabaseManager.close(pstmt);
+            DatabaseManager.close(conn);
+        }
+        return c;  
+    }
+    
+    public static Client findClient(String cid){
+        int type = getClientType(cid);
+        if(type == -1 || type == 3){
+            return null;
+        } else if (type == 1){
+            // this is a local client
+            return getClient(cid);
+        } else if(type == 2){
+            // this is an external client
+            return getExternalClient(cid);
+        } else {
+            // unknown
+            return null;
+        }
+            
+    }
+    
+    public static int getClientType(String cid){
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return -1;
+        }
+        try {
+            cs = conn.prepareCall(CLIENTTYPE);
+            cs.registerOutParameter(1, Types.INTEGER);
+
+            cs.setString(2, cid);
+
+            cs.execute();
+            return cs.getInt(1);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error getting client type: " + e.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return -1;
+    }
+    
     public static boolean editCredit(String clientid, String amount){
         BigDecimal bd = null;
         try{
@@ -224,7 +302,7 @@ public class ClientManager {
         return false;
     }
 
-    public static Client findClient(String id) {
+    public static Client getClient(String id) {
         if (id == null) {
             if (Helpers.DEBUG) {
                 throw new NullPointerException("clientid nulo");

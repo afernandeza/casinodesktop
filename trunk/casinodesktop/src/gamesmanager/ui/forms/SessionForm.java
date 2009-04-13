@@ -20,6 +20,7 @@ public class SessionForm extends JFrame implements ActionListener {
         GridBagConstraints c = new GridBagConstraints();
 
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
+        Helpers.setIcon(this);
         this.pack();
         this.setSize(this.getWidth() + Helpers.XOFFSET, this.getHeight()
                 + Helpers.YOFFSET);

@@ -11,3 +11,14 @@ CREATE TABLE syncinfo
 )
 WITH (OIDS=FALSE);
 ALTER TABLE syncinfo OWNER TO casindesktopapp;
+
+-- Index: syncinforangesearch
+
+-- DROP INDEX syncinforangesearch;
+
+CREATE INDEX syncinforangesearch
+  ON syncinfo
+  USING btree
+  (qid);
+ALTER TABLE syncinfo CLUSTER ON syncinforangesearch;
+

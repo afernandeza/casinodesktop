@@ -6,12 +6,11 @@ CREATE TABLE sesiones
 (
   sesionid integer NOT NULL,
   mesaid integer NOT NULL,
-  fecha date NOT NULL,
-  horaapertura time with time zone NOT NULL,
-  horacierre time with time zone,
   fichasinicio integer NOT NULL,
   fichasfin integer,
   empleadoid character varying(100) NOT NULL,
+  timeopened timestamp with time zone NOT NULL,
+  timeclosed timestamp with time zone NOT NULL,
   CONSTRAINT sesiones_pkey PRIMARY KEY (sesionid),
   CONSTRAINT sesiones_empleadoid_fkey FOREIGN KEY (empleadoid)
       REFERENCES empleados (empleadoid) MATCH SIMPLE

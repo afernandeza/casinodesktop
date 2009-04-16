@@ -9,4 +9,4 @@ SELECT * FROM clientesexternos WHERE clienteid = $1;
 $BODY$
   LANGUAGE 'sql' VOLATILE
   COST 100;
-ALTER FUNCTION findexternalclient(character varying) OWNER TO postgres;
+ALTER FUNCTION findexternalclient(character varying) OWNER TO casindesktopapp;

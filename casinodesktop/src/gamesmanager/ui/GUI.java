@@ -6,9 +6,9 @@ import gamesmanager.ui.forms.ClientInfoForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
 import gamesmanager.ui.forms.GameTypeForm;
 import gamesmanager.ui.forms.LoginForm;
-import gamesmanager.ui.forms.SessionForm;
-import gamesmanager.ui.forms.ViewGameTables;
 import gamesmanager.ui.forms.ViewEmployees;
+import gamesmanager.ui.forms.ViewGameTables;
+import gamesmanager.ui.forms.ViewSessions;
 import gamesmanager.ui.session.Session;
 
 import java.awt.BorderLayout;
@@ -32,10 +32,10 @@ public class GUI extends JFrame implements ActionListener {
     private static final String NEWMEMBER = "Nuevo miembro...";
     private static final String NEWEMPLOYEE = "Nuevo empleado...";
     private static final String ADMINTABLES = "Mesas...";
-    private static final String NEWSESSION = "Nueva sesi" + Helpers.OACUTE
-            + "n...";
+
     private static final String ADMINGAMETYPES = "Tipos de juego...";
     private static final String ADMINEMPLOYEES = "Empleados...";
+    private static final String ADMINSESSIONS = "Sesiones...";
     private static final String SYNC = "Sincronizar...";
     private static final String MANUAL = "Manual de usuario";
     private static final String ABOUT = "Acerca de";
@@ -147,9 +147,6 @@ public class GUI extends JFrame implements ActionListener {
         newEmployee.addActionListener(this);
         file.add(newEmployee);
 
-        JMenuItem newSession = new JMenuItem(NEWSESSION);
-        newSession.addActionListener(this);
-        file.add(newSession);
 
         file.addSeparator();
 
@@ -183,6 +180,10 @@ public class GUI extends JFrame implements ActionListener {
         JMenuItem adminEmployees = new JMenuItem(ADMINEMPLOYEES);
         adminEmployees.addActionListener(this);
         admin.add(adminEmployees);
+        
+        JMenuItem adminSessions = new JMenuItem(ADMINSESSIONS);
+        adminSessions.addActionListener(this);
+        admin.add(adminSessions);
 
         help = new JMenu("Ayuda");
         menubar.add(help);
@@ -255,15 +256,15 @@ public class GUI extends JFrame implements ActionListener {
             tableform.setVisible(true);
         } else if (action.equals(SYNC)) {
             checkForm.startSync();
-        } else if (action.equals(NEWSESSION)) {
-            SessionForm sessionform = new SessionForm();
-            sessionform.setVisible(true);
         } else if (action.equals(ADMINEMPLOYEES)) {
-            ViewEmployees gametypeform = new ViewEmployees();
-            gametypeform.setVisible(true);
+            ViewEmployees viewemps = new ViewEmployees();
+            viewemps.setVisible(true);
         } else if (action.equals(ADMINGAMETYPES)) {
             GameTypeForm gametypeform = new GameTypeForm();
             gametypeform.setVisible(true);
+        }  else if (action.equals(ADMINSESSIONS)) {
+            ViewSessions sessions = new ViewSessions();
+            sessions.setVisible(true);
         } else if (action.equals(MANUAL)) {
             HelpWindow h = new HelpWindow("help/index.html", USERMANUALWIDTH, USERMANUALHEIGHT);
             h.setVisible(true);

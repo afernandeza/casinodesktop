@@ -138,11 +138,6 @@ KeyListener, MouseListener {
         this.etm.setData(this.emps);
     }
 
-    public void refreshData() {
-        this.emps = EmployeeManager.getEmployeesSummary();
-        this.etm.setData(this.emps);
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
     }

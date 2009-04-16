@@ -25,6 +25,30 @@ public class DatabaseOperations {
         + "FROM estadosmexico ORDER BY estado";
     private final static String SESSIONINFO = "SELECT empleadoid, usuario, externo, " +
     		"tipoempleadoid, tipo FROM employeesdata WHERE usuario = ?";
+
+    public static boolean runStoredProcedure(int id, String query){
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return false;
+        }
+        try {
+            cs = conn.prepareCall(query);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+            cs.setInt(2, id);
+            cs.execute();
+            return cs.getBoolean(1);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                e.printStackTrace();
+                System.out.println("Error running procedure: " + e.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return false;
+    }
     
     public static boolean runStoredProcedure(String id, String query){
         if (id == null) {

@@ -87,10 +87,15 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
         buttonPane.add(hireButton);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
+        buttonPane.setOpaque(true);
+        buttonPane.setBackground(Helpers.LIGHTBLUE);
+        
         p.add(listScrollPane, BorderLayout.CENTER);
         p.add(buttonPane, BorderLayout.PAGE_END);
 
-        p.setOpaque(true); // content panes must be opaque
+        p.setOpaque(true);
+        p.setBackground(Helpers.LIGHTBLUE);
+        
         this.setContentPane(p);
         Helpers.setIcon(this);
         this.pack();
@@ -108,8 +113,10 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
 
             String ename = (String) list.getSelectedValue();
             if (GameTypeManager.deleteGameType(ename)) {
-                System.out.println("quitar tipo");
                 listModel.remove(index);
+            } else {
+                GuiDialogs.showErrorMessage("No se puede borrar este tipo de juego porque \n" +
+                		"hay al menos una mesa de juego que lo ofrece."); 
             }
 
             int size = listModel.getSize();
@@ -144,7 +151,8 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
 
             // User didn't type in a unique name...
             if (name.equals("") || alreadyInList(name)) {
-                GuiDialogs.errorBeep();
+                GuiDialogs.showErrorMessage("No se pudo agregar el tipo de juego pues el nombre \n" +
+                "es incorrecto o ya existe en la base de datos.");
                 employeeName.requestFocusInWindow();
                 employeeName.selectAll();
                 return;
@@ -159,8 +167,9 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
 
             String ename = employeeName.getText();
             if (GameTypeManager.insertGameType(ename)) {
-                System.out.println("agregar tipo");
                 listModel.insertElementAt(ename, index);
+            } else {
+                GuiDialogs.showErrorMessage("Hubo un error inesperado.");
             }
             // If we just wanted to add to the end, we'd do this:
             // listModel.addElement(employeeName.getText());

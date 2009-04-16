@@ -1,7 +1,12 @@
 package gamesmanager.ui.forms;
 
+import gamesmanager.beans.GameTable;
+import gamesmanager.beans.Type;
+import gamesmanager.db.GameTypeManager;
 import gamesmanager.db.TableManager;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
+import gamesmanager.ui.session.Session;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -12,10 +17,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
@@ -24,12 +33,21 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
 
     private static final long serialVersionUID = 1L;
     private static String NULLSTRING = "N/A";
-    
-    private static final int TWIDTH = 250;
+
+    private static final int TWIDTH = 400;
     private static final int THEIGHT = 400;
     private JTable table;
     private GameTableTableModel gttm;
     private Object[][] tableinfo;
+    
+    public String[] OPTIONS = { "Cambiar datos de mesa",
+    "Eliminar mesa"};
+    public String INSTRUCTIONS = "Seleccione qu" + Helpers.EACUTE
+    + " desea hacer con la mesa de juego:";
+    
+    private JTextField newtableid;
+    private JComboBox newgametype;
+    private JButton newtablebutton;
 
     public ViewGameTables() {
         super("Mesas de Juego");
@@ -38,6 +56,26 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
+
+        JPanel newtablepanel = new JPanel();
+        JLabel idlabel = new JLabel("<html><b>ID: </b></html>");
+        newtablepanel.add(idlabel);
+
+        newtableid = new JTextField(5);
+        newtablepanel.add(newtableid, c);
+        newtablepanel.setBackground(Helpers.LIGHTBLUE);
+        
+        newgametype = new JComboBox();
+        for (Type gt : GameTypeManager.getGameTypes()) {
+            newgametype.addItem(gt);
+        }
+        newtablepanel.add(newgametype);
+        
+        newtablebutton = new JButton("Agregar mesa");
+        newtablebutton.addActionListener(this);
+        newtablepanel.add(newtablebutton);
+        
+        this.add(newtablepanel);
         
         JPanel tablepanel = new JPanel();
         tablepanel.setLayout(new GridLayout(1, 0));
@@ -64,9 +102,10 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
         scrollPane
         .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         tablepanel.add(scrollPane);
-        
+
+        c.gridy++;
         this.add(tablepanel, c);
-        
+
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
         Helpers.setIcon(this);
         this.pack();
@@ -84,10 +123,36 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
         column.setPreferredWidth(200);
     }
 
-    
+    public void refreshData() {
+        this.tableinfo = TableManager.getTables();
+        this.gttm.setData(this.tableinfo);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        Object o = e.getSource();
+        if(o.equals(this.newtablebutton)){
+            String newid = this.newtableid.getText().trim();
+            if(!newid.equals("")){
+                try{
+                    int tid = Integer.parseInt(newid);
+                    Type t = (Type)this.newgametype.getSelectedItem();
+                    int gtid = t.getTypeid();
+                    System.out.println("inserting table with id " + tid + " and gtid " + gtid );
+                    GameTable gt = new GameTable(tid, gtid);
+                    if(TableManager.insertGameTable(gt)){
+                        this.refreshData();
+                        GuiDialogs.showSuccessMessage("Mesa agregada exitosamente.");   
+                    } else {
+                        GuiDialogs.showErrorMessage("La mesa no ha sido agregada.");
+                    }
+                } catch(Exception ex){
+                    GuiDialogs.showErrorMessage("El ID de la mesa debe ser num"+Helpers.EACUTE+"rico.");
+                }
+            } else {
+                GuiDialogs.showErrorMessage("ID incorrecto");
+            }
+        }
     }
 
     class GameTableTableModel extends AbstractTableModel {
@@ -171,10 +236,31 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
         if (e.getClickCount() == 2) {
             int selindex = table.getSelectedRow();
             if(selindex != -1){
-                System.out.println("do something");
+                String opt = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS, 0);
+                String tableid = tableinfo[selindex][0].toString();
+                int tid = Integer.parseInt(tableid);
+
+                if ((opt != null) && (opt.length() > 0)) {
+                    if(opt.equals(OPTIONS[0])){
+                        System.out.println("updating table " + tableid);
+                    } else if (opt.equals(OPTIONS[1])){ 
+                        if (Session.mayDeleteGameTable()) {
+                            if(TableManager.deleteGameTable(tid)){
+                                refreshData();
+                                GuiDialogs.showSuccessMessage("La mesa de juego ha sido " +
+                                		"borrada exitosamente.");
+                            } else {
+                                GuiDialogs
+                                .showErrorMessage("No se pudo borrar la mesa seleccionada.");
+                            }
+                        } else {
+                            GuiDialogs.showPermissionsError();
+                        }
+                    }
+                }
             }
         }
-        
+
     }
 
     @Override

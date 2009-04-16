@@ -104,4 +104,13 @@ public class Session {
             return false;
         }
     }
+    
+    public static boolean mayDeleteGameTable(){
+        // administradores y gerentes
+        if (session.et.getTypeid() <= 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

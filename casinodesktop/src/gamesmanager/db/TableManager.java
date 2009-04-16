@@ -1,16 +1,59 @@
 package gamesmanager.db;
 
+import gamesmanager.beans.GameTable;
 import gamesmanager.ui.Helpers;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 
 public class TableManager {
     
     public static String[] TABLECOLUMNS = {"ID", "Juego"};
     private static String GETTABLESCOUNT = "SELECT COUNT(*) FROM mesasinfo";
     private static String GETTABLES = "SELECT * FROM mesasinfo";
+    private static String INSERT = "{ ? = call insertgametable( ?, ? ) }";
+    private static String DELETE = "{ ? = call deletegametable( ? ) }";
+    
+    public static boolean insertGameTable(GameTable gt) {
+        if (gt == null) {
+            if (Helpers.DEBUG) {
+                throw new NullPointerException("Mesa nulo");
+            } else {
+                return false;
+            }
+        }
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return false;
+        }
+        try {
+            cs = conn.prepareCall(INSERT);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+
+            cs.setInt(2, gt.getTableid());
+            cs.setInt(3, gt.getGameType().getTypeid());
+
+            cs.execute();
+            return cs.getBoolean(1);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error inserting table: " + e.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return false;
+    }
+    
+    public static boolean deleteGameTable(int tableid) {
+        return DatabaseOperations.runStoredProcedure(tableid, DELETE);
+    }
     
     public static Object[][] getTables(){
         Connection conn = DatabaseManager.connect();

@@ -10,7 +10,7 @@ CREATE TABLE sesiones
   fichasfin integer,
   empleadoid character varying(100) NOT NULL,
   timeopened timestamp with time zone NOT NULL,
-  timeclosed timestamp with time zone NOT NULL,
+  timeclosed timestamp with time zone,
   CONSTRAINT sesiones_pkey PRIMARY KEY (sesionid),
   CONSTRAINT sesiones_empleadoid_fkey FOREIGN KEY (empleadoid)
       REFERENCES empleados (empleadoid) MATCH SIMPLE

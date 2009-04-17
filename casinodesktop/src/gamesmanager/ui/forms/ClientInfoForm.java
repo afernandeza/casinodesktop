@@ -35,7 +35,7 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 public class ClientInfoForm extends JFrame implements ActionListener,
-MouseListener {
+        MouseListener {
 
     private static final long serialVersionUID = 1L;
     private static final int FIELDSIZE = 15;
@@ -77,7 +77,7 @@ MouseListener {
                 "<html><b>Fotograf" + Helpers.IACUTE + "a:</b></html>",
                 "<html><b>Apellido paterno:</b></html>",
                 "<html><b>Apellido materno:</b></html>",
-        "<html><b>Nombre(s):</b></html>" };
+                "<html><b>Nombre(s):</b></html>" };
 
         int numPairs = labels.length;
 
@@ -135,7 +135,7 @@ MouseListener {
                 "<html><b>N" + Helpers.UACUTE + "mero interior:</b></html>",
                 "<html><b>Colonia:</b></html>",
                 "<html><b>Municipio o delegaci" + Helpers.OACUTE
-                + "n:</b></html>",
+                        + "n:</b></html>",
                 "<html><b>C" + Helpers.OACUTE + "digo postal:</b></html>",
                 "<html><b>Estado:</b></html>",
                 "<html><b>Pa" + Helpers.IACUTE + "s:</b></html>",
@@ -168,7 +168,7 @@ MouseListener {
         fecha = new JDateChooser();
         fecha.setLocale(Locale.getDefault());
         JTextFieldDateEditor editor = (JTextFieldDateEditor) fecha
-        .getDateEditor();
+                .getDateEditor();
         editor.setEditable(false);
         editor.setFocusable(false);
         fecha.setDateFormatString("yyyy-MM-dd");
@@ -354,7 +354,7 @@ MouseListener {
                     this.dispose();
                 } else {
                     GuiDialogs
-                    .showErrorMessage("El nuevo miembro no ha sido insertado.");
+                            .showErrorMessage("El nuevo miembro no ha sido insertado.");
                 }
             }
         } else if (o == cancel) {
@@ -382,11 +382,11 @@ MouseListener {
                 boolean updated = ClientManager.updateClient(this.client);
                 if (updated) {
                     GuiDialogs
-                    .showSuccessMessage("Cambios guardados exitosamente.");
+                            .showSuccessMessage("Cambios guardados exitosamente.");
                     this.dispose();
                 } else {
                     GuiDialogs
-                    .showErrorMessage("Los cambios no han sido guardados.");
+                            .showErrorMessage("Los cambios no han sido guardados.");
                 }
             }
         }
@@ -397,11 +397,12 @@ MouseListener {
         String sc = (String) pais.getSelectedItem();
         if (sc.equals("Mexico")) {
             Object[] possibilities = DatabaseOperations.getStates().toArray();
-            String s = GuiDialogs.showInputDialog(
+            Object o = GuiDialogs.showInputDialog(
                     "Seleccione el estado de la Rep" + Helpers.UACUTE
-                    + "blica:\n", possibilities, "Distrito Federal");
+                            + "blica:\n", possibilities, "Distrito Federal");
 
-            if ((s != null) && (s.length() > 0)) {
+            if (o != null) {
+                String s = o.toString();
                 estado.setText(s);
                 estado.setEnabled(false);
                 return;

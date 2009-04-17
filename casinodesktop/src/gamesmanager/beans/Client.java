@@ -17,8 +17,8 @@ public class Client extends Person {
     }
 
     public Client(String nombres, String appaterno, String apmaterno,
-            BigDecimal credito, Character sexo, Date fechanac, Date membersince,
-            String telcasa, String telcel, Address address) {
+            BigDecimal credito, Character sexo, Date fechanac,
+            Date membersince, String telcasa, String telcel, Address address) {
         super(nombres, appaterno, apmaterno, sexo, fechanac, membersince,
                 telcasa, telcel, address);
         this.credito = credito;
@@ -26,8 +26,9 @@ public class Client extends Person {
     }
 
     public Client(String clientid, String nombres, String appaterno,
-            String apmaterno, BigDecimal credito, Character sexo, Date fechanac,
-            Date membersince, String telcasa, String telcel, Address address) {
+            String apmaterno, BigDecimal credito, Character sexo,
+            Date fechanac, Date membersince, String telcasa, String telcel,
+            Address address) {
         super(clientid, nombres, appaterno, apmaterno, sexo, fechanac,
                 membersince, telcasa, telcel, address);
         this.credito = credito;
@@ -41,7 +42,7 @@ public class Client extends Person {
     public void setCredito(BigDecimal credito) {
         this.credito = credito.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
-    
+
     public void setCredito(String credito) {
         BigDecimal bd = new BigDecimal(credito);
         this.credito = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -54,27 +55,27 @@ public class Client extends Person {
     public void setMembersince(Date membersince) {
         this.membersince = membersince;
     }
-    
+
     public void setMembersince(String membersince) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             this.membersince = sdf.parse(membersince);
         } catch (ParseException e) {
             System.out.println("wrong membersince date");
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 e.printStackTrace();
             }
         }
     }
 
-    public boolean isLocal(){
+    public boolean isLocal() {
         return true;
     }
-    
-    public String getSucursal(){
+
+    public String getSucursal() {
         return "Local";
     }
-    
+
     public String toString() {
         final String TAB = ", ";
 

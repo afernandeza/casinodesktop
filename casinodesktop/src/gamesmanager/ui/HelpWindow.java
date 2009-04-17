@@ -37,15 +37,15 @@ public class HelpWindow extends JFrame implements HyperlinkListener {
         }
         JScrollPane editorScrollPane = new JScrollPane(editorPane);
         editorScrollPane
-        .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         editorScrollPane.setPreferredSize(new Dimension(width, height));
         editorScrollPane.setMinimumSize(new Dimension(10, 10));
         this.add(editorScrollPane);
         Helpers.setIcon(this);
         this.pack();
         this
-        .setSize(new Dimension(this.getWidth() + 10,
-                this.getHeight() + 10));
+                .setSize(new Dimension(this.getWidth() + 10,
+                        this.getHeight() + 10));
         this.setLocationRelativeTo(null);
     }
 

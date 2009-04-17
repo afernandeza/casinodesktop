@@ -20,13 +20,13 @@ public class DatabaseOperations {
 
     private final static String AUTH = "{ ? = call authenticate( ?, ? ) }";
     private final static String GETCOUNTRIES = "SELECT printable_name "
-        + "FROM country ORDER BY printable_name";
+            + "FROM country ORDER BY printable_name";
     private final static String GETSTATES = "SELECT estado "
-        + "FROM estadosmexico ORDER BY estado";
-    private final static String SESSIONINFO = "SELECT empleadoid, usuario, externo, " +
-    		"tipoempleadoid, tipo FROM employeesdata WHERE usuario = ?";
+            + "FROM estadosmexico ORDER BY estado";
+    private final static String SESSIONINFO = "SELECT empleadoid, usuario, externo, "
+            + "tipoempleadoid, tipo FROM employeesdata WHERE usuario = ?";
 
-    public static boolean runStoredProcedure(int id, String query){
+    public static boolean runStoredProcedure(int id, String query) {
         Connection conn = DatabaseManager.connect();
         CallableStatement cs = null;
         if (conn == null) {
@@ -40,8 +40,8 @@ public class DatabaseOperations {
             return cs.getBoolean(1);
         } catch (SQLException e) {
             if (Helpers.DEBUG) {
-                e.printStackTrace();
-                System.out.println("Error running procedure: " + e.getMessage());
+                System.out
+                        .println("Error running procedure: " + e.getMessage());
             }
         } finally {
             DatabaseManager.close(cs);
@@ -49,8 +49,8 @@ public class DatabaseOperations {
         }
         return false;
     }
-    
-    public static boolean runStoredProcedure(String id, String query){
+
+    public static boolean runStoredProcedure(String id, String query) {
         if (id == null) {
             if (Helpers.DEBUG) {
                 throw new NullPointerException("id nulo");
@@ -79,7 +79,8 @@ public class DatabaseOperations {
         } catch (SQLException e) {
             if (Helpers.DEBUG) {
                 // e.printStackTrace();
-                System.out.println("Error running procedure: " + e.getMessage());
+                System.out
+                        .println("Error running procedure: " + e.getMessage());
             }
         } finally {
             DatabaseManager.close(cs);
@@ -87,8 +88,8 @@ public class DatabaseOperations {
         }
         return false;
     }
-    
-    public static Session getSessionInfo(String usuario){
+
+    public static Session getSessionInfo(String usuario) {
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
             return null;
@@ -100,21 +101,21 @@ public class DatabaseOperations {
             query.setString(1, usuario);
             Object[] o = getResult(query);
             User u = new User(o[1].toString());
-            u.setExterno((Boolean)o[2]);
-            Type et = new Type((Integer)o[3], o[4].toString());
+            u.setExterno((Boolean) o[2]);
+            Type et = new Type((Integer) o[3], o[4].toString());
             session = new Session(o[0].toString(), u, et);
-            
+
         } catch (SQLException e) {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 e.printStackTrace();
             }
             return null;
         }
-        
+
         return session;
     }
-    
-    public static Object[] getResult(PreparedStatement query){
+
+    public static Object[] getResult(PreparedStatement query) {
         Connection conn = DatabaseManager.connect();
         Statement st = null;
         ResultSet rs = null;
@@ -124,14 +125,14 @@ public class DatabaseOperations {
         }
         try {
             rs = query.executeQuery();
-            
+
             ResultSetMetaData rsmd = rs.getMetaData();
             int ncols = rsmd.getColumnCount();
             o = new Object[ncols];
 
-            if(rs.next()){
-                for(int i = 0; i < ncols; i++){
-                    o[i] = rs.getObject(i+1);
+            if (rs.next()) {
+                for (int i = 0; i < ncols; i++) {
+                    o[i] = rs.getObject(i + 1);
                 }
             }
             return o;
@@ -149,9 +150,9 @@ public class DatabaseOperations {
         }
         return o;
     }
-    
-    public static Object[][] getResults(PreparedStatement rowcount, 
-            PreparedStatement query){
+
+    public static Object[][] getResults(PreparedStatement rowcount,
+            PreparedStatement query) {
         Connection conn = DatabaseManager.connect();
         Statement st = null;
         ResultSet rs = null;
@@ -165,18 +166,18 @@ public class DatabaseOperations {
 
             rsc.next();
             int rows = rsc.getInt(1);
-            if(rows <= 0){
+            if (rows <= 0) {
                 return o;
             }
-            
+
             ResultSetMetaData rsmd = rs.getMetaData();
             int ncols = rsmd.getColumnCount();
 
             o = new Object[rows][ncols];
             int rown = 0;
-            while(rs.next()){
-                for(int i = 0; i < ncols; i++){
-                    o[rown][i] = rs.getObject(i+1);
+            while (rs.next()) {
+                for (int i = 0; i < ncols; i++) {
+                    o[rown][i] = rs.getObject(i + 1);
                 }
                 rown++;
             }
@@ -196,7 +197,7 @@ public class DatabaseOperations {
         return o;
     }
 
-    public static boolean manageType(Type et, String call){
+    public static boolean manageType(Type et, String call) {
         if (et == null) {
             if (Helpers.DEBUG) {
                 throw new NullPointerException("Type nulo");
@@ -220,7 +221,7 @@ public class DatabaseOperations {
         } catch (SQLException sqle) {
             if (Helpers.DEBUG) {
                 // e.printStackTrace();
-                System.out.println("Error inserting employee type: " 
+                System.out.println("Error inserting employee type: "
                         + sqle.getMessage());
             }
         } finally {
@@ -285,8 +286,7 @@ public class DatabaseOperations {
         } catch (SQLException sqle) {
             if (Helpers.DEBUG) {
                 sqle.printStackTrace();
-                System.out.println("Error getting types: "
-                        + sqle.getMessage());
+                System.out.println("Error getting types: " + sqle.getMessage());
             }
         } finally {
             DatabaseManager.close(pstmt);

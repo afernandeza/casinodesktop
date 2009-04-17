@@ -21,8 +21,8 @@ public class ChipManager extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     private static String EDIT_CONFIRMATION = Helpers.OQUESTIONM
-    + "Seguro que desea cambiar el cr" + Helpers.EACUTE
-    + "dito del cliente" + Helpers.CQUESTIONM;
+            + "Seguro que desea cambiar el cr" + Helpers.EACUTE
+            + "dito del cliente" + Helpers.CQUESTIONM;
 
     private GridBagConstraints c = new GridBagConstraints();
     private JTextField amount;

@@ -28,7 +28,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 public class ViewEmployees extends JFrame implements ActionListener,
-KeyListener, MouseListener {
+        KeyListener, MouseListener {
 
     private static final long serialVersionUID = 1L;
     private static String NULLSTRING = "N/A";
@@ -43,11 +43,10 @@ KeyListener, MouseListener {
 
     public String[] OPTIONS = { "Desactivar cuenta de usuario",
             "Reactivar cuenta de usuario", "Dar baja temporal",
-            "Recontratar empleado",
-            "Cambiar contrase" + Helpers.NTILDE + "a",
+            "Recontratar empleado", "Cambiar contrase" + Helpers.NTILDE + "a",
             "Actualizar informaci" + Helpers.OACUTE + "n personal" };
     public String INSTRUCTIONS = "Seleccione qu" + Helpers.EACUTE
-    + " desea hacer con el empleado:";
+            + " desea hacer con el empleado:";
 
     public ViewEmployees() {
         super("Administrar Empleados");
@@ -80,15 +79,15 @@ KeyListener, MouseListener {
         table.setRowSelectionAllowed(true);
 
         table
-        .setPreferredScrollableViewportSize(new Dimension(TWIDTH,
-                THEIGHT));
+                .setPreferredScrollableViewportSize(new Dimension(TWIDTH,
+                        THEIGHT));
         table.setFillsViewportHeight(true);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane
-        .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane
-        .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+                .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         tablepanel.add(scrollPane);
 
         c.gridy++;
@@ -239,23 +238,23 @@ KeyListener, MouseListener {
         if (e.getClickCount() == 2) {
             int selindex = table.getSelectedRow();
             if (selindex != -1) {
-                String opt = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS,
-                        5);
+                Object o = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS, 5);
 
                 String employeeid = emps[selindex][0].toString();
 
-                if ((opt != null) && (opt.length() > 0)) {
+                if (o != null) {
+                    String opt = o.toString();
                     if (opt.equals(OPTIONS[0])) {
                         // Desactivar cuenta del usuario
                         if (Session.mayDeactivateAccount(employeeid)) {
                             if (EmployeeManager.deactivateAccount(employeeid)) {
                                 this.search();
                                 GuiDialogs
-                                .showSuccessMessage("Cuenta de usuario desactivada.");
+                                        .showSuccessMessage("Cuenta de usuario desactivada.");
                             } else {
                                 GuiDialogs
-                                .showErrorMessage("No se pudo desactivar la"
-                                        + " cuenta del usuario seleccionado.");
+                                        .showErrorMessage("No se pudo desactivar la"
+                                                + " cuenta del usuario seleccionado.");
                             }
                         } else {
                             GuiDialogs.showPermissionsError();
@@ -266,11 +265,11 @@ KeyListener, MouseListener {
                             if (EmployeeManager.reactivateAccount(employeeid)) {
                                 this.search();
                                 GuiDialogs
-                                .showSuccessMessage("Cuenta de usuario reactivada.");
+                                        .showSuccessMessage("Cuenta de usuario reactivada.");
                             } else {
                                 GuiDialogs
-                                .showErrorMessage("No se pudo reactivar la"
-                                        + " cuenta del usuario seleccionado.");
+                                        .showErrorMessage("No se pudo reactivar la"
+                                                + " cuenta del usuario seleccionado.");
                             }
                         } else {
                             GuiDialogs.showPermissionsError();
@@ -281,11 +280,11 @@ KeyListener, MouseListener {
                             if (EmployeeManager.fireTemporarily(employeeid)) {
                                 this.search();
                                 GuiDialogs
-                                .showSuccessMessage("Empleado dado de baja temporal.");
+                                        .showSuccessMessage("Empleado dado de baja temporal.");
                             } else {
                                 GuiDialogs
-                                .showErrorMessage("No se pudo dar de "
-                                        + "baja temporal al empleado seleccionado.");
+                                        .showErrorMessage("No se pudo dar de "
+                                                + "baja temporal al empleado seleccionado.");
                             }
                         } else {
                             GuiDialogs.showPermissionsError();
@@ -296,11 +295,11 @@ KeyListener, MouseListener {
                             if (EmployeeManager.rehire(employeeid)) {
                                 this.search();
                                 GuiDialogs
-                                .showSuccessMessage("Empleado recontratado.");
+                                        .showSuccessMessage("Empleado recontratado.");
                             } else {
                                 GuiDialogs
-                                .showErrorMessage("No se pudo recontratar "
-                                        + "el empleado seleccionado.");
+                                        .showErrorMessage("No se pudo recontratar "
+                                                + "el empleado seleccionado.");
                             }
                         } else {
                             GuiDialogs.showPermissionsError();
@@ -315,7 +314,7 @@ KeyListener, MouseListener {
                         // Actualizar information personal
                         if (Session.mayChangePersonalInfoFor(employeeid)) {
                             Employee editemp = EmployeeManager
-                            .findEmployee(employeeid);
+                                    .findEmployee(employeeid);
                             EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
                             eif.loadCurrentImage();
                             eif.setEmployeeViewer(this, selindex);

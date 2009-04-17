@@ -1,6 +1,7 @@
 package gamesmanager.ui.forms;
 
 import gamesmanager.db.SessionManager;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 
 import java.awt.Dimension;
@@ -20,7 +21,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-public class ViewSessions extends JFrame implements ActionListener, MouseListener {
+public class ViewSessions extends JFrame implements ActionListener,
+        MouseListener {
 
     private static final long serialVersionUID = 1L;
     private static String NULLSTRING = "N/A";
@@ -32,9 +34,8 @@ public class ViewSessions extends JFrame implements ActionListener, MouseListene
     private SessionsTableModel etm;
     private Object[][] sessions = null;
 
-
     public ViewSessions() {
-        super("Administrar Sesiones");
+        super("Administrar Sesiones de Juego");
         this.setLayout(new GridBagLayout());
         c.gridx = 0;
         c.gridy = 0;
@@ -54,15 +55,15 @@ public class ViewSessions extends JFrame implements ActionListener, MouseListene
         table.setRowSelectionAllowed(true);
 
         table
-        .setPreferredScrollableViewportSize(new Dimension(TWIDTH,
-                THEIGHT));
+                .setPreferredScrollableViewportSize(new Dimension(TWIDTH,
+                        THEIGHT));
         table.setFillsViewportHeight(true);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane
-        .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane
-        .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+                .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         tablepanel.add(scrollPane);
 
         c.gridy++;
@@ -193,7 +194,42 @@ public class ViewSessions extends JFrame implements ActionListener, MouseListene
         if (e.getClickCount() == 2) {
             int selindex = table.getSelectedRow();
             if (selindex != -1) {
-                System.out.println("delete session");
+                Object obj = GuiDialogs.showInputDialog("Escriba el n"
+                        + Helpers.UACUTE + "mero de fichas con las que la sesi"
+                        + Helpers.OACUTE + "n termin" + Helpers.OACUTE + ".");
+
+                if (obj != null) {
+                    String s = obj.toString();
+                    int sessionid = Integer.parseInt(sessions[selindex][0]
+                            .toString());
+                    double fichas = 0.0;
+                    try {
+                        fichas = Double.parseDouble(s);
+                        int i = GuiDialogs.showConfirmDialog(Helpers.OQUESTIONM
+                                + "Est" + Helpers.AACUTE
+                                + " seguro que desea cerrar la sesi"
+                                + Helpers.OACUTE + "n de juego"
+                                + Helpers.CQUESTIONM);
+                        if (i == 0) {
+                            if (SessionManager.closeGameSession(sessionid,
+                                    fichas)) {
+                                this.refreshData();
+                                GuiDialogs
+                                        .showSuccessMessage("La sesi"
+                                                + Helpers.OACUTE
+                                                + "n de juego ha sido cerrada exitosamente.");
+                            } else {
+                                GuiDialogs
+                                        .showErrorMessage("No se ha podido cerrar la sesi"
+                                                + Helpers.OACUTE + "n de juego");
+                            }
+                        }
+                    } catch (Exception ex) {
+                        GuiDialogs
+                                .showErrorMessage("Debe escribir un valor num"
+                                        + Helpers.EACUTE + "rico.");
+                    }
+                }
             }
         }
     }

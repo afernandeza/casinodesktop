@@ -103,15 +103,15 @@ public class Address {
     }
 
     public void setPais(Object pais) {
-        if(pais instanceof String){
-            this.pais = (String)pais;   
+        if (pais instanceof String) {
+            this.pais = (String) pais;
         } else {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 throw new IllegalArgumentException("pais invalido");
             }
         }
     }
-    
+
     public void setPais(String pais) {
         this.pais = pais;
     }
@@ -122,15 +122,15 @@ public class Address {
         StringBuffer retValue = new StringBuffer();
 
         retValue.append("Address ( ").append(super.toString()).append(TAB)
-        .append("addressid = ").append(this.addressid).append(TAB)
-        .append("callenum = ").append(this.callenum).append(TAB)
-        .append("numint = ").append(this.numint).append(TAB).append(
-        "colonia = ").append(this.colonia).append(TAB).append(
-        "municipio = ").append(this.municipio).append(TAB)
-        .append("codigopostal = ").append(this.codigopostal)
-        .append(TAB).append("estado = ").append(this.estado)
-        .append(TAB).append("pais = ").append(this.pais).append(TAB)
-        .append(" )");
+                .append("addressid = ").append(this.addressid).append(TAB)
+                .append("callenum = ").append(this.callenum).append(TAB)
+                .append("numint = ").append(this.numint).append(TAB).append(
+                        "colonia = ").append(this.colonia).append(TAB).append(
+                        "municipio = ").append(this.municipio).append(TAB)
+                .append("codigopostal = ").append(this.codigopostal)
+                .append(TAB).append("estado = ").append(this.estado)
+                .append(TAB).append("pais = ").append(this.pais).append(TAB)
+                .append(" )");
 
         return retValue.toString();
     }

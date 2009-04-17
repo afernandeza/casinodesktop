@@ -10,16 +10,16 @@ import java.sql.Statement;
 
 public class DatabaseManager {
 
-    public static boolean databaseAvailable(){
+    public static boolean databaseAvailable() {
         Connection conn = connect();
-        if(conn == null){
+        if (conn == null) {
             return false;
         } else {
             close(conn);
             return true;
         }
     }
-    
+
     public static Connection connect() {
         Connection conn = null;
         try {

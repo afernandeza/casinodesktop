@@ -1,4 +1,3 @@
 bugs:
 
-actualizar informacion de empleado puede volver a cualquier administrador
 clicklistener en la ventana de adminsitrar empleados 

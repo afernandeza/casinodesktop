@@ -29,7 +29,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-public class ViewGameTables extends JFrame implements ActionListener, MouseListener {
+public class ViewGameTables extends JFrame implements ActionListener,
+        MouseListener {
 
     private static final long serialVersionUID = 1L;
     private static String NULLSTRING = "N/A";
@@ -39,12 +40,11 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
     private JTable table;
     private GameTableTableModel gttm;
     private Object[][] tableinfo;
-    
-    public String[] OPTIONS = { "Cambiar datos de mesa",
-    "Eliminar mesa"};
+
+    public String[] OPTIONS = { "Cambiar tipo de juego", "Eliminar mesa" };
     public String INSTRUCTIONS = "Seleccione qu" + Helpers.EACUTE
-    + " desea hacer con la mesa de juego:";
-    
+            + " desea hacer con la mesa de juego:";
+
     private JTextField newtableid;
     private JComboBox newgametype;
     private JButton newtablebutton;
@@ -64,19 +64,19 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
         newtableid = new JTextField(5);
         newtablepanel.add(newtableid, c);
         newtablepanel.setBackground(Helpers.LIGHTBLUE);
-        
+
         newgametype = new JComboBox();
         for (Type gt : GameTypeManager.getGameTypes()) {
             newgametype.addItem(gt);
         }
         newtablepanel.add(newgametype);
-        
+
         newtablebutton = new JButton("Agregar mesa");
         newtablebutton.addActionListener(this);
         newtablepanel.add(newtablebutton);
-        
+
         this.add(newtablepanel);
-        
+
         JPanel tablepanel = new JPanel();
         tablepanel.setLayout(new GridLayout(1, 0));
 
@@ -92,15 +92,15 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
         table.setRowSelectionAllowed(true);
 
         table
-        .setPreferredScrollableViewportSize(new Dimension(TWIDTH,
-                THEIGHT));
+                .setPreferredScrollableViewportSize(new Dimension(TWIDTH,
+                        THEIGHT));
         table.setFillsViewportHeight(true);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane
-        .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane
-        .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+                .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         tablepanel.add(scrollPane);
 
         c.gridy++;
@@ -131,23 +131,27 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
-        if(o.equals(this.newtablebutton)){
+        if (o.equals(this.newtablebutton)) {
             String newid = this.newtableid.getText().trim();
-            if(!newid.equals("")){
-                try{
+            if (!newid.equals("")) {
+                try {
                     int tid = Integer.parseInt(newid);
-                    Type t = (Type)this.newgametype.getSelectedItem();
+                    Type t = (Type) this.newgametype.getSelectedItem();
                     int gtid = t.getTypeid();
-                    System.out.println("inserting table with id " + tid + " and gtid " + gtid );
+                    System.out.println("inserting table with id " + tid
+                            + " and gtid " + gtid);
                     GameTable gt = new GameTable(tid, gtid);
-                    if(TableManager.insertGameTable(gt)){
+                    if (TableManager.insertGameTable(gt)) {
                         this.refreshData();
-                        GuiDialogs.showSuccessMessage("Mesa agregada exitosamente.");   
+                        GuiDialogs
+                                .showSuccessMessage("Mesa agregada exitosamente.");
                     } else {
-                        GuiDialogs.showErrorMessage("La mesa no ha sido agregada.");
+                        GuiDialogs
+                                .showErrorMessage("La mesa no ha sido agregada.");
                     }
-                } catch(Exception ex){
-                    GuiDialogs.showErrorMessage("El ID de la mesa debe ser num"+Helpers.EACUTE+"rico.");
+                } catch (Exception ex) {
+                    GuiDialogs.showErrorMessage("El ID de la mesa debe ser num"
+                            + Helpers.EACUTE + "rico.");
                 }
             } else {
                 GuiDialogs.showErrorMessage("ID incorrecto");
@@ -235,23 +239,51 @@ public class ViewGameTables extends JFrame implements ActionListener, MouseListe
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
             int selindex = table.getSelectedRow();
-            if(selindex != -1){
-                String opt = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS, 0);
+            if (selindex != -1) {
+                Object obj = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS,
+                        0);
                 String tableid = tableinfo[selindex][0].toString();
                 int tid = Integer.parseInt(tableid);
 
-                if ((opt != null) && (opt.length() > 0)) {
-                    if(opt.equals(OPTIONS[0])){
-                        System.out.println("updating table " + tableid);
-                    } else if (opt.equals(OPTIONS[1])){ 
-                        if (Session.mayDeleteGameTable()) {
-                            if(TableManager.deleteGameTable(tid)){
-                                refreshData();
-                                GuiDialogs.showSuccessMessage("La mesa de juego ha sido " +
-                                		"borrada exitosamente.");
+                if (obj != null) {
+                    String opt = obj.toString();
+                    if (opt.equals(OPTIONS[0])) {
+                        Object[] o = GameTypeManager.getGameTypes().toArray();
+                        Object ntopt = GuiDialogs.showInputDialog(
+                                "Seleccione el nuevo tipo de juego "
+                                        + "para la mesa:", o, 0).toString();
+                        if ((ntopt != null)) {
+                            GameTable newgt = (GameTable) ntopt;
+                            if (Session.mayUpdateGameTable()) {
+                                if (TableManager.updateGameTable(newgt)) {
+                                    System.out.println("updating shit with "
+                                            + newgt);
+                                } else {
+                                    GuiDialogs
+                                            .showErrorMessage("No se pudo cambiar el tipo de juego.");
+                                }
                             } else {
-                                GuiDialogs
-                                .showErrorMessage("No se pudo borrar la mesa seleccionada.");
+                                GuiDialogs.showPermissionsError();
+                            }
+                        }
+                    } else if (opt.equals(OPTIONS[1])) {
+                        if (Session.mayDeleteGameTable()) {
+                            int i = GuiDialogs
+                                    .showConfirmDialog(Helpers.OQUESTIONM
+                                            + "Est" + Helpers.AACUTE
+                                            + " seguro que desea borrar la "
+                                            + "mesa de juego"
+                                            + Helpers.CQUESTIONM);
+                            if (i == 0) {
+                                if (TableManager.deleteGameTable(tid)) {
+                                    refreshData();
+                                    GuiDialogs
+                                            .showSuccessMessage("La mesa de juego ha sido "
+                                                    + "borrada exitosamente.");
+                                } else {
+                                    GuiDialogs
+                                            .showErrorMessage("No se pudo borrar la mesa seleccionada.");
+                                }
                             }
                         } else {
                             GuiDialogs.showPermissionsError();

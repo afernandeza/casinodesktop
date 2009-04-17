@@ -41,7 +41,7 @@ public class GUI extends JFrame implements ActionListener {
     private static final String ABOUT = "Acerca de";
     private static final String LOGOUT = "Cerrar sesi" + Helpers.OACUTE + "n";
     private static final String EXIT = "Salir";
-    
+
     private static final int USERMANUALWIDTH = 800;
     private static final int USERMANUALHEIGHT = 400;
 
@@ -147,7 +147,6 @@ public class GUI extends JFrame implements ActionListener {
         newEmployee.addActionListener(this);
         file.add(newEmployee);
 
-
         file.addSeparator();
 
         JMenuItem logout = new JMenuItem(LOGOUT);
@@ -180,7 +179,7 @@ public class GUI extends JFrame implements ActionListener {
         JMenuItem adminEmployees = new JMenuItem(ADMINEMPLOYEES);
         adminEmployees.addActionListener(this);
         admin.add(adminEmployees);
-        
+
         JMenuItem adminSessions = new JMenuItem(ADMINSESSIONS);
         adminSessions.addActionListener(this);
         admin.add(adminSessions);
@@ -262,11 +261,12 @@ public class GUI extends JFrame implements ActionListener {
         } else if (action.equals(ADMINGAMETYPES)) {
             GameTypeForm gametypeform = new GameTypeForm();
             gametypeform.setVisible(true);
-        }  else if (action.equals(ADMINSESSIONS)) {
+        } else if (action.equals(ADMINSESSIONS)) {
             ViewSessions sessions = new ViewSessions();
             sessions.setVisible(true);
         } else if (action.equals(MANUAL)) {
-            HelpWindow h = new HelpWindow("help/index.html", USERMANUALWIDTH, USERMANUALHEIGHT);
+            HelpWindow h = new HelpWindow("help/index.html", USERMANUALWIDTH,
+                    USERMANUALHEIGHT);
             h.setVisible(true);
         } else if (action.equals(ABOUT)) {
             HelpWindow h = new HelpWindow("about/index.html", 420, 250);

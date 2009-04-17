@@ -10,12 +10,12 @@ import org.junit.Assert;
 
 public class ClientManagerTest {
 
-    //@Test
-    public void testEditCredit(){
+    // @Test
+    public void testEditCredit() {
         Assert.assertTrue(ClientManager.editCredit("SUCA_C168", 21.55));
     }
-    
-    //@Test
+
+    // @Test
     public void testInsert() {
         Client c = new Client();
         c.setCredito("90.34");
@@ -27,7 +27,7 @@ public class ClientManagerTest {
         c.setFoto(new File("/Users/afa/Desktop/pics/8423.729.486.jpg"));
         c.setTelcasa("5536051150");
         c.setTelcel("0445554534335");
-        
+
         Address d = new Address();
         d.setCallenum("av club de golf lomas 8");
         d.setNumint("mz 3 lt 7");
@@ -36,13 +36,13 @@ public class ClientManagerTest {
         d.setCodigopostal("52779");
         d.setEstado("Edo Mex");
         d.setPais("Mexico");
-        
+
         c.setAddress(d);
-        
+
         Assert.assertTrue(ClientManager.insertClient(c));
     }
-    
-    //@Test
+
+    // @Test
     public void testUpdate() {
         Client c = new Client();
         c.setId("SUCA_C166");
@@ -55,7 +55,7 @@ public class ClientManagerTest {
         c.setFoto(new File("/Users/afa/Desktop/pics/DSCN0559.jpg"));
         c.setTelcasa("5512131415");
         c.setTelcel("04427281113");
-        
+
         Address d = new Address();
         d.setCallenum("memorial shit");
         d.setNumint("mz 123");
@@ -64,19 +64,19 @@ public class ClientManagerTest {
         d.setCodigopostal("10710");
         d.setEstado("MA");
         d.setPais("USA");
-        
+
         c.setAddress(d);
-        
+
         Assert.assertTrue(ClientManager.updateClient(c));
     }
-    
-    //@Test
-    public void testFind(){
+
+    // @Test
+    public void testFind() {
         Assert.assertNotNull(ClientManager.getClient("SUCA_C166"));
     }
-    
-    //@Test
-    public void testDelete(){
+
+    // @Test
+    public void testDelete() {
         Assert.assertTrue(ClientManager.deleteClient("SUCA_C166"));
     }
 

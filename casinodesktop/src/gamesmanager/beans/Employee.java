@@ -59,14 +59,14 @@ public class Employee extends Person {
     public void setHired(Date hired) {
         this.hired = hired;
     }
-    
+
     public void setHired(String hired) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             this.hired = sdf.parse(hired);
         } catch (ParseException e) {
             System.out.println("wrong hired date");
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 e.printStackTrace();
             }
         }
@@ -79,14 +79,14 @@ public class Employee extends Person {
     public void setFired(Date fired) {
         this.fired = fired;
     }
-    
+
     public void setFired(String fired) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             this.fired = sdf.parse(fired);
         } catch (ParseException e) {
             System.out.println("wrong fired date");
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 e.printStackTrace();
             }
         }

@@ -1,12 +1,12 @@
 package gamesmanager.beans;
 
-public class GameType extends Type{
+public class GameType extends Type {
 
-    public GameType(int typeid){
+    public GameType(int typeid) {
         super(typeid);
     }
 
-    public GameType(String type){
+    public GameType(String type) {
         super(type);
     }
 
@@ -20,9 +20,9 @@ public class GameType extends Type{
 
         StringBuffer retValue = new StringBuffer();
 
-        retValue.append("EmployeeType ( ")
-                .append("typeid = ").append(this.typeid).append(TAB).append(
-                        "type = ").append(this.type).append(TAB).append(" )");
+        retValue.append("EmployeeType ( ").append("typeid = ").append(
+                this.typeid).append(TAB).append("type = ").append(this.type)
+                .append(TAB).append(" )");
 
         return retValue.toString();
     }

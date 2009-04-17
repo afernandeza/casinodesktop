@@ -11,6 +11,7 @@ import gamesmanager.ui.Helpers;
 import gamesmanager.ui.ImageFilter;
 import gamesmanager.ui.ImagePanel;
 import gamesmanager.ui.layout.SpringUtilities;
+import gamesmanager.ui.session.Session;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -148,7 +149,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 "<html><b>N" + Helpers.UACUTE + "mero interior:</b></html>",
                 "<html><b>Colonia:</b></html>",
                 "<html><b>Municipio o delegaci" + Helpers.OACUTE
-                + "n:</b></html>",
+                        + "n:</b></html>",
                 "<html><b>C" + Helpers.OACUTE + "digo postal:</b></html>",
                 "<html><b>Estado:</b></html>",
                 "<html><b>Pa" + Helpers.IACUTE + "s:</b></html>",
@@ -183,7 +184,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         fecha = new JDateChooser();
         fecha.setLocale(Locale.getDefault());
         JTextFieldDateEditor editor = (JTextFieldDateEditor) fecha
-        .getDateEditor();
+                .getDateEditor();
         editor.setEditable(false);
         editor.setFocusable(false);
         fecha.setDateFormatString("yyyy-MM-dd");
@@ -313,6 +314,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
 
             Type et = this.e.getEmployeetype();
             this.types.setSelectedItem(et);
+            this.types.setEnabled(Session.mayChangeUserType());
         }
 
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
@@ -384,7 +386,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                     this.dispose();
                 } else {
                     GuiDialogs
-                    .showErrorMessage("El nuevo empleado no ha sido insertado.");
+                            .showErrorMessage("El nuevo empleado no ha sido insertado.");
                 }
             }
         } else if (o == cancel) {
@@ -421,11 +423,11 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                         employeeviewer.search();
                     }
                     GuiDialogs
-                    .showSuccessMessage("Cambios guardados exitosamente.");
+                            .showSuccessMessage("Cambios guardados exitosamente.");
                     this.dispose();
                 } else {
                     GuiDialogs
-                    .showErrorMessage("Los cambios no han sido guardados.");
+                            .showErrorMessage("Los cambios no han sido guardados.");
                 }
             }
         }

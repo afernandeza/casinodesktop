@@ -47,7 +47,7 @@ public class LoginForm extends JPanel implements KeyListener, ActionListener {
 
         centerc.gridy++;
         this.add(errormsg);
-        
+
         JPanel loginform = new JPanel(new SpringLayout());
         String[] labels = { "<html><b>Usuario:</b></html>",
                 "<html><b>Contrase" + Helpers.NTILDE + "a:</b></html>" };

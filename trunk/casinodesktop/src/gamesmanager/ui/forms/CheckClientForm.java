@@ -9,15 +9,19 @@ import gamesmanager.ui.Helpers;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
-public class CheckClientForm extends JPanel implements KeyListener {
+public class CheckClientForm extends JPanel implements KeyListener,
+        ActionListener {
 
     private static final long serialVersionUID = 1L;
     private JTextField memberid;
@@ -28,9 +32,9 @@ public class CheckClientForm extends JPanel implements KeyListener {
             "Actualizar informaci" + Helpers.OACUTE + "n personal",
             "Administrar fichas", "Dar de baja" };
     public String INSTRUCTIONS = "Cliente encontrado, " + "seleccione qu"
-    + Helpers.EACUTE + " desea hacer:";
+            + Helpers.EACUTE + " desea hacer:";
     public String DELETE_CONFIRMATION = Helpers.OQUESTIONM + "Est"
-    + Helpers.AACUTE + " seguro que desea borrar al miembro ";
+            + Helpers.AACUTE + " seguro que desea borrar al miembro ";
 
     public CheckClientForm() {
         super(new GridBagLayout());
@@ -57,10 +61,15 @@ public class CheckClientForm extends JPanel implements KeyListener {
         c.gridx = 0;
         c.gridwidth = 2;
 
-        this.add(new JLabel(" "), c);
-        c.gridy = 2;
-        this.add(syncpb, c);
-        syncpb.setVisible(false);
+        // this.add(new JLabel(" "), c);
+        // c.gridy = 2;
+        // this.add(syncpb, c);
+        // syncpb.setVisible(false);
+
+        JButton buscar = new JButton("Buscar");
+        c.gridy = 3;
+        this.add(buscar, c);
+        buscar.addActionListener(this);
 
         this.setBackground(Helpers.LIGHTBLUE);
         this.memberid.addKeyListener(this);
@@ -85,10 +94,11 @@ public class CheckClientForm extends JPanel implements KeyListener {
                 if (client.isLocal()) {
                     this.errormsg.setForeground(Helpers.LIGHTBLUE);
                     // member found
-                    String s = GuiDialogs.showInputDialog(INSTRUCTIONS,
+                    Object o = GuiDialogs.showInputDialog(INSTRUCTIONS,
                             OPTIONS, 0);
 
-                    if ((s != null) && (s.length() > 0)) {
+                    if (o != null) {
+                        String s = o.toString();
                         if (s.equals(OPTIONS[0])) {
                             // Actualizar
                             ClientInfoForm form = new ClientInfoForm(client);
@@ -101,9 +111,9 @@ public class CheckClientForm extends JPanel implements KeyListener {
                         } else if (s.equals(OPTIONS[2])) {
                             // Dar de baja
                             int n = GuiDialogs
-                            .showConfirmDialog(DELETE_CONFIRMATION
-                                    + client.getFullName()
-                                    + Helpers.CQUESTIONM);
+                                    .showConfirmDialog(DELETE_CONFIRMATION
+                                            + client.getFullName()
+                                            + Helpers.CQUESTIONM);
                             if (n == 0) {
                                 // confirmar
                                 if (ClientManager.deleteClient(client.getId())) {
@@ -122,8 +132,8 @@ public class CheckClientForm extends JPanel implements KeyListener {
                     }
                 } else {
                     GuiDialogs
-                    .showSuccessMessage("El cliente ha sido encontrado y pertenece a la sucursal "
-                            + client.getSucursal());
+                            .showSuccessMessage("El cliente ha sido encontrado y pertenece a la sucursal "
+                                    + client.getSucursal());
                 }
             } else {
                 GuiDialogs.errorBeep();
@@ -146,6 +156,11 @@ public class CheckClientForm extends JPanel implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        this.findMember();
     }
 
 }

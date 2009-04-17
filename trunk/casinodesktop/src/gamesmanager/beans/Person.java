@@ -84,18 +84,18 @@ public class Person {
         return foto;
     }
 
-    public void setFoto(byte[] array){
+    public void setFoto(byte[] array) {
         this.fotoarray = array;
     }
-    
-    public ImageIcon getFotoImageIcon(){
+
+    public ImageIcon getFotoImageIcon() {
         this.ii = new ImageIcon(this.fotoarray);
-        if(this.ii == null){
+        if (this.ii == null) {
             throw new NullPointerException("Foto no ha sido creado");
         }
         return this.ii;
     }
-    
+
     public void setFoto(File foto) {
         this.foto = foto;
     }
@@ -238,10 +238,10 @@ public class Person {
 
         return retValue.toString();
     }
-    
-    public int getFotoSize(){
-        if (this.foto != null){
-            return (int)this.foto.length();
+
+    public int getFotoSize() {
+        if (this.foto != null) {
+            return (int) this.foto.length();
         } else {
             return this.fotoarray.length;
         }
@@ -249,7 +249,7 @@ public class Person {
 
     public InputStream getNewFotoInputStream() {
         try {
-            if(this.foto == null){
+            if (this.foto == null) {
                 this.fotoInputStream = new ByteArrayInputStream(this.fotoarray);
             } else {
                 this.fotoInputStream = new FileInputStream(this.foto);
@@ -262,7 +262,7 @@ public class Person {
         }
         return this.fotoInputStream;
     }
-    
+
     public InputStream getCurrentFotoInputStream() {
         return this.fotoInputStream;
     }

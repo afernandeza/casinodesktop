@@ -28,7 +28,7 @@ public class ClientManager {
     private static String EDITCREDIT = "{? = call editcredit(?, ?)}";
     private static String CLIENTTYPE = "{? = call clienttype(?)}";
 
-    private static ExternalClient getExternalClient(String cid){
+    private static ExternalClient getExternalClient(String cid) {
         Connection conn = DatabaseManager.connect();
         PreparedStatement pstmt = null;
         if (conn == null) {
@@ -42,42 +42,43 @@ public class ClientManager {
             rs = pstmt.executeQuery();
             rs.next();
             String casinoid = rs.getString(1);
-            if(casinoid == null){
+            if (casinoid == null) {
                 return null;
-            }            
+            }
             c = new ExternalClient(casinoid, rs.getString(2));
-            
+
         } catch (SQLException e) {
             if (Helpers.DEBUG) {
                 // e.printStackTrace();
-                System.out.println("Error finding external client: " + e.getMessage());
+                System.out.println("Error finding external client: "
+                        + e.getMessage());
             }
         } finally {
             DatabaseManager.close(rs);
             DatabaseManager.close(pstmt);
             DatabaseManager.close(conn);
         }
-        return c;  
+        return c;
     }
-    
-    public static Client findClient(String cid){
+
+    public static Client findClient(String cid) {
         int type = getClientType(cid);
-        if(type == -1 || type == 3){
+        if (type == -1 || type == 3) {
             return null;
-        } else if (type == 1){
+        } else if (type == 1) {
             // this is a local client
             return getClient(cid);
-        } else if(type == 2){
+        } else if (type == 2) {
             // this is an external client
             return getExternalClient(cid);
         } else {
             // unknown
             return null;
         }
-            
+
     }
-    
-    public static int getClientType(String cid){
+
+    public static int getClientType(String cid) {
         Connection conn = DatabaseManager.connect();
         CallableStatement cs = null;
         if (conn == null) {
@@ -94,7 +95,8 @@ public class ClientManager {
         } catch (SQLException e) {
             if (Helpers.DEBUG) {
                 // e.printStackTrace();
-                System.out.println("Error getting client type: " + e.getMessage());
+                System.out.println("Error getting client type: "
+                        + e.getMessage());
             }
         } finally {
             DatabaseManager.close(cs);
@@ -102,13 +104,13 @@ public class ClientManager {
         }
         return -1;
     }
-    
-    public static boolean editCredit(String clientid, String amount){
+
+    public static boolean editCredit(String clientid, String amount) {
         BigDecimal bd = null;
-        try{
+        try {
             bd = new BigDecimal(amount);
-        } catch (NumberFormatException mfe){
-            if(Helpers.DEBUG){
+        } catch (NumberFormatException mfe) {
+            if (Helpers.DEBUG) {
                 mfe.printStackTrace();
             } else {
                 return false;
@@ -116,15 +118,15 @@ public class ClientManager {
         }
         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
         return editCredit(clientid, bd);
-        
+
     }
-    
-    public static boolean editCredit(String clientid, double amount){
+
+    public static boolean editCredit(String clientid, double amount) {
         BigDecimal bd = null;
-        try{
+        try {
             bd = new BigDecimal(amount);
-        } catch (NumberFormatException mfe){
-            if(Helpers.DEBUG){
+        } catch (NumberFormatException mfe) {
+            if (Helpers.DEBUG) {
                 mfe.printStackTrace();
             } else {
                 return false;
@@ -133,8 +135,8 @@ public class ClientManager {
         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
         return editCredit(clientid, bd);
     }
-    
-    public static boolean editCredit(String clientid, BigDecimal amount){
+
+    public static boolean editCredit(String clientid, BigDecimal amount) {
         if (clientid == null) {
             if (Helpers.DEBUG) {
                 throw new NullPointerException("clientid nulo");
@@ -149,7 +151,7 @@ public class ClientManager {
                 return false;
             }
         }
-        if(!(amount instanceof BigDecimal)){
+        if (!(amount instanceof BigDecimal)) {
             if (Helpers.DEBUG) {
                 throw new IllegalArgumentException("cantidad incorrecta");
             } else {
@@ -181,7 +183,7 @@ public class ClientManager {
         }
         return false;
     }
-    
+
     public static boolean insertClient(Client c) {
         if (c == null) {
             if (Helpers.DEBUG) {
@@ -208,11 +210,11 @@ public class ClientManager {
 
             File foto = c.getSelectedFoto();
             InputStream is = c.getNewFotoInputStream();
-            
+
             if (is != null) {
                 cs.setBinaryStream(8, is, (int) foto.length());
             } else {
-                if(Helpers.DEBUG){
+                if (Helpers.DEBUG) {
                     throw new NullPointerException("Foto es null");
                 }
             }
@@ -268,7 +270,6 @@ public class ClientManager {
             cs.setString(7, c.getSexo() + "");
             cs.setDate(8, new Date(c.getFechanac().getTime()));
 
-            
             InputStream is = c.getNewFotoInputStream();
             if (is != null) {
                 cs.setBinaryStream(9, is, c.getFotoSize());
@@ -325,9 +326,9 @@ public class ClientManager {
             pstmt.setString(1, id);
             rs = pstmt.executeQuery();
             rs.next();
-            if(rs.getString(1) == null){
+            if (rs.getString(1) == null) {
                 return null;
-            }            
+            }
             c = new Client();
             c.setId(rs.getString(1));
             c.setNombres(rs.getString(2));
@@ -335,9 +336,9 @@ public class ClientManager {
             c.setApmaterno(rs.getString(4));
             c.setSexo(rs.getString(5));
             c.setFechanac(rs.getDate(6));
-            
+
             c.setFoto(rs.getBytes(7));
-            
+
             c.setTelcasa(rs.getString(8));
             c.setTelcel(rs.getString(9));
             c.setMembersince(rs.getString(10));

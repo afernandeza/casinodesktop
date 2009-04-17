@@ -49,7 +49,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public void setPassword(char[] password) {
         String s = new String(password);
         this.password = s.trim();

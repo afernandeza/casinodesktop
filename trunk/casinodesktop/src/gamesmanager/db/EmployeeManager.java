@@ -20,45 +20,46 @@ import java.util.List;
 public class EmployeeManager {
 
     private static String INSERT = "{? = call insertemployee(?, ?, ?, ?, ?, ?, ?,"
-        + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+            + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String UPDATE = "{? = call updateemployee(?, ?, ?, ?, ?, ?, ?,"
-        + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+            + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static String FIND = "SELECT * FROM findemployee(?)";
-    
+
     private static String DEACTIVATEACCOUNT = "{? = call deactivateaccount(?)}";
     private static String REACTIVATEACCOUNT = "{? = call reactivateaccount(?)}";
     private static String FIRETEMPORARILY = "{? = call firetemporarily(?)}";
     private static String REHIRE = "{? = call rehire(?)}";
-    
+
     private static String GETEMPLOYEETYPES = "SELECT * FROM tipoempleados "
-        + "ORDER BY tipo";
-    
+            + "ORDER BY tipo";
+
     public static String GETEMPSUMMARY = "SELECT * FROM employeessummary ORDER BY nombre";
     public static String EMPSUMMARYCOUNT = "SELECT COUNT(*) from employeessummary";
-    
+
     public static String SEARCH = "SELECT * from searchemployees(?)";
     public static String SEARCHCOUNT = "SELECT COUNT(*) from searchemployees(?)";
-    
-    public static String[] EMPLOYEECOLUMNS = {"ID", "Tipo", "Nombre", "Usuario", 
-        "Us. activo", "Fecha alta", "Tel. Casa", "Tel. Celular", "Despedido",};
-    
-    public static boolean deactivateAccount(String eid){
+
+    public static String[] EMPLOYEECOLUMNS = { "ID", "Tipo", "Nombre",
+            "Usuario", "Us. activo", "Fecha alta", "Tel. Casa", "Tel. Celular",
+            "Despedido", };
+
+    public static boolean deactivateAccount(String eid) {
         return DatabaseOperations.runStoredProcedure(eid, DEACTIVATEACCOUNT);
     }
-    
-    public static boolean reactivateAccount(String eid){
+
+    public static boolean reactivateAccount(String eid) {
         return DatabaseOperations.runStoredProcedure(eid, REACTIVATEACCOUNT);
     }
-    
-    public static boolean fireTemporarily(String eid){
+
+    public static boolean fireTemporarily(String eid) {
         return DatabaseOperations.runStoredProcedure(eid, FIRETEMPORARILY);
     }
-    
-    public static boolean rehire(String eid){
+
+    public static boolean rehire(String eid) {
         return DatabaseOperations.runStoredProcedure(eid, REHIRE);
     }
 
-    public static Object[][] searchEmployees(String s){
+    public static Object[][] searchEmployees(String s) {
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
             return new Object[0][0];
@@ -71,16 +72,16 @@ public class EmployeeManager {
             query = conn.prepareStatement(SEARCH);
             query.setString(1, s);
         } catch (SQLException e) {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 e.printStackTrace();
             }
             return new Object[0][0];
         }
-        
+
         return DatabaseOperations.getResults(rowcount, query);
     }
-    
-    public static Object[][] getEmployeesSummary(){
+
+    public static Object[][] getEmployeesSummary() {
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
             return new Object[0][0];
@@ -91,16 +92,16 @@ public class EmployeeManager {
             rowcount = conn.prepareStatement(EMPSUMMARYCOUNT);
             query = conn.prepareStatement(GETEMPSUMMARY);
         } catch (SQLException e) {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 e.printStackTrace();
             }
             return new Object[0][0];
         }
-        
+
         return DatabaseOperations.getResults(rowcount, query);
     }
 
-    public static List<Type> getEmployeeTypes(){
+    public static List<Type> getEmployeeTypes() {
         return DatabaseOperations.getTypes(GETEMPLOYEETYPES);
     }
 
@@ -133,7 +134,7 @@ public class EmployeeManager {
             if (is != null) {
                 cs.setBinaryStream(7, is, (int) foto.length());
             } else {
-                if(Helpers.DEBUG){
+                if (Helpers.DEBUG) {
                     throw new NullPointerException("Foto es null");
                 }
             }
@@ -162,7 +163,8 @@ public class EmployeeManager {
         } catch (SQLException sqle) {
             if (Helpers.DEBUG) {
                 // e.printStackTrace();
-                System.out.println("Error inserting employee: " + sqle.getMessage());
+                System.out.println("Error inserting employee: "
+                        + sqle.getMessage());
             }
         } finally {
             DatabaseManager.close(cs);
@@ -212,9 +214,9 @@ public class EmployeeManager {
             }
             e.setSexo(rs.getString(5));
             e.setFechanac(rs.getDate(6));
-            
+
             e.setFoto(rs.getBytes(7));
-            
+
             e.setTelcasa(rs.getString(8));
             e.setTelcel(rs.getString(9));
             e.setHired(rs.getDate(10));
@@ -236,7 +238,7 @@ public class EmployeeManager {
             a.setPais(rs.getString(19));
 
             e.setAddress(a);
-            User u = new User(rs.getInt(20), rs.getString(21), 
+            User u = new User(rs.getInt(20), rs.getString(21),
                     rs.getString(22), rs.getBoolean(23));
             u.setExterno(rs.getBoolean(24));
             e.setUser(u);
@@ -310,7 +312,8 @@ public class EmployeeManager {
         } catch (SQLException sqle) {
             if (Helpers.DEBUG) {
                 // e.printStackTrace();
-                System.out.println("Error updating employee: " + sqle.getMessage());
+                System.out.println("Error updating employee: "
+                        + sqle.getMessage());
             }
         } finally {
             DatabaseManager.close(cs);

@@ -10,14 +10,19 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 public class SessionManager {
-    
-    public static String[] TABLECOLUMNS = {"ID", "ID Mesa", "Juego", "Fichas inicio",
-        "Fichas cierre", "Responsable", "Apertura", "Cierre"};
+
+    public static String[] TABLECOLUMNS = { "ID", "ID Mesa", "Juego",
+            "Fichas inicio", "Fichas cierre", "Responsable", "Apertura",
+            "Cierre" };
     private static String GETSESSIONCOUNT = "SELECT COUNT(*) FROM sesionesinfo";
     private static String GETSESSIONS = "SELECT * FROM sesionesinfo";
     private static String INSERT = "{ ? = call insertgamesession( ?, ?, ?) }";
-    private static String CLOSE = "{ ? = call closegamesession( ? ) }";
-    
+    private static String CLOSE = "{ ? = call closegamesession( ? , ?) }";
+
+    public static boolean closeGameSession(int gamdeid, double fichas) {
+        return true;
+    }
+
     public static boolean startGameSession(GameSession gs) {
         if (gs == null) {
             if (Helpers.DEBUG) {
@@ -44,7 +49,8 @@ public class SessionManager {
         } catch (SQLException e) {
             if (Helpers.DEBUG) {
                 // e.printStackTrace();
-                System.out.println("Error inserting session: " + e.getMessage());
+                System.out
+                        .println("Error inserting session: " + e.getMessage());
             }
         } finally {
             DatabaseManager.close(cs);
@@ -52,12 +58,8 @@ public class SessionManager {
         }
         return false;
     }
-    
-    public static boolean closeGameSession(int sessionid) {
-        return DatabaseOperations.runStoredProcedure(sessionid, CLOSE);
-    }
-    
-    public static Object[][] getGameSessions(){
+
+    public static Object[][] getGameSessions() {
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
             return new Object[0][0];
@@ -68,12 +70,12 @@ public class SessionManager {
             rowcount = conn.prepareStatement(GETSESSIONCOUNT);
             query = conn.prepareStatement(GETSESSIONS);
         } catch (SQLException e) {
-            if(Helpers.DEBUG){
+            if (Helpers.DEBUG) {
                 e.printStackTrace();
             }
             return new Object[0][0];
         }
-        
+
         return DatabaseOperations.getResults(rowcount, query);
     }
 }

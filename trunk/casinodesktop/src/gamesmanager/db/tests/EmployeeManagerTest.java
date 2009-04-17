@@ -14,20 +14,20 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class EmployeeManagerTest {
-    
+
     @Test
-    public void testGetEmployees(){
+    public void testGetEmployees() {
         Object[][] o = EmployeeManager.getEmployeesSummary();
         Assert.assertNotNull(o);
-        for(int i = 0; i < o.length; i++){
+        for (int i = 0; i < o.length; i++) {
             System.out.println("row");
-            for(int j = 0; j < o[0].length; j++){
+            for (int j = 0; j < o[0].length; j++) {
                 System.out.println(o[i][j]);
             }
         }
     }
 
-    //@Test
+    // @Test
     public void testInsertEmployee() {
         Employee c = new Employee();
         c.setNombres("Bastard");
@@ -38,7 +38,7 @@ public class EmployeeManagerTest {
         c.setFoto(new File("/Users/afa/Desktop/pics/8423.729.486.jpg"));
         c.setTelcasa("5536051150");
         c.setTelcel("0445554534335");
-        
+
         Address d = new Address();
         d.setCallenum("av club de golf lomas 8");
         d.setNumint("mz 3 lt 7");
@@ -47,29 +47,29 @@ public class EmployeeManagerTest {
         d.setCodigopostal("52779");
         d.setEstado("Edo Mex");
         d.setPais("Mexico");
-        
+
         c.setAddress(d);
-        
+
         User u = new User("afa", "afameister");
         c.setUser(u);
-        
+
         EmployeeType et = new EmployeeType(1);
         c.setEmployeetype(et);
-        
+
         Assert.assertTrue(EmployeeManager.insertEmployee(c));
     }
 
-    //@Test
+    // @Test
     public void testFindEmployee() {
         assertNull(EmployeeManager.findEmployee("asdf"));
     }
 
-    //@Test
+    // @Test
     public void testFindEmployee2() {
         assertNotNull(EmployeeManager.findEmployee("SUCA_E17"));
     }
-    
-    //@Test
+
+    // @Test
     public void testUpdate() {
         Employee c = new Employee();
         c.setId("SUCA_E18");
@@ -81,7 +81,7 @@ public class EmployeeManagerTest {
         c.setFoto(new File("/Users/afa/Desktop/pics/8423.729.486.jpg"));
         c.setTelcasa("5536051150");
         c.setTelcel("0445554534335");
-        
+
         Address d = new Address();
         d.setCallenum("memorial shit");
         d.setNumint("mz 123");
@@ -90,15 +90,15 @@ public class EmployeeManagerTest {
         d.setCodigopostal("10710");
         d.setEstado("MA");
         d.setPais("USA");
-        
+
         c.setAddress(d);
-        
+
         User u = new User("afa3");
         c.setUser(u);
-        
+
         EmployeeType et = new EmployeeType(2);
         c.setEmployeetype(et);
-        
+
         Assert.assertTrue(EmployeeManager.updateEmployee(c));
     }
 

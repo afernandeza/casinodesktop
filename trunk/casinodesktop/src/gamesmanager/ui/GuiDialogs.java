@@ -16,12 +16,12 @@ public class GuiDialogs {
     private static final ImageIcon WARNING = Helpers.createImage(
             "images/warningicon.png", GuiDialogs.class);
     private static final String PERM_ERROR = "Usted no cuenta con los permisos suficientes "
-        + "para realizar la operaci" + Helpers.OACUTE + "n deseada.";
+            + "para realizar la operaci" + Helpers.OACUTE + "n deseada.";
 
-    public static void errorBeep(){
+    public static void errorBeep() {
         Toolkit.getDefaultToolkit().beep();
     }
-    
+
     public static void showFormErrorMessage(String msg) {
         errorBeep();
         JOptionPane.showMessageDialog(null, msg, "Error al introducir datos",
@@ -39,30 +39,35 @@ public class GuiDialogs {
                 + "n", JOptionPane.INFORMATION_MESSAGE, INFO);
     }
 
-    public static String showInputDialog(String instructions, Object[] options,
+    public static Object showInputDialog(String instructions, Object[] options,
             int defindex) {
         if (defindex < 0 || defindex >= options.length) {
             if (Helpers.DEBUG) {
                 throw new IllegalArgumentException("opcion default invalida");
             }
         }
-        return (String) JOptionPane.showInputDialog(null, instructions,
-                "Opciones", JOptionPane.QUESTION_MESSAGE, QUESTION, options,
+        return JOptionPane.showInputDialog(null, instructions, "Opciones",
+                JOptionPane.QUESTION_MESSAGE, QUESTION, options,
                 options[defindex]);
+    }
+
+    public static Object showInputDialog(String instructions, Object[] options,
+            Object selected) {
+        return JOptionPane.showInputDialog(null, instructions, "Opciones",
+                JOptionPane.QUESTION_MESSAGE, QUESTION, options, selected);
 
     }
 
-    public static String showInputDialog(String instructions, Object[] options,
-            Object selected) {
-        return (String) JOptionPane.showInputDialog(null, instructions,
-                "Opciones", JOptionPane.QUESTION_MESSAGE, QUESTION, options,
-                selected);
+    public static Object showInputDialog(String instructions) {
+        return JOptionPane.showInputDialog(null, instructions, "Opciones",
+                JOptionPane.QUESTION_MESSAGE, QUESTION, null, null);
 
     }
 
     public static int showConfirmDialog(String msg) {
         return JOptionPane.showConfirmDialog(null, msg, "Confirmar",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, WARNING);
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                WARNING);
     }
 
     public static void showPermissionsError() {

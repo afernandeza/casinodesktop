@@ -89,13 +89,13 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
 
         buttonPane.setOpaque(true);
         buttonPane.setBackground(Helpers.LIGHTBLUE);
-        
+
         p.add(listScrollPane, BorderLayout.CENTER);
         p.add(buttonPane, BorderLayout.PAGE_END);
 
         p.setOpaque(true);
         p.setBackground(Helpers.LIGHTBLUE);
-        
+
         this.setContentPane(p);
         Helpers.setIcon(this);
         this.pack();
@@ -115,8 +115,9 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
             if (GameTypeManager.deleteGameType(ename)) {
                 listModel.remove(index);
             } else {
-                GuiDialogs.showErrorMessage("No se puede borrar este tipo de juego porque \n" +
-                		"hay al menos una mesa de juego que lo ofrece."); 
+                GuiDialogs
+                        .showErrorMessage("No se puede borrar este tipo de juego porque \n"
+                                + "hay al menos una mesa de juego que lo ofrece.");
             }
 
             int size = listModel.getSize();
@@ -151,8 +152,9 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
 
             // User didn't type in a unique name...
             if (name.equals("") || alreadyInList(name)) {
-                GuiDialogs.showErrorMessage("No se pudo agregar el tipo de juego pues el nombre \n" +
-                "es incorrecto o ya existe en la base de datos.");
+                GuiDialogs
+                        .showErrorMessage("No se pudo agregar el tipo de juego pues el nombre \n"
+                                + "es incorrecto o ya existe en la base de datos.");
                 employeeName.requestFocusInWindow();
                 employeeName.selectAll();
                 return;

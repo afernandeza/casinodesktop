@@ -19,6 +19,8 @@ public class SyncForm extends JFrame implements ActionListener {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
+        //admin sucursales 
+        
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
         this.pack();
         this.setSize(this.getWidth() + Helpers.XOFFSET, this.getHeight()

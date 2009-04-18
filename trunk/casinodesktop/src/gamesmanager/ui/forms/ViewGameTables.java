@@ -138,8 +138,6 @@ public class ViewGameTables extends JFrame implements ActionListener,
                     int tid = Integer.parseInt(newid);
                     Type t = (Type) this.newgametype.getSelectedItem();
                     int gtid = t.getTypeid();
-                    System.out.println("inserting table with id " + tid
-                            + " and gtid " + gtid);
                     GameTable gt = new GameTable(tid, gtid);
                     if (TableManager.insertGameTable(gt)) {
                         this.refreshData();
@@ -251,13 +249,13 @@ public class ViewGameTables extends JFrame implements ActionListener,
                         Object[] o = GameTypeManager.getGameTypes().toArray();
                         Object ntopt = GuiDialogs.showInputDialog(
                                 "Seleccione el nuevo tipo de juego "
-                                        + "para la mesa:", o, 0).toString();
+                                        + "para la mesa:", o, 0);
                         if ((ntopt != null)) {
-                            GameTable newgt = (GameTable) ntopt;
+                            Type newgt = (Type) ntopt;
                             if (Session.mayUpdateGameTable()) {
-                                if (TableManager.updateGameTable(newgt)) {
-                                    System.out.println("updating shit with "
-                                            + newgt);
+                                if (TableManager.updateGameTable(tid, newgt.getTypeid())) {
+                                    this.refreshData();
+                                    GuiDialogs.showSuccessMessage("Mesa actualizada correctamente.");
                                 } else {
                                     GuiDialogs
                                             .showErrorMessage("No se pudo cambiar el tipo de juego.");

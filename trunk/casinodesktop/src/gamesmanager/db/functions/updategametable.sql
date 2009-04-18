@@ -1,8 +1,8 @@
--- Function: updategametable(integer, numeric)
+-- Function: updategametable(integer, integer)
 
--- DROP FUNCTION updategametable(integer, numeric);
+-- DROP FUNCTION updategametable(integer, integer);
 
-CREATE OR REPLACE FUNCTION updategametable(id integer, gt numeric)
+CREATE OR REPLACE FUNCTION updategametable(id integer, gt integer)
   RETURNS boolean AS
 $BODY$
 BEGIN
@@ -11,4 +11,4 @@ return true;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
-ALTER FUNCTION updategametable(integer, numeric) OWNER TO casindesktopapp;
+ALTER FUNCTION updategametable(integer, integer) OWNER TO casindesktopapp;

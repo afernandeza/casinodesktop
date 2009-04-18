@@ -30,6 +30,7 @@ public class ChipManager extends JFrame implements ActionListener {
     private JButton restar;
     private Client client;
     private BigDecimal validatedAmount;
+    private JLabel ccliente;
 
     public ChipManager(Client client) {
         super("Administrar fichas");
@@ -48,7 +49,7 @@ public class ChipManager extends JFrame implements ActionListener {
         c.gridwidth = 2;
         this.add(ncliente, c);
 
-        JLabel ccliente = new JLabel("<html><b>Cr" + Helpers.EACUTE + "dito: "
+        ccliente = new JLabel("<html><b>Cr" + Helpers.EACUTE + "dito: "
                 + client.getCredito() + "</b></html>");
         amount = new JTextField(6);
         sumar = new JButton("Agregar cr" + Helpers.EACUTE + "dito");
@@ -95,7 +96,6 @@ public class ChipManager extends JFrame implements ActionListener {
             Object o = e.getSource();
             if (sumar.equals(o) || restar.equals(o)) {
                 int n = GuiDialogs.showConfirmDialog(EDIT_CONFIRMATION);
-                System.out.println("n: " + n);
                 if (n == 0) {
                     boolean result = false;
                     if (sumar.equals(o)) {
@@ -106,9 +106,11 @@ public class ChipManager extends JFrame implements ActionListener {
                                 this.validatedAmount.negate());
                     }
                     if (result) {
-                        GuiDialogs.showSuccessMessage("Cr" + Helpers.EACUTE
+                        Client c = ClientManager.findClient(this.client.getId());
+                        GuiDialogs.showSuccessMessage("<html>El nuevo cr" + Helpers.EACUTE
                                 + "dito de " + client.getFullName()
-                                + " editado.");
+                                + " es <b>" + c.getCredito() +"</b></html>");
+                        this.dispose();
                     } else {
                         GuiDialogs.showErrorMessage("Cr" + Helpers.EACUTE
                                 + "dito de " + client.getFullName()
@@ -116,6 +118,8 @@ public class ChipManager extends JFrame implements ActionListener {
                     }
                 }
             }
+        } else {
+            GuiDialogs.showErrorMessage("Escriba una cantidad num" +Helpers.EACUTE+"rica.");
         }
     }
 }

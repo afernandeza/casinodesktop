@@ -17,7 +17,7 @@ public class TableManager {
     private static String INSERT = "{ ? = call insertgametable( ?, ? ) }";
     private static String DELETE = "{ ? = call deletegametable( ? ) }";
     private static String UPDATE = "{ ? = call updategametable( ?, ? ) }";
- 
+
     public static boolean updateGameTable(int tableid, int gametypeid) {
         Connection conn = DatabaseManager.connect();
         CallableStatement cs = null;
@@ -101,5 +101,17 @@ public class TableManager {
         }
 
         return DatabaseOperations.getResults(rowcount, query);
+    }
+
+    public static GameTable[] getTablesArray() {
+        Object[][] o = getTables();
+        GameTable[] s = new GameTable[o.length];
+        for (int i = 0; i < o.length; i++) {
+            GameTable e = new GameTable();
+            e.setTableid(o[i][0].toString());
+            e.setGame(o[i][1].toString());
+            s[i] = e;
+        }
+        return s;
     }
 }

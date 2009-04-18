@@ -104,8 +104,8 @@ public class Session {
             return false;
         }
     }
-    
-    public static boolean mayDeleteGameTable(){
+
+    public static boolean mayDeleteGameTable() {
         // administradores y gerentes
         if (session.et.getTypeid() <= 2) {
             return true;
@@ -113,8 +113,8 @@ public class Session {
             return false;
         }
     }
-    
-    public static boolean mayUpdateGameTable(){
+
+    public static boolean mayUpdateGameTable() {
         // administradores y gerentes
         if (session.et.getTypeid() <= 2) {
             return true;
@@ -122,8 +122,8 @@ public class Session {
             return false;
         }
     }
-    
-    public static boolean mayChangeUserType(){
+
+    public static boolean mayChangeUserType() {
         // administradores y gerentes
         if (session.et.getTypeid() <= 2) {
             return true;

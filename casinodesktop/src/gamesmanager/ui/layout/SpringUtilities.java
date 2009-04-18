@@ -77,9 +77,9 @@ public class SpringUtilities {
         try {
             layout = (SpringLayout) parent.getLayout();
         } catch (ClassCastException exc) {
-            if(Helpers.DEBUG){
-            System.err
-                    .println("The first argument to makeGrid must use SpringLayout.");
+            if (Helpers.DEBUG) {
+                System.err
+                        .println("The first argument to makeGrid must use SpringLayout.");
             }
             return;
         }
@@ -181,9 +181,9 @@ public class SpringUtilities {
         try {
             layout = (SpringLayout) parent.getLayout();
         } catch (ClassCastException exc) {
-            if(Helpers.DEBUG){
-            System.err
-                    .println("The first argument to makeCompactGrid must use SpringLayout.");
+            if (Helpers.DEBUG) {
+                System.err
+                        .println("The first argument to makeCompactGrid must use SpringLayout.");
             }
             return;
         }

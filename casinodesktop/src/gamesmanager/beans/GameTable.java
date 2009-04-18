@@ -4,6 +4,11 @@ public class GameTable {
 
     private int tableid;
     private GameType gameType;
+    private String game;
+
+    public GameTable() {
+
+    }
 
     public GameTable(int tableid, int gameTypeid) {
         super();
@@ -21,6 +26,10 @@ public class GameTable {
         return tableid;
     }
 
+    public void setTableid(String tableid) {
+        this.tableid = Integer.parseInt(tableid);
+    }
+
     public void setTableid(int tableid) {
         this.tableid = tableid;
     }
@@ -31,6 +40,14 @@ public class GameTable {
 
     public void setGameType(GameType gameType) {
         this.gameType = gameType;
+    }
+
+    public String getGame() {
+        return game;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
     }
 
 }

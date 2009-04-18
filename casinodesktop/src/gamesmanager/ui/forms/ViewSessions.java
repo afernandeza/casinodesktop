@@ -1,6 +1,10 @@
 package gamesmanager.ui.forms;
 
+import gamesmanager.beans.Employee;
+import gamesmanager.beans.GameTable;
+import gamesmanager.db.EmployeeManager;
 import gamesmanager.db.SessionManager;
+import gamesmanager.db.TableManager;
 import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 
@@ -13,10 +17,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
@@ -34,11 +42,48 @@ public class ViewSessions extends JFrame implements ActionListener,
     private SessionsTableModel etm;
     private Object[][] sessions = null;
 
+    private JComboBox tableselector;
+    private JTextField startchips;
+    private JComboBox empselector;
+    private JButton newsessionbutton;
+
     public ViewSessions() {
         super("Administrar Sesiones de Juego");
         this.setLayout(new GridBagLayout());
         c.gridx = 0;
         c.gridy = 0;
+
+        JPanel newtablepanel = new JPanel();
+        JLabel idlabel = new JLabel("<html><b>Mesa:</b></html>");
+        newtablepanel.add(idlabel);
+
+        tableselector = new JComboBox();
+        for (GameTable gt : TableManager.getTablesArray()) {
+            tableselector.addItem(gt.getTableid() + " " + gt.getGame());
+        }
+        newtablepanel.add(tableselector);
+
+        JLabel sc = new JLabel("<html><b>Fichas inicio:</b></html>");
+        newtablepanel.add(sc);
+
+        startchips = new JTextField(5);
+        newtablepanel.add(startchips, c);
+        newtablepanel.setBackground(Helpers.LIGHTBLUE);
+
+        JLabel empl = new JLabel("<html><b>Responsable:</b></html>");
+        newtablepanel.add(empl);
+
+        empselector = new JComboBox();
+        for (Employee emp : EmployeeManager.getEmployeeNames()) {
+            empselector.addItem(emp.getNombres());
+        }
+        newtablepanel.add(empselector);
+
+        newsessionbutton = new JButton("Agregar sesi" + Helpers.OACUTE + "n");
+        newsessionbutton.addActionListener(this);
+        newtablepanel.add(newsessionbutton);
+
+        this.add(newtablepanel);
 
         JPanel tablepanel = new JPanel();
         tablepanel.setLayout(new GridLayout(1, 0));
@@ -109,8 +154,15 @@ public class ViewSessions extends JFrame implements ActionListener,
         this.etm.setData(this.sessions);
     }
 
+    public boolean validateForm() {
+        return true;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (this.validateForm()) {
+            System.out.println("agregando nueva sesion");
+        }
     }
 
     class SessionsTableModel extends AbstractTableModel {

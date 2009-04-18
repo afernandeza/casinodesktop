@@ -3,6 +3,7 @@ package gamesmanager.db;
 import gamesmanager.beans.GameSession;
 import gamesmanager.ui.Helpers;
 
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,8 +20,33 @@ public class SessionManager {
     private static String INSERT = "{ ? = call insertgamesession( ?, ?, ?) }";
     private static String CLOSE = "{ ? = call closegamesession( ? , ?) }";
 
-    public static boolean closeGameSession(int gamdeid, double fichas) {
-        return true;
+    public static boolean closeGameSession(int gameid, double fichas) {
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return false;
+        }
+        try {
+            cs = conn.prepareCall(CLOSE);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+
+            cs.setInt(2, gameid);
+            BigDecimal bd = new BigDecimal(fichas);
+            bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+            cs.setBigDecimal(3, bd);
+
+            cs.execute();
+            return cs.getBoolean(1);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error closing session: " + e.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return false;
     }
 
     public static boolean startGameSession(GameSession gs) {

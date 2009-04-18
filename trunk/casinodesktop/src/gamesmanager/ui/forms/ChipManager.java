@@ -106,10 +106,12 @@ public class ChipManager extends JFrame implements ActionListener {
                                 this.validatedAmount.negate());
                     }
                     if (result) {
-                        Client c = ClientManager.findClient(this.client.getId());
-                        GuiDialogs.showSuccessMessage("<html>El nuevo cr" + Helpers.EACUTE
-                                + "dito de " + client.getFullName()
-                                + " es <b>" + c.getCredito() +"</b></html>");
+                        Client c = ClientManager
+                                .findClient(this.client.getId());
+                        GuiDialogs.showSuccessMessage("<html>El nuevo cr"
+                                + Helpers.EACUTE + "dito de "
+                                + client.getFullName() + " es <b>"
+                                + c.getCredito() + "</b></html>");
                         this.dispose();
                     } else {
                         GuiDialogs.showErrorMessage("Cr" + Helpers.EACUTE
@@ -119,7 +121,8 @@ public class ChipManager extends JFrame implements ActionListener {
                 }
             }
         } else {
-            GuiDialogs.showErrorMessage("Escriba una cantidad num" +Helpers.EACUTE+"rica.");
+            GuiDialogs.showErrorMessage("Escriba una cantidad num"
+                    + Helpers.EACUTE + "rica.");
         }
     }
 }

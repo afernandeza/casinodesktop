@@ -81,6 +81,18 @@ public class EmployeeManager {
         return DatabaseOperations.getResults(rowcount, query);
     }
 
+    public static Employee[] getEmployeeNames() {
+        Object[][] o = getEmployeesSummary();
+        Employee[] s = new Employee[o.length];
+        for (int i = 0; i < o.length; i++) {
+            Employee e = new Employee();
+            e.setId(o[i][0].toString());
+            e.setNombres(o[i][2].toString());
+            s[i] = e;
+        }
+        return s;
+    }
+
     public static Object[][] getEmployeesSummary() {
         Connection conn = DatabaseManager.connect();
         if (conn == null) {

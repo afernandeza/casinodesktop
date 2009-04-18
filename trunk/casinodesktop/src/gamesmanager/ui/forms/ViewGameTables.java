@@ -253,9 +253,11 @@ public class ViewGameTables extends JFrame implements ActionListener,
                         if ((ntopt != null)) {
                             Type newgt = (Type) ntopt;
                             if (Session.mayUpdateGameTable()) {
-                                if (TableManager.updateGameTable(tid, newgt.getTypeid())) {
+                                if (TableManager.updateGameTable(tid, newgt
+                                        .getTypeid())) {
                                     this.refreshData();
-                                    GuiDialogs.showSuccessMessage("Mesa actualizada correctamente.");
+                                    GuiDialogs
+                                            .showSuccessMessage("Mesa actualizada correctamente.");
                                 } else {
                                     GuiDialogs
                                             .showErrorMessage("No se pudo cambiar el tipo de juego.");

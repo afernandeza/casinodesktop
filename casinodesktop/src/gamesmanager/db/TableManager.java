@@ -16,16 +16,9 @@ public class TableManager {
     private static String GETTABLES = "SELECT * FROM mesasinfo";
     private static String INSERT = "{ ? = call insertgametable( ?, ? ) }";
     private static String DELETE = "{ ? = call deletegametable( ? ) }";
-    private static String UPDATE = "{ ? = call updategametable( ? ) }";
-
-    public static boolean updateGameTable(GameTable gt) {
-        if (gt == null) {
-            if (Helpers.DEBUG) {
-                throw new NullPointerException("Mesa nula");
-            } else {
-                return false;
-            }
-        }
+    private static String UPDATE = "{ ? = call updategametable( ?, ? ) }";
+ 
+    public static boolean updateGameTable(int tableid, int gametypeid) {
         Connection conn = DatabaseManager.connect();
         CallableStatement cs = null;
         if (conn == null) {
@@ -35,8 +28,8 @@ public class TableManager {
             cs = conn.prepareCall(UPDATE);
             cs.registerOutParameter(1, Types.BOOLEAN);
 
-            cs.setInt(2, gt.getTableid());
-            cs.setInt(3, gt.getGameType().getTypeid());
+            cs.setInt(2, tableid);
+            cs.setInt(3, gametypeid);
 
             cs.execute();
             return cs.getBoolean(1);

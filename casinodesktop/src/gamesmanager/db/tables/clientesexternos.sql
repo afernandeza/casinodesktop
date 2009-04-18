@@ -6,6 +6,8 @@ CREATE TABLE clientesexternos
 (
   casinoid character varying(100) NOT NULL,
   clienteid character varying(100) NOT NULL,
+  credito numeric(15,2) NOT NULL,
+  nombre character varying(100) NOT NULL,
   CONSTRAINT clientesexternos_pkey PRIMARY KEY (casinoid, clienteid),
   CONSTRAINT clientesexternos_clienteid_key UNIQUE (clienteid)
 )

@@ -1,12 +1,14 @@
 package gamesmanager.ui.forms;
 
 import gamesmanager.beans.Employee;
+import gamesmanager.beans.GameSession;
 import gamesmanager.beans.GameTable;
 import gamesmanager.db.EmployeeManager;
 import gamesmanager.db.SessionManager;
 import gamesmanager.db.TableManager;
 import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
+import gamesmanager.ui.session.Session;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -47,6 +49,8 @@ public class ViewSessions extends JFrame implements ActionListener,
     private JComboBox empselector;
     private JButton newsessionbutton;
 
+    private GameSession gs = new GameSession();
+
     public ViewSessions() {
         super("Administrar Sesiones de Juego");
         this.setLayout(new GridBagLayout());
@@ -59,7 +63,7 @@ public class ViewSessions extends JFrame implements ActionListener,
 
         tableselector = new JComboBox();
         for (GameTable gt : TableManager.getTablesArray()) {
-            tableselector.addItem(gt.getTableid() + " " + gt.getGame());
+            tableselector.addItem(gt);
         }
         newtablepanel.add(tableselector);
 
@@ -75,7 +79,7 @@ public class ViewSessions extends JFrame implements ActionListener,
 
         empselector = new JComboBox();
         for (Employee emp : EmployeeManager.getEmployeeNames()) {
-            empselector.addItem(emp.getNombres());
+            empselector.addItem(emp);
         }
         newtablepanel.add(empselector);
 
@@ -155,13 +159,51 @@ public class ViewSessions extends JFrame implements ActionListener,
     }
 
     public boolean validateForm() {
-        return true;
+        String s = this.startchips.getText().trim();
+        if (!s.equals("")) {
+            try {
+                double d = Double.parseDouble(s);
+                gs.setFichasinicio(d);
+
+                Employee e = (Employee) this.empselector.getSelectedItem();
+                gs.setEmpleadoid(e.getId());
+                
+                GameTable gt = (GameTable) this.tableselector.getSelectedItem();
+                gs.setTableid(gt.getTableid());
+
+                return true;
+            } catch (Exception e) {
+                if (Helpers.DEBUG) {
+                    e.printStackTrace();
+                }
+                GuiDialogs.showErrorMessage("Escriba un valor num"
+                        + Helpers.EACUTE + "rico para el n" + Helpers.UACUTE
+                        + "mero de fichas de inicio.");
+            }
+        } else {
+            GuiDialogs.showErrorMessage("Escriba un valor num" + Helpers.EACUTE
+                    + "rico para el n" + Helpers.UACUTE
+                    + "mero de fichas de inicio.");
+        }
+        return false;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (this.validateForm()) {
-            System.out.println("agregando nueva sesion");
+            if (Session.mayOpenGameSession()) {
+                if (SessionManager.startGameSession(gs)) {
+                    this.refreshData();
+                    GuiDialogs.showSuccessMessage("La sesi" + Helpers.OACUTE
+                            + "n de juego ha sido iniciada exitosamente");
+                } else {
+                    GuiDialogs
+                            .showErrorMessage("No se ha podido iniciar la sesi"
+                                    + Helpers.OACUTE + "n de juego.");
+                }
+            } else {
+                GuiDialogs.showPermissionsError();
+            }
         }
     }
 

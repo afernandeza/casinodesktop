@@ -67,7 +67,7 @@ public class SessionManager {
             cs.registerOutParameter(1, Types.BOOLEAN);
 
             cs.setInt(2, gs.getTableid());
-            cs.setDouble(3, gs.getFichasinicio());
+            cs.setBigDecimal(3, gs.getFichasinicio());
             cs.setString(4, gs.getEmpleadoid());
 
             cs.execute();

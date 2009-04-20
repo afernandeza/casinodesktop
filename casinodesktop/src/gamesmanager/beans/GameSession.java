@@ -1,15 +1,20 @@
 package gamesmanager.beans;
 
+import java.math.BigDecimal;
+
 public class GameSession {
 
     private int sessionid;
     private int tableid;
-    private double fichasinicio;
-    private double fichasfin;
+    private BigDecimal fichasinicio;
+    private BigDecimal fichasfin;
     private String empleadoid;
     private String timeopened;
     private String timeclosed;
 
+    public GameSession(){
+    }
+    
     public int getSessionid() {
         return sessionid;
     }
@@ -26,20 +31,24 @@ public class GameSession {
         this.tableid = tableid;
     }
 
-    public double getFichasinicio() {
+    public BigDecimal getFichasinicio() {
         return fichasinicio;
     }
 
     public void setFichasinicio(double fichasinicio) {
-        this.fichasinicio = fichasinicio;
+        BigDecimal bd = new BigDecimal(fichasinicio);
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        this.fichasinicio = bd;
     }
 
-    public double getFichasfin() {
+    public BigDecimal getFichasfin() {
         return fichasfin;
     }
 
     public void setFichasfin(double fichasfin) {
-        this.fichasfin = fichasfin;
+        BigDecimal bd = new BigDecimal(fichasfin);
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        this.fichasfin = bd;
     }
 
     public String getEmpleadoid() {

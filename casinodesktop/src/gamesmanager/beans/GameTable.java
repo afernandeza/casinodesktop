@@ -50,4 +50,9 @@ public class GameTable {
         this.game = game;
     }
 
+    @Override
+    public String toString(){
+        return this.getTableid() + " " + this.getGame();
+    }
+    
 }

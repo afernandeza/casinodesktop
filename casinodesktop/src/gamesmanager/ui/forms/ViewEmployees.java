@@ -132,8 +132,9 @@ public class ViewEmployees extends JFrame implements ActionListener,
     }
 
     public void search() {
-        this.emps = EmployeeManager.searchEmployees(this.buscar.getText()
-                .trim());
+        String squery = this.buscar.getText().trim();
+        System.out.println(squery);
+        this.emps = EmployeeManager.searchEmployees(squery);
         this.etm.setData(this.emps);
     }
 
@@ -223,14 +224,11 @@ public class ViewEmployees extends JFrame implements ActionListener,
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.search();
-        }
+        this.search();
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        this.search();
     }
 
     @Override

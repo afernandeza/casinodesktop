@@ -15,8 +15,12 @@ public class SessionManager {
     public static String[] TABLECOLUMNS = { "ID", "ID Mesa", "Juego",
             "Fichas inicio", "Fichas cierre", "Responsable", "Apertura",
             "Cierre" };
-    private static String GETSESSIONCOUNT = "SELECT COUNT(*) FROM sesionesinfo";
-    private static String GETSESSIONS = "SELECT * FROM sesionesinfo";
+    private static String GETALLSESSIONCOUNT = "SELECT COUNT(*) FROM sesionesinfo";
+    private static String GETALLSESSIONS = "SELECT * FROM sesionesinfo";
+    
+    private static String GETOPENSESSIONCOUNT = "SELECT COUNT(*) FROM opensessionsinfo";
+    private static String GETOPENSESSIONS = "SELECT * FROM opensessionsinfo";
+    
     private static String INSERT = "{ ? = call insertgamesession( ?, ?, ?) }";
     private static String CLOSE = "{ ? = call closegamesession( ? , ?) }";
 
@@ -85,7 +89,7 @@ public class SessionManager {
         return false;
     }
 
-    public static Object[][] getGameSessions() {
+    public static Object[][] getOpenGameSessions() {
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
             return new Object[0][0];
@@ -93,8 +97,28 @@ public class SessionManager {
         PreparedStatement rowcount;
         PreparedStatement query;
         try {
-            rowcount = conn.prepareStatement(GETSESSIONCOUNT);
-            query = conn.prepareStatement(GETSESSIONS);
+            rowcount = conn.prepareStatement(GETOPENSESSIONCOUNT);
+            query = conn.prepareStatement(GETOPENSESSIONS);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                e.printStackTrace();
+            }
+            return new Object[0][0];
+        }
+
+        return DatabaseOperations.getResults(rowcount, query);
+    }
+    
+    public static Object[][] getAllGameSessions() {
+        Connection conn = DatabaseManager.connect();
+        if (conn == null) {
+            return new Object[0][0];
+        }
+        PreparedStatement rowcount;
+        PreparedStatement query;
+        try {
+            rowcount = conn.prepareStatement(GETALLSESSIONCOUNT);
+            query = conn.prepareStatement(GETALLSESSIONS);
         } catch (SQLException e) {
             if (Helpers.DEBUG) {
                 e.printStackTrace();

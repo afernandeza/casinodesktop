@@ -17,7 +17,8 @@ CREATE TABLE sesiones
       ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT sesiones_mesaid_fkey FOREIGN KEY (mesaid)
       REFERENCES mesas (mesaid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT sesiones_mesaid_key UNIQUE (mesaid, timeclosed)
 )
 WITH (OIDS=FALSE);
 ALTER TABLE sesiones OWNER TO casindesktopapp;

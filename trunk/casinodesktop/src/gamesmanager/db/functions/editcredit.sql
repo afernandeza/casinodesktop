@@ -7,6 +7,7 @@ CREATE OR REPLACE FUNCTION editcredit(id character varying, cantidad numeric)
 $BODY$
 BEGIN
 UPDATE clientes SET credito = credito + cantidad WHERE clienteid = id;
+UPDATE clientesexternos SET credito = credito + cantidad WHERE clienteid = id;
 return true;
 END;
 $BODY$

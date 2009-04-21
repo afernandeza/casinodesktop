@@ -93,7 +93,7 @@ public class CheckClientForm extends JPanel implements KeyListener,
             if (client != null) {
                 if (client.isLocal()) {
                     this.errormsg.setForeground(Helpers.LIGHTBLUE);
-                    // member found
+                    // local member found
                     Object o = GuiDialogs.showInputDialog(INSTRUCTIONS,
                             OPTIONS, 0);
 
@@ -131,9 +131,11 @@ public class CheckClientForm extends JPanel implements KeyListener,
                         return;
                     }
                 } else {
-                    GuiDialogs
-                            .showSuccessMessage("El cliente ha sido encontrado y pertenece a la sucursal "
-                                    + client.getSucursal());
+                    // external member found
+                    GuiDialogs.showSuccessMessage("El cliente "+ client.getFullName() +" ha sido encontrado y pertenece a la sucursal "
+                            + client.getSucursal() + ".\nD"+Helpers.EACUTE+" clic en OK para administrar fichas.");
+                    ChipManager cm = new ChipManager(client);
+                    cm.setVisible(true);
                 }
             } else {
                 GuiDialogs.errorBeep();

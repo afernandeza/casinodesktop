@@ -45,7 +45,8 @@ public class ClientManager {
             if (casinoid == null) {
                 return null;
             }
-            c = new ExternalClient(casinoid, rs.getString(2));
+            c = new ExternalClient(casinoid, rs.getString(2), rs.getString(3),
+                    rs.getString(4));
 
         } catch (SQLException e) {
             if (Helpers.DEBUG) {

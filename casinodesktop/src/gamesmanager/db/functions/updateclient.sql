@@ -29,6 +29,8 @@ begin
     estado = edo,
     pais = ps
     where direccionid = addressid;
+ insert into syncinfo values(nextval('syncinfoid'), 
+  'updateextclient(''' || cid || ''' , ''' || ap || ' ' || am || ' ' || n || ''')', current_timestamp);
    return true;
 end;
 $BODY$

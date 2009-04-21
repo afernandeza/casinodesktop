@@ -11,6 +11,7 @@ begin
     select into dirid direccionid from clientes where clienteid = id;
     delete from clientes where clienteid = id;
     delete from direcciones where direccionid = dirid;
+    insert into syncinfo values (nextval('syncinfoid'), 'deleteextclient(''' || id || ''')', current_timestamp);
     return true;
 end;
 $BODY$

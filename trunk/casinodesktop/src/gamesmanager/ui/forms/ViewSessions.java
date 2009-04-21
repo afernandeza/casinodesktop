@@ -93,7 +93,7 @@ public class ViewSessions extends JFrame implements ActionListener,
         tablepanel.setLayout(new GridLayout(1, 0));
 
         String[] columns = SessionManager.TABLECOLUMNS;
-        sessions = SessionManager.getGameSessions();
+        sessions = SessionManager.getOpenGameSessions();
         etm = new SessionsTableModel(columns, sessions);
         table = new JTable(etm);
         table.addMouseListener(this);
@@ -154,7 +154,7 @@ public class ViewSessions extends JFrame implements ActionListener,
     }
 
     public void refreshData() {
-        this.sessions = SessionManager.getGameSessions();
+        this.sessions = SessionManager.getOpenGameSessions();
         this.etm.setData(this.sessions);
     }
 

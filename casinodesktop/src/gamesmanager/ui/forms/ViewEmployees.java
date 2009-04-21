@@ -133,7 +133,6 @@ public class ViewEmployees extends JFrame implements ActionListener,
 
     public void search() {
         String squery = this.buscar.getText().trim();
-        System.out.println(squery);
         this.emps = EmployeeManager.searchEmployees(squery);
         this.etm.setData(this.emps);
     }

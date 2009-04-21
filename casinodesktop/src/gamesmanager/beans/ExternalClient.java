@@ -4,12 +4,19 @@ public class ExternalClient extends Client {
 
     private String casinoid;
 
-    public ExternalClient(String casinoid, String clientid) {
+    public ExternalClient(String casinoid, String clientid, String credito, String nombre) {
         super();
         this.setId(clientid);
+        this.setNombres(nombre);
+        this.setCredito(credito);
         this.casinoid = casinoid;
     }
 
+    @Override
+    public String getFullName(){
+        return this.getId() + " : " + this.getNombres();
+    }
+    
     public String getCasinoid() {
         return casinoid;
     }

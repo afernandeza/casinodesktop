@@ -15,7 +15,8 @@ begin
   sexo, fechanac, foto, current_date, telcasa, telcel, clientid);
   insert into direcciones values(addressid, callenum, numint, colonia,
   municipio, codigopostal, estado, pais);
-  insert into syncinfo values(nextval('syncinfoid'), "insertextclient('clientid')", current_timestamp);
+  insert into syncinfo values(nextval('syncinfoid'), 
+  'insertextclient(''SUCA'', ''' || clientid || ''' , ''' || appaterno || ' ' || apmaterno || ' ' || nombres || ''')', current_timestamp);
   return true;
 end;
 $BODY$

@@ -343,12 +343,6 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         } else {
             callelabel.setForeground(Color.BLACK);
         }
-        if (num.getText().trim().equals("")) {
-            good = false;
-            numlabel.setForeground(Color.RED);
-        } else {
-            numlabel.setForeground(Color.BLACK);
-        }
         if (colonia.getText().trim().equals("")) {
             good = false;
             colonialabel.setForeground(Color.RED);

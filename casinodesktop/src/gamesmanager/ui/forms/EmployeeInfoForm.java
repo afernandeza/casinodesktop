@@ -418,17 +418,6 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         } else {
             passwordlabel.setForeground(Color.BLACK);
         }
-        if (fotofile != null) {
-            if (!fotofile.exists()) {
-                good = false;
-                piclabel.setForeground(Color.RED);
-            } else {
-                piclabel.setForeground(Color.BLACK);
-            }
-        } else {
-            good = false;
-            piclabel.setForeground(Color.RED);
-        }
         if(!good){
            GuiDialogs.showErrorMessage("Por favor corrija los campos marcados con rojo.");
         }

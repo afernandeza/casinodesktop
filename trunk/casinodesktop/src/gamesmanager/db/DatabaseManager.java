@@ -20,6 +20,25 @@ public class DatabaseManager {
         }
     }
 
+    public static Connection attemptConnection(String jdbcurl) {
+        Connection conn = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn = DriverManager.getConnection(
+                    jdbcurl,
+                    "casindesktopapp", "casindesktopapp");
+        } catch (ClassNotFoundException cnfe) {
+            if (Helpers.DEBUG) {
+                System.err.println(cnfe.getMessage());
+            }
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                System.err.println(e.getMessage());
+            }
+        }
+        return conn;
+    }
+    
     public static Connection connect() {
         Connection conn = null;
         try {

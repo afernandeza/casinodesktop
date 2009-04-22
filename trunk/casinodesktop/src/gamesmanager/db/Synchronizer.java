@@ -4,8 +4,10 @@ import gamesmanager.beans.Casino;
 import gamesmanager.beans.SyncQuery;
 import gamesmanager.ui.Helpers;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Types;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,10 +73,30 @@ public class Synchronizer {
         for(Casino casino: casinos){
             System.out.println(casino);
             List<SyncQuery> queries = getQueriesForCasino(casino);
+            int initsyncedid = casino.getLatestsyncedid();
+            int latestsyncedid = casino.getLatestsyncedid();
             for(SyncQuery sq: queries){
                 Connection conn = DatabaseManager.attemptConnection(casino.getJdbcurl());
                 if(conn != null){
                     System.out.println(sq);   
+                    try{
+                        String call = "{? = " + sq.toString() + "}";
+                        CallableStatement cs = conn.prepareCall(call);
+                        cs.registerOutParameter(1, Types.BOOLEAN);
+                        cs.execute();
+                        if(cs.getBoolean(1)){
+                            latestsyncedid = sq.getTypeid();
+                        } else {
+                            break;
+                        }
+                    } catch(Exception e){
+                        if(Helpers.DEBUG){
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                } else {
+                    break;
                 }
             }
         }

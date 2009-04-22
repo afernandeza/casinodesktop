@@ -43,7 +43,7 @@ public class ViewEmployees extends JFrame implements ActionListener,
 
     public String[] OPTIONS = { "Desactivar cuenta de usuario",
             "Reactivar cuenta de usuario", "Dar baja temporal",
-            "Recontratar empleado", "Cambiar contrase" + Helpers.NTILDE + "a",
+            "Recontratar empleado",
             "Actualizar informaci" + Helpers.OACUTE + "n personal" };
     public String INSTRUCTIONS = "Seleccione qu" + Helpers.EACUTE
             + " desea hacer con el empleado:";
@@ -235,7 +235,7 @@ public class ViewEmployees extends JFrame implements ActionListener,
         if (e.getClickCount() == 2) {
             int selindex = table.getSelectedRow();
             if (selindex != -1) {
-                Object o = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS, 5);
+                Object o = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS, 4);
 
                 String employeeid = emps[selindex][0].toString();
 
@@ -302,12 +302,6 @@ public class ViewEmployees extends JFrame implements ActionListener,
                             GuiDialogs.showPermissionsError();
                         }
                     } else if (opt.equals(OPTIONS[4])) {
-                        // Cambiar password
-                        if (Session.mayChangePasswordFor(employeeid)) {
-                        } else {
-                            GuiDialogs.showPermissionsError();
-                        }
-                    } else if (opt.equals(OPTIONS[5])) {
                         // Actualizar information personal
                         if (Session.mayChangePersonalInfoFor(employeeid)) {
                             Employee editemp = EmployeeManager

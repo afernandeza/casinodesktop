@@ -43,19 +43,30 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     private static final int PICHEIGHT = 225;
 
     private final JFileChooser fc;
+    private JLabel piclabel;
     private JTextField appat;
+    private JLabel appatlabel;
     private JTextField apmat;
     private JTextField nombre;
+    private JLabel nombrelabel;
     private JTextField telcasa;
+    private JLabel telcasalabel;
     private JTextField telcel;
+    private JLabel telcellabel;
     private JComboBox sexo;
     private JDateChooser fecha;
+    private JLabel fechalabel;
     private JButton imagebutton;
     private JTextField calle;
+    private JLabel callelabel;
     private JTextField num;
+    private JLabel numlabel;
     private JTextField colonia;
+    private JLabel colonialabel;
     private JTextField municipio;
+    private JLabel municipiolabel;
     private JTextField cp;
+    private JLabel cplabel;
     private JComboBox estado;
     private JComboBox pais;
     private ImagePanel image;
@@ -64,10 +75,13 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     private JButton cancel;
     private Employee e;
     private ViewEmployees employeeviewer;
+    private File fotofile;
 
     private JComboBox types;
     private JTextField username;
+    private JLabel usernamelabel;
     private JPasswordField password;
+    private JLabel passwordlabel;
 
     public EmployeeInfoForm(Employee e) {
         super("Empleado del Casino");
@@ -93,21 +107,21 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         c.gridy = 0;
         this.add(image, c);
 
-        JLabel pic = new JLabel(labels[0], JLabel.TRAILING);
-        memberform.add(pic);
+        piclabel = new JLabel(labels[0], JLabel.TRAILING);
+        memberform.add(piclabel);
         imagebutton = new JButton("Abrir foto...");
         imagebutton.addActionListener(this);
         fc = new JFileChooser();
         fc.setAcceptAllFileFilterUsed(false);
         fc.setFileFilter(new ImageFilter());
 
-        pic.setLabelFor(imagebutton);
+        piclabel.setLabelFor(imagebutton);
         memberform.add(imagebutton);
 
-        JLabel l = new JLabel(labels[1], JLabel.TRAILING);
-        memberform.add(l);
+        appatlabel = new JLabel(labels[1], JLabel.TRAILING);
+        memberform.add(appatlabel);
         appat = new JTextField(FIELDSIZE);
-        l.setLabelFor(appat);
+        appatlabel.setLabelFor(appat);
         memberform.add(appat);
 
         JLabel l2 = new JLabel(labels[2], JLabel.TRAILING);
@@ -116,10 +130,10 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         l2.setLabelFor(apmat);
         memberform.add(apmat);
 
-        JLabel l3 = new JLabel(labels[3], JLabel.TRAILING);
-        memberform.add(l3);
+        nombrelabel = new JLabel(labels[3], JLabel.TRAILING);
+        memberform.add(nombrelabel);
         nombre = new JTextField(FIELDSIZE);
-        l3.setLabelFor(nombre);
+        nombrelabel.setLabelFor(nombre);
         memberform.add(nombre);
 
         JLabel typel = new JLabel(labels[4], JLabel.TRAILING);
@@ -159,16 +173,16 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 "<html><b>Contrase" + Helpers.NTILDE + "a:</b></html>" };
         int aPairs = alabels.length;
 
-        JLabel labeltelcasa = new JLabel(alabels[9], JLabel.TRAILING);
-        addressform.add(labeltelcasa);
+        telcasalabel = new JLabel(alabels[9], JLabel.TRAILING);
+        addressform.add(telcasalabel);
         telcasa = new JTextField(FIELDSIZE);
-        labeltelcasa.setLabelFor(telcasa);
+        telcasalabel.setLabelFor(telcasa);
         addressform.add(telcasa);
 
-        JLabel labeltelcel = new JLabel(alabels[10], JLabel.TRAILING);
-        addressform.add(labeltelcel);
+        telcellabel = new JLabel(alabels[10], JLabel.TRAILING);
+        addressform.add(telcellabel);
         telcel = new JTextField(FIELDSIZE);
-        labeltelcel.setLabelFor(telcel);
+        telcellabel.setLabelFor(telcel);
         addressform.add(telcel);
 
         JLabel l4 = new JLabel(alabels[0], JLabel.TRAILING);
@@ -179,8 +193,8 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         l4.setLabelFor(sexo);
         addressform.add(sexo);
 
-        JLabel l5 = new JLabel(alabels[1], JLabel.TRAILING);
-        addressform.add(l5);
+        fechalabel = new JLabel(alabels[1], JLabel.TRAILING);
+        addressform.add(fechalabel);
         fecha = new JDateChooser();
         fecha.setLocale(Locale.getDefault());
         JTextFieldDateEditor editor = (JTextFieldDateEditor) fecha
@@ -188,37 +202,37 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         editor.setEditable(false);
         editor.setFocusable(false);
         fecha.setDateFormatString("yyyy-MM-dd");
-        l5.setLabelFor(fecha);
+        fechalabel.setLabelFor(fecha);
         addressform.add(fecha);
 
-        l = new JLabel(alabels[2], JLabel.TRAILING);
-        addressform.add(l);
+        callelabel = new JLabel(alabels[2], JLabel.TRAILING);
+        addressform.add(callelabel);
         calle = new JTextField(FIELDSIZE);
-        l.setLabelFor(calle);
+        callelabel.setLabelFor(calle);
         addressform.add(calle);
 
-        l2 = new JLabel(alabels[3], JLabel.TRAILING);
-        addressform.add(l2);
+        numlabel = new JLabel(alabels[3], JLabel.TRAILING);
+        addressform.add(numlabel);
         num = new JTextField(FIELDSIZE);
-        l2.setLabelFor(num);
+        numlabel.setLabelFor(num);
         addressform.add(num);
 
-        l3 = new JLabel(alabels[4], JLabel.TRAILING);
-        addressform.add(l3);
+        colonialabel = new JLabel(alabels[4], JLabel.TRAILING);
+        addressform.add(colonialabel);
         colonia = new JTextField(FIELDSIZE);
-        l3.setLabelFor(colonia);
+        colonialabel.setLabelFor(colonia);
         addressform.add(colonia);
 
-        l4 = new JLabel(alabels[5], JLabel.TRAILING);
-        addressform.add(l4);
+        municipiolabel = new JLabel(alabels[5], JLabel.TRAILING);
+        addressform.add(municipiolabel);
         municipio = new JTextField(FIELDSIZE);
-        l4.setLabelFor(municipio);
+        municipiolabel.setLabelFor(municipio);
         addressform.add(municipio);
 
-        l5 = new JLabel(alabels[6], JLabel.TRAILING);
-        addressform.add(l5);
+        cplabel = new JLabel(alabels[6], JLabel.TRAILING);
+        addressform.add(cplabel);
         cp = new JTextField(FIELDSIZE);
-        l5.setLabelFor(cp);
+        cplabel.setLabelFor(cp);
         addressform.add(cp);
 
         JLabel l6 = new JLabel(alabels[7], JLabel.TRAILING);
@@ -239,16 +253,16 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         paisl.setLabelFor(pais);
         addressform.add(pais);
 
-        JLabel userl = new JLabel(alabels[11], JLabel.TRAILING);
-        addressform.add(userl);
+        usernamelabel = new JLabel(alabels[11], JLabel.TRAILING);
+        addressform.add(usernamelabel);
         username = new JTextField(FIELDSIZE);
-        userl.setLabelFor(username);
+        usernamelabel.setLabelFor(username);
         addressform.add(username);
 
-        JLabel passwordl = new JLabel(alabels[12], JLabel.TRAILING);
-        addressform.add(passwordl);
+        passwordlabel = new JLabel(alabels[12], JLabel.TRAILING);
+        addressform.add(passwordlabel);
         password = new JPasswordField(FIELDSIZE);
-        passwordl.setLabelFor(password);
+        passwordlabel.setLabelFor(password);
         addressform.add(password);
 
         SpringUtilities.makeCompactGrid(addressform, aPairs, 2, // rows, cols
@@ -337,7 +351,88 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     }
 
     private boolean validateForm() {
-        return true;
+        boolean good = true;
+        if (appat.getText().trim().equals("")) {
+            appatlabel.setForeground(Color.RED);
+            good = false;
+        } else {
+            appatlabel.setForeground(Color.BLACK);
+        }
+        if (nombre.getText().trim().equals("")) {
+            good = false;
+            nombrelabel.setForeground(Color.RED);
+        } else {
+            nombrelabel.setForeground(Color.BLACK);
+        }
+        if (telcasa.getText().trim().equals("")) {
+            good = false;
+            telcasalabel.setForeground(Color.RED);
+        } else {
+            telcasalabel.setForeground(Color.BLACK);
+        }
+        if (telcel.getText().trim().equals("")) {
+            good = false;
+            telcellabel.setForeground(Color.RED);
+        } else {
+            telcellabel.setForeground(Color.BLACK);
+        }
+        if (calle.getText().trim().equals("")) {
+            good = false;
+            callelabel.setForeground(Color.RED);
+        } else {
+            callelabel.setForeground(Color.BLACK);
+        }
+        if (colonia.getText().trim().equals("")) {
+            good = false;
+            colonialabel.setForeground(Color.RED);
+        } else {
+            colonialabel.setForeground(Color.BLACK);
+        }
+        if (cp.getText().trim().equals("")) {
+            good = false;
+            cplabel.setForeground(Color.RED);
+        } else {
+            cplabel.setForeground(Color.BLACK);
+        }
+        if (municipio.getText().trim().equals("")) {
+            good = false;
+            municipiolabel.setForeground(Color.RED);
+        } else {
+            municipiolabel.setForeground(Color.BLACK);
+        }
+        if (fecha.getDate() == null) {
+            good = false;
+            fechalabel.setForeground(Color.RED);
+        } else {
+            fechalabel.setForeground(Color.BLACK);
+        }
+        if (username.getText().trim().equals("")) {
+            good = false;
+            usernamelabel.setForeground(Color.RED);
+        } else {
+            usernamelabel.setForeground(Color.BLACK);
+        }
+        if (new String(password.getPassword()).trim().equals("")) {
+            good = false;
+            passwordlabel.setForeground(Color.RED);
+        } else {
+            passwordlabel.setForeground(Color.BLACK);
+        }
+        if (fotofile != null) {
+            if (!fotofile.exists()) {
+                good = false;
+                piclabel.setForeground(Color.RED);
+            } else {
+                piclabel.setForeground(Color.BLACK);
+            }
+        } else {
+            good = false;
+            piclabel.setForeground(Color.RED);
+        }
+        if(!good){
+           GuiDialogs.showErrorMessage("Por favor corrija los campos marcados con rojo.");
+        }
+        return good;
     }
 
     @Override
@@ -346,8 +441,8 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         if (o == imagebutton) {
             int returnVal = fc.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                this.image.loadImage(file.getAbsolutePath());
+                fotofile = fc.getSelectedFile();
+                this.image.loadImage(fotofile.getAbsolutePath());
             } else {
                 // System.out.println("Open command cancelled by user.");
             }

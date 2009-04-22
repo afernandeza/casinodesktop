@@ -1,0 +1,12 @@
+TO DO:
+
+1. agregar validacion para sesiones de juego cerradas
+2. mostrar solo opciones disponibles en message dialogs
+3. que no se pueden abrir sesiones invalidas
+4. terminar validacion formas de empleados y clientes
+  4.1 validacion fotos, validacion campos numericos, usuario ya existente, 
+  contrase–a invalida, etc
+  4.2 seleccionar estados de la republica bugs al dar cancelar o al escribir primero
+  el estado y luego el pais
+5. sincronizacion
+  5.1 administrar sucursales y sincronizar sucursales disponibles

@@ -292,8 +292,8 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             this.add(p, c);
         } else {
             // existing employee
-            this.password.setEditable(false);
-            this.password.setEnabled(false);
+            this.password.setEditable(Session.mayChangePasswordFor(this.e.getId()));
+            this.password.setEnabled(Session.mayChangePasswordFor(this.e.getId()));
             JPanel p = new JPanel();
             savechanges = new JButton("Guardar cambios");
             savechanges.addActionListener(this);

@@ -16,10 +16,13 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,7 +35,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 public class ViewSessions extends JFrame implements ActionListener,
-        MouseListener {
+        MouseListener, ItemListener{
 
     private static final long serialVersionUID = 1L;
     private static String NULLSTRING = "N/A";
@@ -48,6 +51,7 @@ public class ViewSessions extends JFrame implements ActionListener,
     private JTextField startchips;
     private JComboBox empselector;
     private JButton newsessionbutton;
+    private JCheckBox displayopensessions;
 
     private GameSession gs = new GameSession();
 
@@ -118,6 +122,13 @@ public class ViewSessions extends JFrame implements ActionListener,
         c.gridy++;
         this.add(tablepanel, c);
 
+        c.gridy++;
+        displayopensessions = new JCheckBox(
+                "Mostrar sesiones abiertas " + Helpers.UACUTE + "nicamente.");
+        displayopensessions.setSelected(true);
+        displayopensessions.addItemListener(this);
+        this.add(displayopensessions, c);
+
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
         Helpers.setIcon(this);
         this.pack();
@@ -154,7 +165,11 @@ public class ViewSessions extends JFrame implements ActionListener,
     }
 
     public void refreshData() {
-        this.sessions = SessionManager.getOpenGameSessions();
+        if(displayopensessions.isSelected()){
+            this.sessions = SessionManager.getOpenGameSessions();
+        } else {
+            this.sessions = SessionManager.getAllGameSessions();   
+        }
         this.etm.setData(this.sessions);
     }
 
@@ -167,7 +182,7 @@ public class ViewSessions extends JFrame implements ActionListener,
 
                 Employee e = (Employee) this.empselector.getSelectedItem();
                 gs.setEmpleadoid(e.getId());
-                
+
                 GameTable gt = (GameTable) this.tableselector.getSelectedItem();
                 gs.setTableid(gt.getTableid());
 
@@ -342,6 +357,11 @@ public class ViewSessions extends JFrame implements ActionListener,
 
     @Override
     public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        this.refreshData();
     }
 
 }

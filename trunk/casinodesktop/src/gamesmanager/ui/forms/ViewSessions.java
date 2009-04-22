@@ -35,7 +35,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 public class ViewSessions extends JFrame implements ActionListener,
-        MouseListener, ItemListener{
+        MouseListener, ItemListener {
 
     private static final long serialVersionUID = 1L;
     private static String NULLSTRING = "N/A";
@@ -123,8 +123,8 @@ public class ViewSessions extends JFrame implements ActionListener,
         this.add(tablepanel, c);
 
         c.gridy++;
-        displayopensessions = new JCheckBox(
-                "Mostrar sesiones abiertas " + Helpers.UACUTE + "nicamente.");
+        displayopensessions = new JCheckBox("Mostrar sesiones abiertas "
+                + Helpers.UACUTE + "nicamente.");
         displayopensessions.setSelected(true);
         displayopensessions.addItemListener(this);
         this.add(displayopensessions, c);
@@ -140,10 +140,10 @@ public class ViewSessions extends JFrame implements ActionListener,
     private void setColumnWidths() {
         TableColumn column = null;
         column = this.table.getColumnModel().getColumn(0);
-        column.setPreferredWidth(10);
+        column.setPreferredWidth(5);
 
         column = this.table.getColumnModel().getColumn(1);
-        column.setPreferredWidth(10);
+        column.setPreferredWidth(5);
 
         column = this.table.getColumnModel().getColumn(2);
         column.setPreferredWidth(120);
@@ -155,20 +155,20 @@ public class ViewSessions extends JFrame implements ActionListener,
         column.setPreferredWidth(10);
 
         column = this.table.getColumnModel().getColumn(5);
-        column.setPreferredWidth(45);
+        column.setPreferredWidth(120);
 
         column = this.table.getColumnModel().getColumn(6);
-        column.setPreferredWidth(40);
+        column.setPreferredWidth(70);
 
         column = this.table.getColumnModel().getColumn(7);
-        column.setPreferredWidth(60);
+        column.setPreferredWidth(70);
     }
 
     public void refreshData() {
-        if(displayopensessions.isSelected()){
+        if (displayopensessions.isSelected()) {
             this.sessions = SessionManager.getOpenGameSessions();
         } else {
-            this.sessions = SessionManager.getAllGameSessions();   
+            this.sessions = SessionManager.getAllGameSessions();
         }
         this.etm.setData(this.sessions);
     }
@@ -303,41 +303,52 @@ public class ViewSessions extends JFrame implements ActionListener,
         if (e.getClickCount() == 2) {
             int selindex = table.getSelectedRow();
             if (selindex != -1) {
-                Object obj = GuiDialogs.showInputDialog("Escriba el n"
-                        + Helpers.UACUTE + "mero de fichas con las que la sesi"
-                        + Helpers.OACUTE + "n termin" + Helpers.OACUTE + ".");
+                if (sessions[selindex][4] == null) {
+                    Object obj = GuiDialogs.showInputDialog("Escriba el n"
+                            + Helpers.UACUTE
+                            + "mero de fichas con las que la sesi"
+                            + Helpers.OACUTE + "n termin" + Helpers.OACUTE
+                            + ".");
 
-                if (obj != null) {
-                    String s = obj.toString();
-                    int sessionid = Integer.parseInt(sessions[selindex][0]
-                            .toString());
-                    double fichas = 0.0;
-                    try {
-                        fichas = Double.parseDouble(s);
-                        int i = GuiDialogs.showConfirmDialog(Helpers.OQUESTIONM
-                                + "Est" + Helpers.AACUTE
-                                + " seguro que desea cerrar la sesi"
-                                + Helpers.OACUTE + "n de juego"
-                                + Helpers.CQUESTIONM);
-                        if (i == 0) {
-                            if (SessionManager.closeGameSession(sessionid,
-                                    fichas)) {
-                                this.refreshData();
-                                GuiDialogs
-                                        .showSuccessMessage("La sesi"
-                                                + Helpers.OACUTE
-                                                + "n de juego ha sido cerrada exitosamente.");
-                            } else {
-                                GuiDialogs
-                                        .showErrorMessage("No se ha podido cerrar la sesi"
-                                                + Helpers.OACUTE + "n de juego");
+                    if (obj != null) {
+                        String s = obj.toString();
+                        int sessionid = Integer.parseInt(sessions[selindex][0]
+                                .toString());
+                        double fichas = 0.0;
+                        try {
+                            fichas = Double.parseDouble(s);
+                            int i = GuiDialogs
+                                    .showConfirmDialog(Helpers.OQUESTIONM
+                                            + "Est"
+                                            + Helpers.AACUTE
+                                            + " seguro que desea cerrar la sesi"
+                                            + Helpers.OACUTE + "n de juego"
+                                            + Helpers.CQUESTIONM);
+                            if (i == 0) {
+                                if (SessionManager.closeGameSession(sessionid,
+                                        fichas)) {
+                                    this.refreshData();
+                                    GuiDialogs
+                                            .showSuccessMessage("La sesi"
+                                                    + Helpers.OACUTE
+                                                    + "n de juego ha sido cerrada exitosamente.");
+                                } else {
+                                    GuiDialogs
+                                            .showErrorMessage("No se ha podido cerrar la sesi"
+                                                    + Helpers.OACUTE
+                                                    + "n de juego");
+                                }
                             }
+                        } catch (Exception ex) {
+                            GuiDialogs
+                                    .showErrorMessage("Debe escribir un valor num"
+                                            + Helpers.EACUTE + "rico.");
                         }
-                    } catch (Exception ex) {
-                        GuiDialogs
-                                .showErrorMessage("Debe escribir un valor num"
-                                        + Helpers.EACUTE + "rico.");
                     }
+                } else {
+                    GuiDialogs
+                            .showErrorMessage("No hay operaciones disponibles para dicha sesi"
+                                    + Helpers.OACUTE + "n de juego.");
                 }
             }
         }

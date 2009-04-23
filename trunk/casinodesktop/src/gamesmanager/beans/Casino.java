@@ -6,6 +6,14 @@ public class Casino {
     private String jdbcurl;
     private int latestsyncedid;
     private boolean available;
+
+    public Casino(String casinoid, String jdbcurl) {
+        super();
+        this.casinoid = casinoid;
+        this.jdbcurl = jdbcurl;
+        this.latestsyncedid = 0;
+        this.available = false;
+    }
     
     public Casino(String casinoid, String jdbcurl, Integer latestsyncedid) {
         super();

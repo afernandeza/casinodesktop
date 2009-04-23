@@ -140,4 +140,13 @@ public class Session {
             return false;
         }
     }
+    
+    public static boolean mayManageCasinos() {
+        // administradores y gerentes
+        if (session.et.getTypeid() <= 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

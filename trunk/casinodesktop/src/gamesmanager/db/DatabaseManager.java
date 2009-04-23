@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseManager {
+    
+    public static final int CONNECTIONTIMEOUT = 5;
 
     public static boolean databaseAvailable() {
         Connection conn = connect();
@@ -24,6 +26,7 @@ public class DatabaseManager {
         Connection conn = null;
         try {
             Class.forName("org.postgresql.Driver");
+            DriverManager.setLoginTimeout(CONNECTIONTIMEOUT);
             conn = DriverManager.getConnection(
                     jdbcurl,
                     "casindesktopapp", "casindesktopapp");
@@ -43,6 +46,7 @@ public class DatabaseManager {
         Connection conn = null;
         try {
             Class.forName("org.postgresql.Driver");
+            DriverManager.setLoginTimeout(CONNECTIONTIMEOUT);
             conn = DriverManager.getConnection(
                     "jdbc:postgresql://localhost/casinolocal",
                     "casindesktopapp", "casindesktopapp");

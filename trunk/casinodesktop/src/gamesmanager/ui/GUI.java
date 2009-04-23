@@ -264,6 +264,7 @@ public class GUI extends JFrame implements ActionListener {
                 @Override
                 protected Void doInBackground() throws Exception {
                     progress = new JFrame("Syncronizaci"+Helpers.OACUTE+"n en proceso");
+                    Helpers.setIcon(progress);
                     JProgressBar pb = new JProgressBar();
                     pb.setIndeterminate(true);
                     progress.add(pb);

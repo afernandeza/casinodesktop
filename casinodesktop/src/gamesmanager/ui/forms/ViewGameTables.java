@@ -238,6 +238,10 @@ public class ViewGameTables extends JFrame implements ActionListener,
         if (e.getClickCount() == 2) {
             int selindex = table.getSelectedRow();
             if (selindex != -1) {
+                if(!Session.mayUpdateGameTable()){
+                    GuiDialogs.showPermissionsError();
+                    return;
+                }
                 Object obj = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS,
                         0);
                 String tableid = tableinfo[selindex][0].toString();

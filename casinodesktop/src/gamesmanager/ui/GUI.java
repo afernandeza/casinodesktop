@@ -1,12 +1,12 @@
 package gamesmanager.ui;
 
 import gamesmanager.db.DatabaseManager;
+import gamesmanager.db.SyncFormThread;
 import gamesmanager.ui.forms.CheckClientForm;
 import gamesmanager.ui.forms.ClientInfoForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
 import gamesmanager.ui.forms.GameTypeForm;
 import gamesmanager.ui.forms.LoginForm;
-import gamesmanager.ui.forms.SyncForm;
 import gamesmanager.ui.forms.ViewEmployees;
 import gamesmanager.ui.forms.ViewGameTables;
 import gamesmanager.ui.forms.ViewSessions;
@@ -27,8 +27,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.SwingWorker;
 
 public class GUI extends JFrame implements ActionListener {
 
@@ -257,31 +255,7 @@ public class GUI extends JFrame implements ActionListener {
             ViewGameTables tableform = new ViewGameTables();
             tableform.setVisible(true);
         } else if (action.equals(SYNC)) {
-            SwingWorker<Void, Void> syncer = new SwingWorker<Void, Void>(){
-                private SyncForm sf;
-                private JFrame progress;
-                
-                @Override
-                protected Void doInBackground() throws Exception {
-                    progress = new JFrame("Syncronizaci"+Helpers.OACUTE+"n en proceso");
-                    Helpers.setIcon(progress);
-                    JProgressBar pb = new JProgressBar();
-                    pb.setIndeterminate(true);
-                    progress.add(pb);
-                    progress.pack();
-                    progress.setSize(progress.getWidth() + 100, progress.getHeight());
-                    progress.setLocationRelativeTo(null);
-                    progress.setVisible(true);
-                    sf = new SyncForm();
-                    return null;
-                }
-                
-                @Override
-                public void done(){
-                    progress.dispose();
-                    sf.setVisible(true);
-                }
-            };
+            SyncFormThread syncer = new SyncFormThread();
             syncer.execute();
         } else if (action.equals(ADMINEMPLOYEES)) {
             ViewEmployees viewemps = new ViewEmployees();

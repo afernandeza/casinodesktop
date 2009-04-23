@@ -123,6 +123,7 @@ public class SyncForm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
         if(src.equals(syncbutton)){
+            Synchronizer.sync();
             System.out.println("start syncing");
         } else if(src.equals(addbutton)){
             System.out.println("agregar sucursal");

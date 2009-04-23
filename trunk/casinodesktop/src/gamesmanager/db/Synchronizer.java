@@ -7,6 +7,7 @@ import gamesmanager.ui.Helpers;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,20 +19,22 @@ public class Synchronizer {
 
     private static String QUERYCOUNT = "SELECT COUNT(*) from syncinfofor(?)";
     private static String GETQUERIES = "SELECT qid, query from syncinfofor(?)";
+    
+    private static String UPDATELATESTSID = "{ ? = call updatelatestsid(?, ?)}";
 
-    public static Object[][] getCasinosTable(){
+    public static Object[][] getCasinosTable() {
         List<Casino> casinos = getCasinos();
         Object[][] o = new Object[casinos.size()][3];
-        
-        for(int i = 0; i < o.length; i++){
+
+        for (int i = 0; i < o.length; i++) {
             o[i][0] = casinos.get(i).getCasinoid();
             o[i][1] = casinos.get(i).getJdbcurl();
             o[i][2] = casinos.get(i).isAvailable();
         }
-        
+
         return o;
     }
-    
+
     private static List<Casino> getCasinos() {
         Connection localconn = DatabaseManager.connect();
         PreparedStatement countpstmt = null;
@@ -81,8 +84,37 @@ public class Synchronizer {
             if (Helpers.DEBUG) {
                 e.printStackTrace();
             }
+        } finally {
+            DatabaseManager.close(localconn);
         }
         return queries;
+    }
+
+    private static boolean updateLatestSyncedId(String cid, int lqid) {
+        Connection conn = DatabaseManager.connect();
+        CallableStatement cs = null;
+        if (conn == null) {
+            return false;
+        }
+        try {
+            cs = conn.prepareCall(UPDATELATESTSID);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+
+            cs.setString(2, cid);
+            cs.setInt(3, lqid);
+
+            cs.execute();
+            return cs.getBoolean(1);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                // e.printStackTrace();
+                System.out.println("Error updating casino: " + e.getMessage());
+            }
+        } finally {
+            DatabaseManager.close(cs);
+            DatabaseManager.close(conn);
+        }
+        return false;
     }
 
     public static void sync() {
@@ -97,9 +129,9 @@ public class Synchronizer {
                     Connection conn = DatabaseManager.attemptConnection(casino
                             .getJdbcurl());
                     if (conn != null) {
-                        System.out.println(sq);
                         try {
-                            String call = "{? = " + sq.toString() + "}";
+                            String call = "{? = call " + sq.toString() + "}";
+                            System.out.println(call);
                             CallableStatement cs = conn.prepareCall(call);
                             cs.registerOutParameter(1, Types.BOOLEAN);
                             cs.execute();
@@ -113,10 +145,16 @@ public class Synchronizer {
                                 e.printStackTrace();
                             }
                             break;
+                        } finally {
+                            DatabaseManager.close(conn);
                         }
                     } else {
                         break;
                     }
+                }
+                if (initsyncedid != latestsyncedid) {
+                    // update latest synced
+                    updateLatestSyncedId(casino.getCasinoid(), latestsyncedid);
                 }
             }
         }

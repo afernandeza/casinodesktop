@@ -1,6 +1,7 @@
 package gamesmanager.ui.forms;
 
 import gamesmanager.beans.Employee;
+import gamesmanager.beans.User;
 import gamesmanager.db.EmployeeManager;
 import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
@@ -16,6 +17,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +36,13 @@ public class ViewEmployees extends JFrame implements ActionListener,
     private static final long serialVersionUID = 1L;
     private static String NULLSTRING = "N/A";
 
+    private String DEACTIVATE = "Desactivar cuenta de usuario";
+    private String REACTIVATE = "Reactivar cuenta de usuario";
+    private String FIRE = "Dar baja temporal";
+    private String REHIRE = "Recontratar empleado";
+    private String UPDATEINFO = "Actualizar informaci" + Helpers.OACUTE
+            + "n personal";
+
     private static final int TWIDTH = 800;
     private static final int THEIGHT = 400;
     private GridBagConstraints c = new GridBagConstraints();
@@ -41,10 +51,6 @@ public class ViewEmployees extends JFrame implements ActionListener,
     private EmployeeTableModel etm;
     private Object[][] emps = null;
 
-    public String[] OPTIONS = { "Desactivar cuenta de usuario",
-            "Reactivar cuenta de usuario", "Dar baja temporal",
-            "Recontratar empleado",
-            "Actualizar informaci" + Helpers.OACUTE + "n personal" };
     public String INSTRUCTIONS = "Seleccione qu" + Helpers.EACUTE
             + " desea hacer con el empleado:";
 
@@ -235,13 +241,43 @@ public class ViewEmployees extends JFrame implements ActionListener,
         if (e.getClickCount() == 2) {
             int selindex = table.getSelectedRow();
             if (selindex != -1) {
-                Object o = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS, 4);
-
                 String employeeid = emps[selindex][0].toString();
+                Employee editemp = EmployeeManager.findEmployee(employeeid);
+                User u = editemp.getUser();
+
+                List<String> options = new LinkedList<String>();
+
+                if (Session.mayActivateAccount()) {
+                    if (u.isActive()) {
+                        options.add(DEACTIVATE);
+                    } else {
+                        options.add(REACTIVATE);
+                    }
+                }
+
+                if (Session.mayTemporarilyFire()) {
+                    if (editemp.getFired() == null) {
+                        options.add(FIRE);
+                    } else {
+                        options.add(REHIRE);
+                    }
+                }
+
+                if (Session.mayChangePersonalInfoFor(employeeid)) {
+                    options.add(UPDATEINFO);
+                }
+                
+                if(options.size() == 0){
+                    GuiDialogs.showPermissionsError();
+                    return;
+                }
+
+                Object o = GuiDialogs.showInputDialog(INSTRUCTIONS, options
+                        .toArray());
 
                 if (o != null) {
                     String opt = o.toString();
-                    if (opt.equals(OPTIONS[0])) {
+                    if (opt.equals(DEACTIVATE)) {
                         // Desactivar cuenta del usuario
                         if (Session.mayDeactivateAccount(employeeid)) {
                             if (EmployeeManager.deactivateAccount(employeeid)) {
@@ -256,7 +292,7 @@ public class ViewEmployees extends JFrame implements ActionListener,
                         } else {
                             GuiDialogs.showPermissionsError();
                         }
-                    } else if (opt.equals(OPTIONS[1])) {
+                    } else if (opt.equals(REACTIVATE)) {
                         // Reactivar cuenta de usuario
                         if (Session.mayActivateAccount()) {
                             if (EmployeeManager.reactivateAccount(employeeid)) {
@@ -271,7 +307,7 @@ public class ViewEmployees extends JFrame implements ActionListener,
                         } else {
                             GuiDialogs.showPermissionsError();
                         }
-                    } else if (opt.equals(OPTIONS[2])) {
+                    } else if (opt.equals(FIRE)) {
                         // Dar baja temporal
                         if (Session.mayTemporarilyFire()) {
                             if (EmployeeManager.fireTemporarily(employeeid)) {
@@ -286,7 +322,7 @@ public class ViewEmployees extends JFrame implements ActionListener,
                         } else {
                             GuiDialogs.showPermissionsError();
                         }
-                    } else if (opt.equals(OPTIONS[3])) {
+                    } else if (opt.equals(REHIRE)) {
                         // Recontratar empleado
                         if (Session.mayHire()) {
                             if (EmployeeManager.rehire(employeeid)) {
@@ -301,11 +337,9 @@ public class ViewEmployees extends JFrame implements ActionListener,
                         } else {
                             GuiDialogs.showPermissionsError();
                         }
-                    } else if (opt.equals(OPTIONS[4])) {
+                    } else if (opt.equals(UPDATEINFO)) {
                         // Actualizar information personal
                         if (Session.mayChangePersonalInfoFor(employeeid)) {
-                            Employee editemp = EmployeeManager
-                                    .findEmployee(employeeid);
                             EmployeeInfoForm eif = new EmployeeInfoForm(editemp);
                             eif.loadCurrentImage();
                             eif.setEmployeeViewer(this, selindex);

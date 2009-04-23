@@ -50,6 +50,10 @@ public class GuiDialogs {
                 JOptionPane.QUESTION_MESSAGE, QUESTION, options,
                 options[defindex]);
     }
+    
+    public static Object showInputDialog(String instructions, Object[] options) {
+        return showInputDialog(instructions, options, 0);
+    }
 
     public static Object showInputDialog(String instructions, Object[] options,
             Object selected) {

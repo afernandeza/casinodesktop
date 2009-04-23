@@ -5,12 +5,14 @@ public class Casino {
     private String casinoid;
     private String jdbcurl;
     private int latestsyncedid;
+    private boolean available;
     
     public Casino(String casinoid, String jdbcurl, Integer latestsyncedid) {
         super();
         this.casinoid = casinoid;
         this.jdbcurl = jdbcurl;
         this.latestsyncedid = latestsyncedid;
+        this.available = false;
     }
     
     public String getCasinoid() {
@@ -46,7 +48,13 @@ public class Casino {
         
         return retValue.toString();
     }
-    
-    
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
     
 }

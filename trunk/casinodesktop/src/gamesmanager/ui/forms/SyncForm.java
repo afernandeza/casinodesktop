@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +30,10 @@ public class SyncForm extends JFrame implements ActionListener {
     private static final int TWIDTH = 500;
     private static final int THEIGHT = 300;
     private GridBagConstraints c = new GridBagConstraints();
-    private JTextField buscar;
+    private JTextField id;
+    private JTextField jdbchost;
+    private JButton addbutton;
+    private JButton syncbutton;
     private JTable table;
     private SynInfoTableModel etm;
     private Object[][] syncinfo = null;
@@ -40,14 +44,26 @@ public class SyncForm extends JFrame implements ActionListener {
         c.gridx = 0;
         c.gridy = 0;
 
-        JPanel buscarp = new JPanel();
-        JLabel buscarlabel = new JLabel("<html><b>Buscar: </b></html>");
-        buscarp.add(buscarlabel);
+        JPanel newcasino = new JPanel();
+        newcasino.setBackground(Helpers.LIGHTBLUE);
+        
+        JLabel idlabel = new JLabel("<html><b>ID: </b></html>");
+        newcasino.add(idlabel);
 
-        buscar = new JTextField(20);
-        buscarp.add(buscar, c);
-        buscarp.setBackground(Helpers.LIGHTBLUE);
-        this.add(buscarp);
+        id = new JTextField(5);
+        newcasino.add(id);
+        
+        JLabel jdbchostlabel = new JLabel("<html><b>URL JDBC: </b></html>");
+        newcasino.add(jdbchostlabel);
+        
+        jdbchost = new JTextField(10);
+        newcasino.add(jdbchost);
+        
+        addbutton = new JButton("Agregar");
+        addbutton.addActionListener(this);
+        newcasino.add(addbutton);
+        
+        this.add(newcasino);
 
         JPanel tablepanel = new JPanel();
         tablepanel.setLayout(new GridLayout(1, 0));
@@ -76,6 +92,12 @@ public class SyncForm extends JFrame implements ActionListener {
 
         c.gridy++;
         this.add(tablepanel, c);
+        
+        c.gridy++;
+        syncbutton = new JButton("Sincronizar");
+        syncbutton.addActionListener(this);
+        this.add(syncbutton, c);
+        
 
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
         Helpers.setIcon(this);
@@ -99,6 +121,12 @@ public class SyncForm extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        Object src = e.getSource();
+        if(src.equals(syncbutton)){
+            System.out.println("start syncing");
+        } else if(src.equals(addbutton)){
+            System.out.println("agregar sucursal");
+        }
     }
 
     class SynInfoTableModel extends AbstractTableModel {

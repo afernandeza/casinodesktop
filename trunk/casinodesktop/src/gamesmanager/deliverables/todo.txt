@@ -1,6 +1,5 @@
 TO DO:
 
-. mostrar solo opciones disponibles en message dialogs
 . que no se pueden abrir sesiones invalidas
 . terminar validacion formas de empleados y clientes
   . validacion fotos, validacion campos numericos, usuario ya existente, 

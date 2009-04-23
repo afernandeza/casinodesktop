@@ -6,5 +6,3 @@ TO DO:
     contrase–a invalida, etc
   . seleccionar estados de la republica bugs al dar cancelar o al escribir primero
     el estado y luego el pais
-. sincronizacion
-   . administrar sucursales y sincronizar sucursales disponibles

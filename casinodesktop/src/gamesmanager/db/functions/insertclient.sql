@@ -16,7 +16,7 @@ begin
   insert into direcciones values(addressid, callenum, numint, colonia,
   municipio, codigopostal, estado, pais);
   insert into syncinfo values(nextval('syncinfoid'), 
-  'insertextclient(''SUCA'', ''' || clientid || ''' , ''' || appaterno || ' ' || apmaterno || ' ' || nombres || ''')', current_timestamp);
+  'insertextclient(''SUCA'', ''' || clientid || ''', ''' || appaterno || ' ' || apmaterno || ' ' || nombres || ''')', current_timestamp);
   return true;
 end;
 $BODY$

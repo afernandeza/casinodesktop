@@ -165,6 +165,7 @@ public class SyncForm extends JFrame implements ActionListener, MouseListener {
         if (src.equals(syncbutton)) {
             SynchronizerThread st = new SynchronizerThread();
             st.execute();
+            this.dispose();
         } else if (src.equals(addbutton)) {
             if (Session.mayManageCasinos()) {
                 if (this.validateForm()) {

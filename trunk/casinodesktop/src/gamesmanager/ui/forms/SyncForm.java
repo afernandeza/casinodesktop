@@ -1,6 +1,8 @@
 package gamesmanager.ui.forms;
 
 import gamesmanager.db.Synchronizer;
+import gamesmanager.db.SyncFormThread;
+import gamesmanager.db.SynchronizerThread;
 import gamesmanager.ui.Helpers;
 
 import java.awt.Dimension;
@@ -34,6 +36,7 @@ public class SyncForm extends JFrame implements ActionListener {
     private JTextField jdbchost;
     private JButton addbutton;
     private JButton syncbutton;
+    private JButton refreshbutton;
     private JTable table;
     private SynInfoTableModel etm;
     private Object[][] syncinfo = null;
@@ -56,7 +59,7 @@ public class SyncForm extends JFrame implements ActionListener {
         JLabel jdbchostlabel = new JLabel("<html><b>URL JDBC: </b></html>");
         newcasino.add(jdbchostlabel);
         
-        jdbchost = new JTextField(10);
+        jdbchost = new JTextField(18);
         newcasino.add(jdbchost);
         
         addbutton = new JButton("Agregar");
@@ -94,10 +97,19 @@ public class SyncForm extends JFrame implements ActionListener {
         this.add(tablepanel, c);
         
         c.gridy++;
+        
+        JPanel syncbuttons = new JPanel();
+        syncbuttons.setBackground(Helpers.LIGHTBLUE);
+        
+        refreshbutton = new JButton("Actualizar");
+        refreshbutton.addActionListener(this);
+        syncbuttons.add(refreshbutton);
+        
         syncbutton = new JButton("Sincronizar");
         syncbutton.addActionListener(this);
-        this.add(syncbutton, c);
+        syncbuttons.add(syncbutton);
         
+        this.add(syncbuttons, c);
 
         this.getContentPane().setBackground(Helpers.LIGHTBLUE);
         Helpers.setIcon(this);
@@ -123,10 +135,14 @@ public class SyncForm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
         if(src.equals(syncbutton)){
-            Synchronizer.sync();
-            System.out.println("start syncing");
+            SynchronizerThread st = new SynchronizerThread();
+            st.execute();
         } else if(src.equals(addbutton)){
             System.out.println("agregar sucursal");
+        } else if (src.equals(refreshbutton)){
+            SyncFormThread syncer = new SyncFormThread();
+            syncer.execute();
+            this.dispose();
         }
     }
 

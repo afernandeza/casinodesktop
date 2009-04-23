@@ -2,7 +2,6 @@ package gamesmanager.ui.forms;
 
 import gamesmanager.beans.Client;
 import gamesmanager.db.ClientManager;
-import gamesmanager.db.SynchronizeMembers;
 import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 
@@ -73,12 +72,6 @@ public class CheckClientForm extends JPanel implements KeyListener,
 
         this.setBackground(Helpers.LIGHTBLUE);
         this.memberid.addKeyListener(this);
-    }
-
-    public void startSync() {
-        syncpb.setVisible(true);
-        SynchronizeMembers sm = new SynchronizeMembers(this.syncpb);
-        sm.execute();
     }
 
     public void setFocus() {

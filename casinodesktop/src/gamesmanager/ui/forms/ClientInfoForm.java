@@ -85,6 +85,10 @@ MouseListener {
     private JButton cancel;
     private Client client;
 
+    private boolean newphotoselected = false;
+    private boolean imageloaded = false;
+    private boolean editing = false;
+    
     public ClientInfoForm(Client client) {
         super("Miembro del Casino");
         this.client = client;
@@ -259,6 +263,7 @@ MouseListener {
 
         if (this.client == null) {
             // new member
+            editing = false;
             JPanel p = new JPanel();
             newmember = new JButton("Agregar");
             newmember.addActionListener(this);
@@ -272,6 +277,7 @@ MouseListener {
             this.add(p, c);
         } else {
             // existing member
+            editing = true;
             JPanel p = new JPanel();
             register = new JButton("Guardar cambios");
             register.addActionListener(this);
@@ -313,6 +319,7 @@ MouseListener {
     public void loadCurrentImage() {
         if (this.client.getFotoImageIcon() != null) {
             this.image.loadImage(this.client.getFotoImageIcon());
+            imageloaded = true;
         } else {
             throw new NullPointerException("Imagen nula");
         }
@@ -321,6 +328,19 @@ MouseListener {
     private boolean validateForm() {
         formerrors.clear();
         boolean good = true;
+        if(newphotoselected){
+            if(!this.fotofile.exists() || !this.fotofile.canRead()){
+                good = false;
+                this.piclabel.setForeground(Color.RED);
+                formerrors.add("La foto seleccionada es invalida.");
+            } else {
+                this.piclabel.setForeground(Color.BLACK);
+            }
+        } else if(imageloaded){
+            this.piclabel.setForeground(Color.BLACK);
+        } else {
+            this.piclabel.setForeground(Color.RED);
+        }
         if (appat.getText().trim().equals("")) {
             appatlabel.setForeground(Color.RED);
             good = false;
@@ -458,7 +478,7 @@ MouseListener {
         Object o = e.getSource();
         if (o == pais) {
             String sc = (String) pais.getSelectedItem();
-            if (sc.equals("Mexico")) {
+            if (sc.equals("Mexico") && !editing) {
                 Object selestado = GuiDialogs.showInputDialog(
                         "Seleccione el estado de la Rep" + Helpers.UACUTE
                         + "blica:\n", ESTADOS.toArray(), "Distrito Federal");
@@ -476,6 +496,7 @@ MouseListener {
                     int returnVal = fc.showOpenDialog(ClientInfoForm.this);
                     if (returnVal == JFileChooser.APPROVE_OPTION) {
                         fotofile = fc.getSelectedFile();
+                        newphotoselected = true;
                         image.loadImage(fotofile.getAbsolutePath());
                         System.out.println("Opening: " + fotofile.getName()
                                 + ".");

@@ -19,6 +19,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.math.BigInteger;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.JButton;
@@ -35,12 +38,15 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 public class ClientInfoForm extends JFrame implements ActionListener,
-        MouseListener {
+MouseListener {
 
     private static final long serialVersionUID = 1L;
     private static final int FIELDSIZE = 15;
     private static final int PICWIDTH = 300;
     private static final int PICHEIGHT = 225;
+    private static final String[] SEXITEMS = {"Seleccione...", "Masculino", "Femenino"};
+    private static final List<String> formerrors = new LinkedList<String>();
+    private static final List<String> ESTADOS = DatabaseOperations.getStates();
 
     private final JFileChooser fc;
     private File fotofile;
@@ -89,10 +95,10 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         /* General info */
         JPanel memberform = new JPanel(new SpringLayout());
         String[] labels = {
-                "<html><b>Fotograf" + Helpers.IACUTE + "a:</b></html>",
-                "<html><b>Apellido paterno:</b></html>",
+                "<html><b>*Fotograf" + Helpers.IACUTE + "a:</b></html>",
+                "<html><b>*Apellido paterno:</b></html>",
                 "<html><b>Apellido materno:</b></html>",
-                "<html><b>Nombre(s):</b></html>" };
+        "<html><b>*Nombre(s):</b></html>" };
 
         int numPairs = labels.length;
 
@@ -144,18 +150,18 @@ public class ClientInfoForm extends JFrame implements ActionListener,
 
         JPanel addressform = new JPanel(new SpringLayout());
         String[] alabels = {
-                "<html><b>Sexo:</b></html>",
-                "<html><b>Fecha nacimiento:</b></html>",
-                "<html><b>Calle y n" + Helpers.UACUTE + "mero:</b></html>",
+                "<html><b>*Sexo:</b></html>",
+                "<html><b>*Fecha nacimiento:</b></html>",
+                "<html><b>*Calle y n" + Helpers.UACUTE + "mero:</b></html>",
                 "<html><b>N" + Helpers.UACUTE + "mero interior:</b></html>",
-                "<html><b>Colonia:</b></html>",
-                "<html><b>Municipio o delegaci" + Helpers.OACUTE
-                        + "n:</b></html>",
-                "<html><b>C" + Helpers.OACUTE + "digo postal:</b></html>",
-                "<html><b>Estado:</b></html>",
-                "<html><b>Pa" + Helpers.IACUTE + "s:</b></html>",
+                "<html><b>*Colonia:</b></html>",
+                "<html><b>*Municipio o delegaci" + Helpers.OACUTE
+                + "n:</b></html>",
+                "<html><b>*C" + Helpers.OACUTE + "digo postal:</b></html>",
+                "<html><b>*Estado:</b></html>",
+                "<html><b>*Pa" + Helpers.IACUTE + "s:</b></html>",
                 "<html><b>Tel" + Helpers.EACUTE + "fono casa:</b></html>",
-                "<html><b>Tel" + Helpers.EACUTE + "fono celular:</b></html>" };
+                "<html><b>*Tel" + Helpers.EACUTE + "fono celular:</b></html>" };
         int aPairs = alabels.length;
 
         telcasalabel = new JLabel(alabels[9], JLabel.TRAILING);
@@ -173,8 +179,9 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         sexolabel = new JLabel(alabels[0], JLabel.TRAILING);
         addressform.add(sexolabel);
         sexo = new JComboBox();
-        sexo.addItem("Masculino");
-        sexo.addItem("Femenino");
+        for(String sexitem: SEXITEMS){
+            sexo.addItem(sexitem);
+        }
         sexolabel.setLabelFor(sexo);
         addressform.add(sexo);
 
@@ -183,7 +190,7 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         fecha = new JDateChooser();
         fecha.setLocale(Locale.getDefault());
         JTextFieldDateEditor editor = (JTextFieldDateEditor) fecha
-                .getDateEditor();
+        .getDateEditor();
         editor.setEditable(false);
         editor.setFocusable(false);
         fecha.setDateFormatString("yyyy-MM-dd");
@@ -312,6 +319,7 @@ public class ClientInfoForm extends JFrame implements ActionListener,
     }
 
     private boolean validateForm() {
+        formerrors.clear();
         boolean good = true;
         if (appat.getText().trim().equals("")) {
             appatlabel.setForeground(Color.RED);
@@ -325,9 +333,25 @@ public class ClientInfoForm extends JFrame implements ActionListener,
         } else {
             nombrelabel.setForeground(Color.BLACK);
         }
-        if (telcasa.getText().trim().equals("")) {
-            good = false;
-            telcasalabel.setForeground(Color.RED);
+        if (!telcasa.getText().trim().equals("")) {
+            try{
+                String telc = telcasa.getText().trim();
+                if(telc.length() < 5 || telc.length() > 20){
+                    good = false;
+                    telcasalabel.setForeground(Color.RED);
+                    formerrors.add("El tel"+Helpers.EACUTE+"fono de casa debe " +
+                    		"tener entre 5 y 20 d"+Helpers.IACUTE +"gitos.");
+                } else {
+                    BigInteger bi = new BigInteger(telc);
+                    bi.toString();
+                    telcasalabel.setForeground(Color.BLACK);
+                }
+            } catch(Exception e){
+                good = false;   
+                telcasalabel.setForeground(Color.RED);
+                formerrors.add("El tel"+Helpers.EACUTE+"fono de casa " +
+                        "contiene caracteres inv"+Helpers.AACUTE+"lidos.");
+            }
         } else {
             telcasalabel.setForeground(Color.BLACK);
         }
@@ -335,7 +359,30 @@ public class ClientInfoForm extends JFrame implements ActionListener,
             good = false;
             telcellabel.setForeground(Color.RED);
         } else {
-            telcellabel.setForeground(Color.BLACK);
+            try{
+                String telc = telcel.getText().trim();
+                if(telc.length() < 5 || telc.length() > 20){
+                    good = false;
+                    telcellabel.setForeground(Color.RED);
+                    formerrors.add("El tel"+Helpers.EACUTE+"fono celular debe " +
+                            "tener entre 5 y 20 d"+Helpers.IACUTE +"gitos.");
+                } else {
+                    BigInteger bi = new BigInteger(telc);
+                    bi.toString();
+                    telcellabel.setForeground(Color.BLACK);
+                }
+            } catch(Exception e){
+                good = false;   
+                telcellabel.setForeground(Color.RED);
+                formerrors.add("El tel"+Helpers.EACUTE+"fono celular " +
+                        "contiene caracteres inv"+Helpers.AACUTE+"lidos.");
+            }        
+        }
+        if (sexo.getSelectedIndex() == 0) {
+            sexolabel.setForeground(Color.RED);
+            good = false;
+        } else {
+            sexolabel.setForeground(Color.BLACK);
         }
         if (calle.getText().trim().equals("")) {
             good = false;
@@ -353,7 +400,15 @@ public class ClientInfoForm extends JFrame implements ActionListener,
             good = false;
             cplabel.setForeground(Color.RED);
         } else {
-            cplabel.setForeground(Color.BLACK);
+            String cpostal = cp.getText().trim();
+            if(cpostal.length() > 4){
+                cplabel.setForeground(Color.BLACK);
+            } else {
+                good = false;
+                cplabel.setForeground(Color.RED);
+                formerrors.add("El c"+Helpers.OACUTE+"digo postal " +
+                		"debe ser de al menos 5 caracteres.");
+            }
         }
         if (municipio.getText().trim().equals("")) {
             good = false;
@@ -365,7 +420,18 @@ public class ClientInfoForm extends JFrame implements ActionListener,
             good = false;
             estadolabel.setForeground(Color.RED);
         } else {
-            estadolabel.setForeground(Color.BLACK);
+            String sc = (String) pais.getSelectedItem();
+            if (sc.equals("Mexico")) {
+                String selestado = estado.getText().trim();
+                if(!ESTADOS.contains(selestado)){
+                    good = false;
+                    estadolabel.setForeground(Color.RED);
+                    formerrors.add("El estado introducido no corresponde al pa" +
+                    		Helpers.IACUTE+"s seleccionado");
+                } else {
+                    estadolabel.setForeground(Color.BLACK);
+                }
+            }
         }
         if (fecha.getDate() == null) {
             good = false;
@@ -374,7 +440,15 @@ public class ClientInfoForm extends JFrame implements ActionListener,
             fechalabel.setForeground(Color.BLACK);
         }
         if(!good){
-           GuiDialogs.showErrorMessage("Por favor corrija los campos marcados con rojo.");
+            StringBuffer em = new StringBuffer();
+            em.append("Por favor complete todos los campos obligatorios");
+            if(formerrors.size() > 0){
+                em.append(" y corrija los siguientes errores:\n");
+                for(String err: formerrors){
+                    em.append("- " + err + "\n");
+                }   
+            }
+            GuiDialogs.showErrorMessage(em.toString());
         }
         return good;
     }
@@ -383,8 +457,18 @@ public class ClientInfoForm extends JFrame implements ActionListener,
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (o == pais) {
-            // String selectedcountry = (String) pais.getSelectedItem();
-            estado.setEnabled(true);
+            String sc = (String) pais.getSelectedItem();
+            if (sc.equals("Mexico")) {
+                Object selestado = GuiDialogs.showInputDialog(
+                        "Seleccione el estado de la Rep" + Helpers.UACUTE
+                        + "blica:\n", ESTADOS.toArray(), "Distrito Federal");
+
+                if (selestado != null) {
+                    String s = selestado.toString();
+                    estado.setText(s);
+                    return;
+                }
+            }
         } else if (o == imagebutton) {
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
@@ -434,7 +518,7 @@ public class ClientInfoForm extends JFrame implements ActionListener,
                     this.dispose();
                 } else {
                     GuiDialogs
-                            .showErrorMessage("El nuevo miembro no ha sido insertado.");
+                    .showErrorMessage("El nuevo miembro no ha sido insertado.");
                 }
             }
         } else if (o == cancel) {
@@ -462,11 +546,11 @@ public class ClientInfoForm extends JFrame implements ActionListener,
                 boolean updated = ClientManager.updateClient(this.client);
                 if (updated) {
                     GuiDialogs
-                            .showSuccessMessage("Cambios guardados exitosamente.");
+                    .showSuccessMessage("Cambios guardados exitosamente.");
                     this.dispose();
                 } else {
                     GuiDialogs
-                            .showErrorMessage("Los cambios no han sido guardados.");
+                    .showErrorMessage("Los cambios no han sido guardados.");
                 }
             }
         }
@@ -476,19 +560,15 @@ public class ClientInfoForm extends JFrame implements ActionListener,
     public void mouseClicked(MouseEvent e) {
         String sc = (String) pais.getSelectedItem();
         if (sc.equals("Mexico")) {
-            Object[] possibilities = DatabaseOperations.getStates().toArray();
             Object o = GuiDialogs.showInputDialog(
                     "Seleccione el estado de la Rep" + Helpers.UACUTE
-                            + "blica:\n", possibilities, "Distrito Federal");
+                    + "blica:\n", ESTADOS.toArray(), "Distrito Federal");
 
             if (o != null) {
                 String s = o.toString();
                 estado.setText(s);
-                estado.setEnabled(false);
                 return;
             }
-        } else {
-            estado.setEnabled(true);
         }
     }
 

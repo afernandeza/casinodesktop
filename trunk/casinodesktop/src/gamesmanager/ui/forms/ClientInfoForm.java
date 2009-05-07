@@ -332,7 +332,8 @@ MouseListener {
             if(!this.fotofile.exists() || !this.fotofile.canRead()){
                 good = false;
                 this.piclabel.setForeground(Color.RED);
-                formerrors.add("La foto seleccionada es invalida.");
+                formerrors.add("La foto seleccionada es inv"
+                        +Helpers.AACUTE+"lida.");
             } else {
                 this.piclabel.setForeground(Color.BLACK);
             }

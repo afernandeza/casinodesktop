@@ -20,6 +20,9 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.math.BigInteger;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.JButton;
@@ -47,6 +50,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     private JTextField appat;
     private JLabel appatlabel;
     private JTextField apmat;
+    private JLabel apmatlabel;
     private JTextField nombre;
     private JLabel nombrelabel;
     private JTextField telcasa;
@@ -54,6 +58,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     private JTextField telcel;
     private JLabel telcellabel;
     private JComboBox sexo;
+    private JLabel sexolabel;
     private JDateChooser fecha;
     private JLabel fechalabel;
     private JButton imagebutton;
@@ -68,6 +73,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     private JTextField cp;
     private JLabel cplabel;
     private JComboBox estado;
+    private JLabel estadolabel;
     private JComboBox pais;
     private ImagePanel image;
     private JButton newemployee;
@@ -78,10 +84,18 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     private File fotofile;
 
     private JComboBox types;
+    private JLabel typeslabel;
     private JTextField username;
     private JLabel usernamelabel;
     private JPasswordField password;
     private JLabel passwordlabel;
+    
+    private static final List<String> formerrors = new LinkedList<String>();
+    private static final List<String> ESTADOS = DatabaseOperations.getStates();
+    
+    private boolean newphotoselected = false;
+    private boolean imageloaded = false;
+    private boolean editing = false;
 
     public EmployeeInfoForm(Employee e) {
         super("Empleado del Casino");
@@ -93,10 +107,11 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         /* General info */
         JPanel memberform = new JPanel(new SpringLayout());
         String[] labels = {
-                "<html><b>Fotograf" + Helpers.IACUTE + "a:</b></html>",
-                "<html><b>Apellido paterno:</b></html>",
+                "<html><b>*Fotograf" + Helpers.IACUTE + "a:</b></html>",
+                "<html><b>*Apellido paterno:</b></html>",
                 "<html><b>Apellido materno:</b></html>",
-                "<html><b>Nombre(s):</b></html>", "<html><b>Tipo:</b></html>" };
+                "<html><b>*Nombre(s):</b></html>", 
+                "<html><b>*Tipo:</b></html>" };
 
         int numPairs = labels.length;
 
@@ -124,10 +139,10 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         appatlabel.setLabelFor(appat);
         memberform.add(appat);
 
-        JLabel l2 = new JLabel(labels[2], JLabel.TRAILING);
-        memberform.add(l2);
+        apmatlabel = new JLabel(labels[2], JLabel.TRAILING);
+        memberform.add(apmatlabel);
         apmat = new JTextField(FIELDSIZE);
-        l2.setLabelFor(apmat);
+        apmatlabel.setLabelFor(apmat);
         memberform.add(apmat);
 
         nombrelabel = new JLabel(labels[3], JLabel.TRAILING);
@@ -136,13 +151,14 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         nombrelabel.setLabelFor(nombre);
         memberform.add(nombre);
 
-        JLabel typel = new JLabel(labels[4], JLabel.TRAILING);
-        memberform.add(typel);
+        typeslabel = new JLabel(labels[4], JLabel.TRAILING);
+        memberform.add(typeslabel);
         types = new JComboBox();
+        types.addItem("Seleccionar...");
         for (Type et : EmployeeManager.getEmployeeTypes()) {
             types.addItem(et);
         }
-        typel.setLabelFor(types);
+        typeslabel.setLabelFor(types);
         memberform.add(types);
 
         SpringUtilities.makeCompactGrid(memberform, numPairs, 2, // rows, cols
@@ -157,20 +173,20 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
 
         JPanel addressform = new JPanel(new SpringLayout());
         String[] alabels = {
-                "<html><b>Sexo:</b></html>",
-                "<html><b>Fecha nacimiento:</b></html>",
-                "<html><b>Calle y n" + Helpers.UACUTE + "mero:</b></html>",
+                "<html><b>*Sexo:</b></html>",
+                "<html><b>*Fecha nacimiento:</b></html>",
+                "<html><b>*Calle y n" + Helpers.UACUTE + "mero:</b></html>",
                 "<html><b>N" + Helpers.UACUTE + "mero interior:</b></html>",
-                "<html><b>Colonia:</b></html>",
-                "<html><b>Municipio o delegaci" + Helpers.OACUTE
+                "<html><b>*Colonia:</b></html>",
+                "<html><b>*Municipio o delegaci" + Helpers.OACUTE
                         + "n:</b></html>",
-                "<html><b>C" + Helpers.OACUTE + "digo postal:</b></html>",
-                "<html><b>Estado:</b></html>",
-                "<html><b>Pa" + Helpers.IACUTE + "s:</b></html>",
+                "<html><b>*C" + Helpers.OACUTE + "digo postal:</b></html>",
+                "<html><b>*Estado:</b></html>",
+                "<html><b>*Pa" + Helpers.IACUTE + "s:</b></html>",
                 "<html><b>Tel" + Helpers.EACUTE + "fono casa:</b></html>",
-                "<html><b>Tel" + Helpers.EACUTE + "fono celular:</b></html>",
-                "<html><b>Usuario:</b></html>",
-                "<html><b>Contrase" + Helpers.NTILDE + "a:</b></html>" };
+                "<html><b>*Tel" + Helpers.EACUTE + "fono celular:</b></html>",
+                "<html><b>*Usuario:</b></html>",
+                "<html><b>*Contrase" + Helpers.NTILDE + "a:</b></html>" };
         int aPairs = alabels.length;
 
         telcasalabel = new JLabel(alabels[9], JLabel.TRAILING);
@@ -185,12 +201,13 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         telcellabel.setLabelFor(telcel);
         addressform.add(telcel);
 
-        JLabel l4 = new JLabel(alabels[0], JLabel.TRAILING);
-        addressform.add(l4);
+        sexolabel = new JLabel(alabels[0], JLabel.TRAILING);
+        addressform.add(sexolabel);
         sexo = new JComboBox();
+        sexo.addItem("Seleccionar...");
         sexo.addItem("Masculino");
         sexo.addItem("Femenino");
-        l4.setLabelFor(sexo);
+        sexolabel.setLabelFor(sexo);
         addressform.add(sexo);
 
         fechalabel = new JLabel(alabels[1], JLabel.TRAILING);
@@ -235,13 +252,14 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         cplabel.setLabelFor(cp);
         addressform.add(cp);
 
-        JLabel l6 = new JLabel(alabels[7], JLabel.TRAILING);
-        addressform.add(l6);
+        estadolabel = new JLabel(alabels[7], JLabel.TRAILING);
+        addressform.add(estadolabel);
         estado = new JComboBox();
-        for (String est : DatabaseOperations.getStates()) {
+        estado.addItem("Seleccionar...");
+        for (String est : ESTADOS) {
             estado.addItem(est);
         }
-        l6.setLabelFor(estado);
+        estadolabel.setLabelFor(estado);
         addressform.add(estado);
 
         JLabel paisl = new JLabel(alabels[8], JLabel.TRAILING);
@@ -279,6 +297,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
 
         if (this.e == null) {
             // new member
+            editing = false;
             JPanel p = new JPanel();
             newemployee = new JButton("Agregar");
             newemployee.addActionListener(this);
@@ -292,6 +311,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             this.add(p, c);
         } else {
             // existing employee
+            editing = true;
             this.password.setEditable(Session.mayChangePasswordFor(this.e.getId()));
             this.password.setEnabled(Session.mayChangePasswordFor(this.e.getId()));
             JPanel p = new JPanel();
@@ -345,13 +365,29 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
     public void loadCurrentImage() {
         if (this.e.getFotoImageIcon() != null) {
             this.image.loadImage(this.e.getFotoImageIcon());
+            imageloaded = true;
         } else {
             throw new NullPointerException("Imagen nula");
         }
     }
 
     private boolean validateForm() {
+        formerrors.clear();
         boolean good = true;
+        if(newphotoselected){
+            if(!this.fotofile.exists() || !this.fotofile.canRead()){
+                good = false;
+                this.piclabel.setForeground(Color.RED);
+                formerrors.add("La foto seleccionada es inv"
+                        +Helpers.AACUTE+"lida.");
+            } else {
+                this.piclabel.setForeground(Color.BLACK);
+            }
+        } else if(imageloaded){
+            this.piclabel.setForeground(Color.BLACK);
+        } else {
+            this.piclabel.setForeground(Color.RED);
+        }
         if (appat.getText().trim().equals("")) {
             appatlabel.setForeground(Color.RED);
             good = false;
@@ -364,9 +400,25 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         } else {
             nombrelabel.setForeground(Color.BLACK);
         }
-        if (telcasa.getText().trim().equals("")) {
-            good = false;
-            telcasalabel.setForeground(Color.RED);
+        if (!telcasa.getText().trim().equals("")) {
+            try{
+                String telc = telcasa.getText().trim();
+                if(telc.length() < 5 || telc.length() > 20){
+                    good = false;
+                    telcasalabel.setForeground(Color.RED);
+                    formerrors.add("El tel"+Helpers.EACUTE+"fono de casa debe " +
+                            "tener entre 5 y 20 d"+Helpers.IACUTE +"gitos.");
+                } else {
+                    BigInteger bi = new BigInteger(telc);
+                    bi.toString();
+                    telcasalabel.setForeground(Color.BLACK);
+                }
+            } catch(Exception e){
+                good = false;   
+                telcasalabel.setForeground(Color.RED);
+                formerrors.add("El tel"+Helpers.EACUTE+"fono de casa " +
+                        "contiene caracteres inv"+Helpers.AACUTE+"lidos.");
+            }
         } else {
             telcasalabel.setForeground(Color.BLACK);
         }
@@ -374,7 +426,42 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             good = false;
             telcellabel.setForeground(Color.RED);
         } else {
-            telcellabel.setForeground(Color.BLACK);
+            try{
+                String telc = telcel.getText().trim();
+                if(telc.length() < 5 || telc.length() > 20){
+                    good = false;
+                    telcellabel.setForeground(Color.RED);
+                    formerrors.add("El tel"+Helpers.EACUTE+"fono celular debe " +
+                            "tener entre 5 y 20 d"+Helpers.IACUTE +"gitos.");
+                } else {
+                    BigInteger bi = new BigInteger(telc);
+                    bi.toString();
+                    telcellabel.setForeground(Color.BLACK);
+                }
+            } catch(Exception e){
+                good = false;   
+                telcellabel.setForeground(Color.RED);
+                formerrors.add("El tel"+Helpers.EACUTE+"fono celular " +
+                        "contiene caracteres inv"+Helpers.AACUTE+"lidos.");
+            }        
+        }
+        if (estado.getSelectedIndex() == 0) {
+            estadolabel.setForeground(Color.RED);
+            good = false;
+        } else {
+            estadolabel.setForeground(Color.BLACK);
+        }
+        if (sexo.getSelectedIndex() == 0) {
+            sexolabel.setForeground(Color.RED);
+            good = false;
+        } else {
+            sexolabel.setForeground(Color.BLACK);
+        }
+        if (types.getSelectedIndex() == 0) {
+            typeslabel.setForeground(Color.RED);
+            good = false;
+        } else {
+            typeslabel.setForeground(Color.BLACK);
         }
         if (calle.getText().trim().equals("")) {
             good = false;
@@ -392,7 +479,15 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             good = false;
             cplabel.setForeground(Color.RED);
         } else {
-            cplabel.setForeground(Color.BLACK);
+            String cpostal = cp.getText().trim();
+            if(cpostal.length() > 4){
+                cplabel.setForeground(Color.BLACK);
+            } else {
+                good = false;
+                cplabel.setForeground(Color.RED);
+                formerrors.add("El c"+Helpers.OACUTE+"digo postal " +
+                        "debe ser de al menos 5 caracteres.");
+            }
         }
         if (municipio.getText().trim().equals("")) {
             good = false;
@@ -419,7 +514,15 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             passwordlabel.setForeground(Color.BLACK);
         }
         if(!good){
-           GuiDialogs.showErrorMessage("Por favor corrija los campos marcados con rojo.");
+            StringBuffer em = new StringBuffer();
+            em.append("Por favor complete todos los campos obligatorios");
+            if(formerrors.size() > 0){
+                em.append(" y corrija los siguientes errores:\n");
+                for(String err: formerrors){
+                    em.append("- " + err + "\n");
+                }   
+            }
+            GuiDialogs.showErrorMessage(em.toString());
         }
         return good;
     }
@@ -431,6 +534,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             int returnVal = fc.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 fotofile = fc.getSelectedFile();
+                newphotoselected = true;
                 this.image.loadImage(fotofile.getAbsolutePath());
             } else {
                 // System.out.println("Open command cancelled by user.");

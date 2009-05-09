@@ -386,6 +386,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
         } else if(imageloaded){
             this.piclabel.setForeground(Color.BLACK);
         } else {
+            good = false;
             this.piclabel.setForeground(Color.RED);
         }
         if (appat.getText().trim().equals("")) {
@@ -545,7 +546,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 this.e.setNombres(nombre.getText().trim());
                 this.e.setAppaterno(appat.getText().trim());
                 this.e.setApmaterno(apmat.getText().trim());
-                this.e.setSexo(sexo.getSelectedIndex());
+                this.e.setSexo(sexo.getSelectedIndex() - 1);
                 this.e.setFechanac(fecha.getDate());
                 this.e.setFoto(fc.getSelectedFile());
                 this.e.setTelcasa(telcasa.getText().trim());
@@ -584,7 +585,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
                 this.e.setNombres(nombre.getText().trim());
                 this.e.setAppaterno(appat.getText().trim());
                 this.e.setApmaterno(apmat.getText().trim());
-                this.e.setSexo(sexo.getSelectedIndex());
+                this.e.setSexo(sexo.getSelectedIndex() - 1);
                 this.e.setFechanac(fecha.getDate());
                 this.e.setFoto(fc.getSelectedFile());
                 this.e.setTelcasa(telcasa.getText().trim());

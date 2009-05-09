@@ -340,6 +340,7 @@ MouseListener {
         } else if(imageloaded){
             this.piclabel.setForeground(Color.BLACK);
         } else {
+            good = false;
             this.piclabel.setForeground(Color.RED);
         }
         if (appat.getText().trim().equals("")) {
@@ -518,7 +519,7 @@ MouseListener {
                 c.setNombres(nombre.getText().trim());
                 c.setAppaterno(appat.getText().trim());
                 c.setApmaterno(apmat.getText().trim());
-                c.setSexo(sexo.getSelectedIndex());
+                c.setSexo(sexo.getSelectedIndex() - 1);
                 c.setFechanac(fecha.getDate());
                 c.setFoto(fc.getSelectedFile());
                 c.setTelcasa(telcasa.getText().trim());
@@ -550,7 +551,7 @@ MouseListener {
                 this.client.setNombres(nombre.getText().trim());
                 this.client.setAppaterno(appat.getText().trim());
                 this.client.setApmaterno(apmat.getText().trim());
-                this.client.setSexo(sexo.getSelectedIndex());
+                this.client.setSexo(sexo.getSelectedIndex() - 1);
                 this.client.setFechanac(fecha.getDate());
                 this.client.setFoto(fc.getSelectedFile());
                 this.client.setTelcasa(telcasa.getText().trim());

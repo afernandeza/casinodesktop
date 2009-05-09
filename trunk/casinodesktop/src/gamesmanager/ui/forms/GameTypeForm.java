@@ -73,10 +73,7 @@ public class GameTypeForm extends JFrame implements ListSelectionListener {
         employeeName = new JTextField(10);
         employeeName.addActionListener(hireListener);
         employeeName.getDocument().addDocumentListener(hireListener);
-        // String name = listModel.getElementAt(
-        // list.getSelectedIndex()).toString();
 
-        // Create a panel that uses BoxLayout.
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
         buttonPane.add(fireButton);

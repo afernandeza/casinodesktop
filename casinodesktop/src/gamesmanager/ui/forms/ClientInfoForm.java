@@ -293,7 +293,7 @@ MouseListener {
             this.nombre.setText(this.client.getNombres());
             this.appat.setText(this.client.getAppaterno());
             this.apmat.setText(this.client.getApmaterno());
-            this.sexo.setSelectedIndex(this.client.getSexoIndex());
+            this.sexo.setSelectedIndex(this.client.getSexoIndex() + 1);
             this.telcasa.setText(this.client.getTelcasa());
             this.telcel.setText(this.client.getTelcel());
             this.fecha.setDate(this.client.getFechanac());
@@ -453,6 +453,8 @@ MouseListener {
                 } else {
                     estadolabel.setForeground(Color.BLACK);
                 }
+            } else {
+                estadolabel.setForeground(Color.BLACK);
             }
         }
         if (fecha.getDate() == null) {

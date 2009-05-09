@@ -329,7 +329,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             this.nombre.setText(this.e.getNombres());
             this.appat.setText(this.e.getAppaterno());
             this.apmat.setText(this.e.getApmaterno());
-            this.sexo.setSelectedIndex(this.e.getSexoIndex());
+            this.sexo.setSelectedIndex(this.e.getSexoIndex() + 1);
             this.telcasa.setText(this.e.getTelcasa());
             this.telcel.setText(this.e.getTelcel());
             this.fecha.setDate(this.e.getFechanac());

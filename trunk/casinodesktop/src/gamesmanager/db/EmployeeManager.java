@@ -29,6 +29,7 @@ public class EmployeeManager {
     private static String REACTIVATEACCOUNT = "{? = call reactivateaccount(?)}";
     private static String FIRETEMPORARILY = "{? = call firetemporarily(?)}";
     private static String REHIRE = "{? = call rehire(?)}";
+    private static String USREXISTS = "{? = call userexists(?)}";
 
     private static String GETEMPLOYEETYPES = "SELECT * FROM tipoempleados "
             + "ORDER BY tipo";
@@ -46,6 +47,10 @@ public class EmployeeManager {
             "Usuario", "Us. activo", "Fecha alta", "Tel. Casa", "Tel. Celular",
             "Despedido", };
 
+    public static boolean userExists(String usr){
+        return DatabaseOperations.runStoredProcedure(usr, USREXISTS);
+    }
+    
     public static boolean deactivateAccount(String eid) {
         return DatabaseOperations.runStoredProcedure(eid, DEACTIVATEACCOUNT);
     }

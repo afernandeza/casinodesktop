@@ -1,8 +1,8 @@
 package gamesmanager.ui.forms;
 
-import gamesmanager.db.SyncFormThread;
-import gamesmanager.db.Synchronizer;
-import gamesmanager.db.SynchronizerThread;
+import gamesmanager.db.sync.SyncFormThread;
+import gamesmanager.db.sync.Synchronizer;
+import gamesmanager.db.sync.SynchronizerThread;
 import gamesmanager.ui.Helpers;
 
 import java.awt.Dimension;

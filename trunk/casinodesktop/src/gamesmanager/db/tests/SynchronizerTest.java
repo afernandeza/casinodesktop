@@ -1,6 +1,6 @@
 package gamesmanager.db.tests;
 
-import gamesmanager.db.Synchronizer;
+import gamesmanager.db.sync.Synchronizer;
 
 import org.junit.Test;
 

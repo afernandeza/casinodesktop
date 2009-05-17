@@ -1,7 +1,7 @@
 package gamesmanager.ui;
 
 import gamesmanager.db.DatabaseManager;
-import gamesmanager.db.SyncFormThread;
+import gamesmanager.db.sync.SyncFormThread;
 import gamesmanager.ui.forms.CheckClientForm;
 import gamesmanager.ui.forms.ClientInfoForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;

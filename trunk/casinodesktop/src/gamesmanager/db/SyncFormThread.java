@@ -14,7 +14,7 @@ public class SyncFormThread extends SwingWorker<Void, Void>{
         
         @Override
         protected Void doInBackground() throws Exception {
-            progress = new JFrame("Verificando servidores...");
+            progress = new JFrame("Buscando servidores...");
             Helpers.setIcon(progress);
             JProgressBar pb = new JProgressBar();
             pb.setIndeterminate(true);

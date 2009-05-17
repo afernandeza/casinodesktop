@@ -35,6 +35,9 @@ public class EmployeeManager {
 
     public static String GETEMPSUMMARY = "SELECT * FROM employeessummary ORDER BY nombre";
     public static String EMPSUMMARYCOUNT = "SELECT COUNT(*) from employeessummary";
+    
+    public static String GETAVEMPSUMMARY = "SELECT * FROM availableemployees ORDER BY nombre";
+    public static String EMPAVSUMMARYCOUNT = "SELECT COUNT(*) from availableemployees";
 
     public static String SEARCH = "SELECT * from searchemployees(?)";
     public static String SEARCHCOUNT = "SELECT COUNT(*) from searchemployees(?)";
@@ -93,6 +96,18 @@ public class EmployeeManager {
         return s;
     }
 
+    public static Employee[] getAvailableEmployeeNames() {
+        Object[][] o = getAvailableEmployeesSummary();
+        Employee[] s = new Employee[o.length];
+        for (int i = 0; i < o.length; i++) {
+            Employee e = new Employee();
+            e.setId(o[i][0].toString());
+            e.setNombres(o[i][1].toString());
+            s[i] = e;
+        }
+        return s;
+    }
+    
     public static Object[][] getEmployeesSummary() {
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
@@ -103,6 +118,26 @@ public class EmployeeManager {
         try {
             rowcount = conn.prepareStatement(EMPSUMMARYCOUNT);
             query = conn.prepareStatement(GETEMPSUMMARY);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                e.printStackTrace();
+            }
+            return new Object[0][0];
+        }
+
+        return DatabaseOperations.getResults(rowcount, query);
+    }
+    
+    public static Object[][] getAvailableEmployeesSummary() {
+        Connection conn = DatabaseManager.connect();
+        if (conn == null) {
+            return new Object[0][0];
+        }
+        PreparedStatement rowcount;
+        PreparedStatement query;
+        try {
+            rowcount = conn.prepareStatement(EMPAVSUMMARYCOUNT);
+            query = conn.prepareStatement(GETAVEMPSUMMARY);
         } catch (SQLException e) {
             if (Helpers.DEBUG) {
                 e.printStackTrace();

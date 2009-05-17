@@ -14,10 +14,50 @@ public class TableManager {
     public static String[] TABLECOLUMNS = { "ID", "Juego" };
     private static String GETTABLESCOUNT = "SELECT COUNT(*) FROM mesasinfo";
     private static String GETTABLES = "SELECT * FROM mesasinfo";
+    private static String GETAVTABLESCOUNT = "SELECT COUNT(*) FROM availabletables";
+    private static String GETAVTABLES = "SELECT * FROM availabletables";
+    
+    private static String MAYEDIT = "{? = call gametableinuse(?)}";
     private static String INSERT = "{ ? = call insertgametable( ?, ? ) }";
     private static String DELETE = "{ ? = call deletegametable( ? ) }";
     private static String UPDATE = "{ ? = call updategametable( ?, ? ) }";
 
+    public static boolean gameTableInUse(int tid){
+        return DatabaseOperations.runStoredProcedure(tid, MAYEDIT);
+    }
+    
+    public static Object[][] getAvailableTables() {
+        Connection conn = DatabaseManager.connect();
+        if (conn == null) {
+            return new Object[0][0];
+        }
+        PreparedStatement rowcount;
+        PreparedStatement query;
+        try {
+            rowcount = conn.prepareStatement(GETAVTABLESCOUNT);
+            query = conn.prepareStatement(GETAVTABLES);
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                e.printStackTrace();
+            }
+            return new Object[0][0];
+        }
+
+        return DatabaseOperations.getResults(rowcount, query);
+    }
+    
+    public static GameTable[] getAvailableTablesArray() {
+        Object[][] o = getAvailableTables();
+        GameTable[] s = new GameTable[o.length];
+        for (int i = 0; i < o.length; i++) {
+            GameTable e = new GameTable();
+            e.setTableid(o[i][0].toString());
+            e.setGame(o[i][1].toString());
+            s[i] = e;
+        }
+        return s;
+    }
+    
     public static boolean updateGameTable(int tableid, int gametypeid) {
         Connection conn = DatabaseManager.connect();
         CallableStatement cs = null;

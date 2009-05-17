@@ -42,6 +42,7 @@ public class ViewGameTables extends JFrame implements ActionListener,
     private Object[][] tableinfo;
 
     public String[] OPTIONS = { "Cambiar tipo de juego", "Eliminar mesa" };
+    
     public String INSTRUCTIONS = "Seleccione qu" + Helpers.EACUTE
             + " desea hacer con la mesa de juego:";
 
@@ -242,10 +243,18 @@ public class ViewGameTables extends JFrame implements ActionListener,
                     GuiDialogs.showPermissionsError();
                     return;
                 }
-                Object obj = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS,
-                        0);
                 String tableid = tableinfo[selindex][0].toString();
                 int tid = Integer.parseInt(tableid);
+                
+                if(TableManager.gameTableInUse(tid)){
+                    GuiDialogs.showErrorMessage("Esta mesa no se puede editar porque " +
+                    		"est"+Helpers.AACUTE+" asociada con una sesi"+Helpers.OACUTE
+                    		+"n abierta.");
+                    return;
+                }
+
+                Object obj = GuiDialogs.showInputDialog(INSTRUCTIONS, OPTIONS,
+                        0);
 
                 if (obj != null) {
                     String opt = obj.toString();

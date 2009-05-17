@@ -40,8 +40,8 @@ public class ViewSessions extends JFrame implements ActionListener,
     private static final long serialVersionUID = 1L;
     private static String NULLSTRING = "N/A";
 
-    private static final int TWIDTH = 800;
-    private static final int THEIGHT = 400;
+    private static final int TWIDTH = 820;
+    private static final int THEIGHT = 420;
     private GridBagConstraints c = new GridBagConstraints();
     private JTable table;
     private SessionsTableModel etm;
@@ -52,6 +52,8 @@ public class ViewSessions extends JFrame implements ActionListener,
     private JComboBox empselector;
     private JButton newsessionbutton;
     private JCheckBox displayopensessions;
+    
+    private static final int MINCHIPS = 50;
 
     private GameSession gs = new GameSession();
 
@@ -66,7 +68,7 @@ public class ViewSessions extends JFrame implements ActionListener,
         newtablepanel.add(idlabel);
 
         tableselector = new JComboBox();
-        for (GameTable gt : TableManager.getTablesArray()) {
+        for (GameTable gt : TableManager.getAvailableTablesArray()) {
             tableselector.addItem(gt);
         }
         newtablepanel.add(tableselector);
@@ -75,6 +77,7 @@ public class ViewSessions extends JFrame implements ActionListener,
         newtablepanel.add(sc);
 
         startchips = new JTextField(5);
+        startchips.setText("" + MINCHIPS);
         newtablepanel.add(startchips, c);
         newtablepanel.setBackground(Helpers.LIGHTBLUE);
 
@@ -82,7 +85,7 @@ public class ViewSessions extends JFrame implements ActionListener,
         newtablepanel.add(empl);
 
         empselector = new JComboBox();
-        for (Employee emp : EmployeeManager.getEmployeeNames()) {
+        for (Employee emp : EmployeeManager.getAvailableEmployeeNames()) {
             empselector.addItem(emp);
         }
         newtablepanel.add(empselector);
@@ -171,13 +174,36 @@ public class ViewSessions extends JFrame implements ActionListener,
             this.sessions = SessionManager.getAllGameSessions();
         }
         this.etm.setData(this.sessions);
+        tableselector.removeAllItems();
+        for (GameTable gt : TableManager.getAvailableTablesArray()) {
+            tableselector.addItem(gt);
+        }
+        empselector.removeAllItems();
+        for (Employee e : EmployeeManager.getAvailableEmployeeNames()) {
+            empselector.addItem(e);
+        }
     }
 
     public boolean validateForm() {
         String s = this.startchips.getText().trim();
+        if(tableselector.getSelectedItem() == null){
+            GuiDialogs.showErrorMessage("No hay mesas disponibles para"
+                    +" abrir una sesi" + Helpers.OACUTE + "n.");
+            return false;
+        }
+        if(empselector.getSelectedItem() == null){
+            GuiDialogs.showErrorMessage("No hay empleados disponibles para"
+                    +" abrir una sesi " + Helpers.OACUTE + "n.");
+            return false;
+        }
         if (!s.equals("")) {
             try {
                 double d = Double.parseDouble(s);
+                if(d < 50){
+                    GuiDialogs.showErrorMessage("Escriba un valor de fichas mayor"
+                            +" o igual que " + MINCHIPS);
+                    return false;
+                }
                 gs.setFichasinicio(d);
 
                 Employee e = (Employee) this.empselector.getSelectedItem();

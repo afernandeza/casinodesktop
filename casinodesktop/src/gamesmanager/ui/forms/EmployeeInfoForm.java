@@ -506,13 +506,34 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             good = false;
             usernamelabel.setForeground(Color.RED);
         } else {
-            usernamelabel.setForeground(Color.BLACK);
+            if(username.getText().trim().length() < 3){
+                good = false;
+                usernamelabel.setForeground(Color.RED);
+                formerrors.add("El nombre de usuario " +
+                "debe ser de al menos 3 caracteres.");
+            } else {
+                if(EmployeeManager.userExists(username.getText().trim())){
+                    good = false;
+                    formerrors.add("El nombre de usuario " +
+                    "seleccionado ya existe. Utilice otro.");
+                    usernamelabel.setForeground(Color.RED);
+                } else {
+                    usernamelabel.setForeground(Color.BLACK);
+                }
+            }
         }
         if (new String(password.getPassword()).trim().equals("")) {
             good = false;
             passwordlabel.setForeground(Color.RED);
         } else {
-            passwordlabel.setForeground(Color.BLACK);
+            if(new String(password.getPassword()).trim().length() < 6){
+                good = false;
+                formerrors.add("La contrase" + Helpers.NTILDE +
+                "a debe ser de al menos 6 caracteres.");
+                passwordlabel.setForeground(Color.RED);
+            } else {
+                passwordlabel.setForeground(Color.BLACK);
+            }
         }
         if(!good){
             StringBuffer em = new StringBuffer();

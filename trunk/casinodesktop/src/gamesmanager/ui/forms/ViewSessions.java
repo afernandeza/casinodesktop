@@ -193,7 +193,7 @@ public class ViewSessions extends JFrame implements ActionListener,
         }
         if(empselector.getSelectedItem() == null){
             GuiDialogs.showErrorMessage("No hay empleados disponibles para"
-                    +" abrir una sesi " + Helpers.OACUTE + "n.");
+                    +" abrir una sesi" + Helpers.OACUTE + "n.");
             return false;
         }
         if (!s.equals("")) {

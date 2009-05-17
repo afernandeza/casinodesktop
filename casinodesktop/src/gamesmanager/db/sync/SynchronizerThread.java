@@ -1,4 +1,4 @@
-package gamesmanager.db;
+package gamesmanager.db.sync;
 
 import gamesmanager.ui.Helpers;
 

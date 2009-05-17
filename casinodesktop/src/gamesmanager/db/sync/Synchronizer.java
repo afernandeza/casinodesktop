@@ -1,7 +1,9 @@
-package gamesmanager.db;
+package gamesmanager.db.sync;
 
 import gamesmanager.beans.Casino;
 import gamesmanager.beans.SyncQuery;
+import gamesmanager.db.DatabaseManager;
+import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.Helpers;
 
 import java.sql.CallableStatement;

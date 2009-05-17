@@ -2,6 +2,7 @@ package gamesmanager.ui;
 
 import gamesmanager.db.DatabaseManager;
 import gamesmanager.db.sync.SyncFormThread;
+import gamesmanager.db.sync.SyncScheduler;
 import gamesmanager.ui.forms.CheckClientForm;
 import gamesmanager.ui.forms.ClientInfoForm;
 import gamesmanager.ui.forms.EmployeeInfoForm;
@@ -45,6 +46,9 @@ public class GUI extends JFrame implements ActionListener {
 
     private static final int USERMANUALWIDTH = 800;
     private static final int USERMANUALHEIGHT = 400;
+    
+    private static final int SYNCHOUR = 13;
+    private static final int SYNCMIN = 33;
 
     static final long serialVersionUID = 1L;
 
@@ -206,6 +210,8 @@ public class GUI extends JFrame implements ActionListener {
         GUI g = new GUI();
         if (DatabaseManager.databaseAvailable()) {
             g.setVisible(true);
+            SyncScheduler ss = new SyncScheduler(SYNCHOUR, SYNCMIN, 0);
+            ss.start();
         } else {
             GuiDialogs
                     .showErrorMessage("No se tiene acceso a la base de datos.\n"

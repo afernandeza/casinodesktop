@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.tiling.scheduling.Scheduler;
 import org.tiling.scheduling.SchedulerTask;
-import org.tiling.scheduling.examples.AlarmClock;
 import org.tiling.scheduling.examples.iterators.DailyIterator;
 
 public class SyncScheduler {
@@ -24,19 +23,15 @@ public class SyncScheduler {
     public void start() {
         scheduler.schedule(new SchedulerTask() {
             public void run() {
-                soundAlarm();
+                runTask();
             }
 
-            private void soundAlarm() {
-                System.out.println("Wake up! " + "It's "
+            private void runTask() {
+                System.out.println("Starting scheduled sync at "
                         + dateFormat.format(new Date()));
-                // Start a new thread to sound an alarm...
+                SynchronizerThread st = new SynchronizerThread();
+                st.execute();
             }
         }, new DailyIterator(hourOfDay, minute, second));
-    }
-
-    public static void main(String[] args) {
-        AlarmClock alarmClock = new AlarmClock(11, 59, 0);
-        alarmClock.start();
     }
 }

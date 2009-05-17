@@ -208,7 +208,7 @@ public class GUI extends JFrame implements ActionListener {
 
     public static void main(String args[]) {
         GUI g = new GUI();
-        if (DatabaseManager.databaseAvailable()) {
+        if (DatabaseManager.localDatabaseAvailable()) {
             g.setVisible(true);
             SyncScheduler ss = new SyncScheduler(SYNCHOUR, SYNCMIN, 0);
             ss.start();

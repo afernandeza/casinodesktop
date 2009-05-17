@@ -2,6 +2,7 @@ package gamesmanager.db.sync;
 
 import gamesmanager.beans.Casino;
 import gamesmanager.beans.SyncQuery;
+import gamesmanager.db.CasinoManager;
 import gamesmanager.db.DatabaseManager;
 import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.Helpers;
@@ -16,55 +17,9 @@ import java.util.List;
 
 public class Synchronizer {
 
-    private static String CASINOCOUNT = "SELECT COUNT(*) FROM sucursales";
-    private static String GETCASINOS = "SELECT * FROM sucursales";
-
     private static String QUERYCOUNT = "SELECT COUNT(*) from syncinfofor(?)";
     private static String GETQUERIES = "SELECT qid, query from syncinfofor(?)";
-    
     private static String UPDATELATESTSID = "{ ? = call updatelatestsid(?, ?)}";
-
-    public static Object[][] getCasinosTable() {
-        List<Casino> casinos = getCasinos();
-        Object[][] o = new Object[casinos.size()][3];
-
-        for (int i = 0; i < o.length; i++) {
-            o[i][0] = casinos.get(i).getCasinoid();
-            o[i][1] = casinos.get(i).getJdbcurl();
-            o[i][2] = casinos.get(i).isAvailable();
-        }
-
-        return o;
-    }
-
-    private static List<Casino> getCasinos() {
-        Connection localconn = DatabaseManager.connect();
-        PreparedStatement countpstmt = null;
-        PreparedStatement getpstmt = null;
-        List<Casino> casinos = new LinkedList<Casino>();
-        try {
-            countpstmt = localconn.prepareStatement(CASINOCOUNT);
-            getpstmt = localconn.prepareStatement(GETCASINOS);
-            Object[][] o = DatabaseOperations.getResults(countpstmt, getpstmt);
-
-            for (int i = 0; i < o.length; i++) {
-                Casino c = new Casino(o[i][0].toString(), o[i][1].toString(),
-                        (Integer) o[i][2]);
-                Connection conn = DatabaseManager.attemptConnection(c
-                        .getJdbcurl());
-                if (conn != null) {
-                    c.setAvailable(true);
-                }
-                casinos.add(c);
-                DatabaseManager.close(conn);
-            }
-        } catch (Exception e) {
-            if (Helpers.DEBUG) {
-                e.printStackTrace();
-            }
-        }
-        return casinos;
-    }
 
     private static List<SyncQuery> getQueriesForCasino(Casino c) {
         Connection localconn = DatabaseManager.connect();
@@ -120,7 +75,7 @@ public class Synchronizer {
     }
 
     public static void sync() {
-        List<Casino> casinos = getCasinos();
+        List<Casino> casinos = CasinoManager.getCasinos();
         for (Casino casino : casinos) {
             if (casino.isAvailable()) {
                 System.out.println(casino);
@@ -129,7 +84,7 @@ public class Synchronizer {
                 int latestsyncedid = casino.getLatestsyncedid();
                 for (SyncQuery sq : queries) {
                     Connection conn = DatabaseManager.attemptConnection(casino
-                            .getJdbcurl());
+                            .getIp());
                     if (conn != null) {
                         try {
                             String call = "{? = call " + sq.toString() + "}";

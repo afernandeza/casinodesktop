@@ -9,4 +9,4 @@ return 'SUCA';
 end;$BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
-ALTER FUNCTION getlocalcasinoid() OWNER TO casindesktopapp;
+ALTER FUNCTION getlocalcasinoid() OWNER TO casinomngmtapp;

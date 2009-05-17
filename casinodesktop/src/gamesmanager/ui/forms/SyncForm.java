@@ -1,7 +1,7 @@
 package gamesmanager.ui.forms;
 
+import gamesmanager.db.CasinoManager;
 import gamesmanager.db.sync.SyncFormThread;
-import gamesmanager.db.sync.Synchronizer;
 import gamesmanager.db.sync.SynchronizerThread;
 import gamesmanager.ui.Helpers;
 
@@ -47,7 +47,7 @@ public class SyncForm extends JFrame implements ActionListener {
         tablepanel.setLayout(new GridLayout(1, 0));
 
         String[] columns = { "ID", "URL JDBC", "Disponible" };
-        syncinfo = Synchronizer.getCasinosTable();
+        syncinfo = CasinoManager.getCasinosTable();
         etm = new SynInfoTableModel(columns, syncinfo);
         table = new JTable(etm);
 

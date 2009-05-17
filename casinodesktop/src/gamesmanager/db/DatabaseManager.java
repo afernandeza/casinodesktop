@@ -11,9 +11,40 @@ import java.sql.Statement;
 public class DatabaseManager {
     
     public static final int CONNECTIONTIMEOUT = 5;
+    public static final String BOSSIP = "10.0.1.53";
 
-    public static boolean databaseAvailable() {
-        Connection conn = connect();
+    public static Connection connectToBoss(){
+        Connection conn = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            DriverManager.setLoginTimeout(CONNECTIONTIMEOUT);
+            conn = DriverManager.getConnection(
+                    "jdbc:postgresql://"+BOSSIP+"/casino",
+                    "sucursales", "sucursales");
+        } catch (ClassNotFoundException cnfe) {
+            if (Helpers.DEBUG) {
+                System.err.println(cnfe.getMessage());
+            }
+        } catch (SQLException e) {
+            if (Helpers.DEBUG) {
+                System.err.println(e.getMessage());
+            }
+        }
+        return conn;
+    }
+
+    public static boolean localDatabaseAvailable() {
+        Connection conn = attemptConnection("localhost");
+        if (conn == null) {
+            return false;
+        } else {
+            close(conn);
+            return true;
+        }
+    }
+    
+    public static boolean databaseAvailable(String ip) {
+        Connection conn = attemptConnection(ip);
         if (conn == null) {
             return false;
         } else {
@@ -22,13 +53,13 @@ public class DatabaseManager {
         }
     }
 
-    public static Connection attemptConnection(String jdbcurl) {
+    public static Connection attemptConnection(String ip) {
         Connection conn = null;
         try {
             Class.forName("org.postgresql.Driver");
             DriverManager.setLoginTimeout(CONNECTIONTIMEOUT);
             conn = DriverManager.getConnection(
-                    jdbcurl,
+                    "jdbc:postgresql://"+ip+"/casinolocal",
                     "casindesktopapp", "casindesktopapp");
         } catch (ClassNotFoundException cnfe) {
             if (Helpers.DEBUG) {
@@ -43,24 +74,7 @@ public class DatabaseManager {
     }
     
     public static Connection connect() {
-        Connection conn = null;
-        try {
-            Class.forName("org.postgresql.Driver");
-            DriverManager.setLoginTimeout(CONNECTIONTIMEOUT);
-            conn = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost/casinolocal",
-                    "casindesktopapp", "casindesktopapp");
-        } catch (ClassNotFoundException cnfe) {
-            if (Helpers.DEBUG) {
-                System.err.println(cnfe.getMessage());
-            }
-        } catch (SQLException e) {
-            if (Helpers.DEBUG) {
-                System.err.println(e.getMessage());
-            }
-        }
-
-        return conn;
+        return attemptConnection("localhost");
     }
 
     public static void close(ResultSet rs) {

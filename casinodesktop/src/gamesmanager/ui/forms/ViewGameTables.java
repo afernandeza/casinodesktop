@@ -137,6 +137,11 @@ public class ViewGameTables extends JFrame implements ActionListener,
             if (!newid.equals("")) {
                 try {
                     int tid = Integer.parseInt(newid);
+                    if(this.newgametype.getSelectedItem() == null){
+                        GuiDialogs.showErrorMessage("No hay tipos de juego para" +
+                        		" asociar con una mesa.");
+                        return;
+                    }
                     Type t = (Type) this.newgametype.getSelectedItem();
                     int gtid = t.getTypeid();
                     GameTable gt = new GameTable(tid, gtid);

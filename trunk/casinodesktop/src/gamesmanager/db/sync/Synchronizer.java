@@ -4,6 +4,7 @@ import gamesmanager.beans.Casino;
 import gamesmanager.beans.SyncQuery;
 import gamesmanager.db.DatabaseManager;
 import gamesmanager.db.DatabaseOperations;
+import gamesmanager.ui.GuiDialogs;
 import gamesmanager.ui.Helpers;
 
 import java.sql.CallableStatement;
@@ -33,7 +34,7 @@ public class Synchronizer {
             Object[][] o = DatabaseOperations.getResults(countpstmt, getpstmt);
             for (int i = 0; i < o.length; i++) {
                 SyncQuery sq = new SyncQuery((Integer) o[i][0], o[i][1]
-                        .toString());
+                                                                     .toString());
                 queries.add(sq);
             }
         } catch (Exception e) {
@@ -74,6 +75,7 @@ public class Synchronizer {
     }
 
     public static void sync() {
+        boolean broke = false;
         List<Casino> casinos = CasinoManager.getCasinos();
         for (Casino casino : casinos) {
             if (casino.isAvailable()) {
@@ -94,6 +96,7 @@ public class Synchronizer {
                             if (cs.getBoolean(1)) {
                                 latestsyncedid = sq.getTypeid();
                             } else {
+                                broke = true;
                                 break;
                             }
                         } catch (Exception e) {
@@ -105,6 +108,7 @@ public class Synchronizer {
                             DatabaseManager.close(conn);
                         }
                     } else {
+                        broke = true;
                         break;
                     }
                 }
@@ -113,6 +117,10 @@ public class Synchronizer {
                     updateLatestSyncedId(casino.getCasinoid(), latestsyncedid);
                 }
             }
+        }
+        if(broke){
+            GuiDialogs.showErrorMessage("Hubo errores en la sincronizaci"+Helpers.OACUTE+
+                "n. Intente m"+Helpers.AACUTE+"s tarde.");
         }
     }
 

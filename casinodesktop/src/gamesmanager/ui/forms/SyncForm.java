@@ -1,6 +1,5 @@
 package gamesmanager.ui.forms;
 
-import gamesmanager.db.sync.CasinoManager;
 import gamesmanager.db.sync.SyncFormThread;
 import gamesmanager.db.sync.SynchronizerThread;
 import gamesmanager.ui.Helpers;
@@ -34,10 +33,10 @@ public class SyncForm extends JFrame implements ActionListener {
     private JButton refreshbutton;
     private JButton cancel;
     private JTable table;
-    private SynInfoTableModel etm;
+    private SyncInfoTableModel etm;
     private Object[][] syncinfo = null;
 
-    public SyncForm() {
+    public SyncForm(Object[][] syncinfo) {
         super("Sincronizaci" + Helpers.OACUTE + "n");
         this.setLayout(new GridBagLayout());
         c.gridx = 0;
@@ -47,8 +46,8 @@ public class SyncForm extends JFrame implements ActionListener {
         tablepanel.setLayout(new GridLayout(1, 0));
 
         String[] columns = { "ID", "URL JDBC", "Disponible" };
-        syncinfo = CasinoManager.getCasinosTable();
-        etm = new SynInfoTableModel(columns, syncinfo);
+        this.syncinfo = syncinfo;
+        etm = new SyncInfoTableModel(columns, this.syncinfo);
         table = new JTable(etm);
 
         this.setColumnWidths();
@@ -130,14 +129,14 @@ public class SyncForm extends JFrame implements ActionListener {
         }
     }
 
-    class SynInfoTableModel extends AbstractTableModel {
+    class SyncInfoTableModel extends AbstractTableModel {
 
         static final long serialVersionUID = -1;
 
         private String[] columnNames;
         private Object[][] data;
 
-        public SynInfoTableModel(String[] columnNames, Object[][] data) {
+        public SyncInfoTableModel(String[] columnNames, Object[][] data) {
             this.columnNames = columnNames;
             this.data = data;
         }

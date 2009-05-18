@@ -1,6 +1,8 @@
-package gamesmanager.db;
+package gamesmanager.db.sync;
 
 import gamesmanager.beans.Casino;
+import gamesmanager.db.DatabaseManager;
+import gamesmanager.db.DatabaseOperations;
 import gamesmanager.ui.Helpers;
 
 import java.sql.CallableStatement;
@@ -21,13 +23,14 @@ public class CasinoManager {
     private static String GETCASINOID = "select * from getlocalcasinoid()";
     private static String GETCASINOS = "SELECT * FROM sync(?)";
 
-    public static String[][] getCasinosTable(){
+    public static Object[][] getCasinosTable(){
         List<Casino> casinos = getCasinos();
         int l = casinos.size();
-        String[][] cs = new String[l][2];
+        Object[][] cs = new Object[l][3];
         for(int i = 0; i < l; i++){
             cs[i][0] = casinos.get(i).getCasinoid();
             cs[i][1] = casinos.get(i).getIp();
+            cs[i][2] = casinos.get(i).isAvailable();
         }
         return cs;
     }

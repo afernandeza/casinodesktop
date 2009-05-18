@@ -1,9 +1,6 @@
 package gamesmanager.db.tests;
 
-import gamesmanager.beans.User;
-import gamesmanager.db.DatabaseOperations;
 import gamesmanager.db.EmployeeManager;
-import junit.framework.Assert;
 
 import org.junit.Test;
 

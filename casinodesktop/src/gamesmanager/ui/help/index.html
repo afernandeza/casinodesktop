@@ -93,35 +93,49 @@ Posteriormente se actualizar&aacute; autom&aacute;ticamente la ventana de Admini
 <h3>3.7 Dar de baja definitiva</h3>
 No es posible dar de baja definitiva a un empleado dado que siempre se almacenar&aacute; informaci&oacute;n hist&oacute;rica de los mismos aunque ya no laboren en el casino.
 <h3>3.8 Cambiar usuario o contrase&ntilde;a</h3>
-asfdasfd a dfssdfa sadfasdf
+Los usuarios no se pueden cambiar una vez que han sido creados. Por otra parte, las contrase&ntilde;as s&iacute; se pueden cambiar y esto se hace en la ventana de actualizar informaci&oacute;n personal. Tendr&aacute; que palomear la opci&oacute;n de &quot;Contrase&ntilde;a&quot; para indicar que sea cambiarla. Vea la secci&oacute;n 3.9 para m&aacute;s detalles.
 <h3>3.9 Actualizar informaci&oacute;n personal</h3>
 Primero encuentre al empleado cuya informaci&oacute;n desea actualizar siguiendo las instrucciones del inciso 3.2. Ahora d&eacute; doble clic sobre la fila del empleado y seleccione la opci&oacute;n &quot;Reactivar cuenta de usuario&quot;:
 <br>
 <img src="screens/editinfoemp.png" width="512" height="258" /><br>
 Si tiene los suficientes permisos para actualizar la informaci&oacute;n, se mostrar&aacute; una pantalla coma la siguiente:
 <br>
-<img src="screens/editinfoempconf.png" width="796" height="591" /><br>
+<img src="screens/editinfoempconf.png" width="796" height="596" /><br>
 Haga los cambios correspondientes y d&eacute; clic sobre el bot&oacute;n de &quot;Guardar cambios&quot; al terminar. La forma se validar&aacute; como cuando se insert&oacute; el cliente.<br>
 <h2>4. Administraci&oacute;n de tipos de juego</h2>
 <h3>4.1 Dar de alta</h3>
-<br><img src="screens/addgametype.png" width="420" height="260" /><br>
+Escriba en el cuadro de texto el juego que desea agregar y d&eacute; clic sobre &quot;Agregar&quot;. Si ya existe un tipo de juego con ese nombre, no se agregar&aacute; a la base de datos.<br><img src="screens/addgametype.png" width="420" height="260" /><br>
 <h3>4.2 Dar de baja</h3>
-<br><img src="screens/deletegametype.png" width="420" height="260" /><br>
+Seleccione el juego de la lista que desea borrar y d&eacute; clic sobre &quot;Borrar&quot;. Se eliminar&aacute; instant&aacute;neamente.<br><img src="screens/deletegametype.png" width="420" height="260" /><br>
 <br>   
 <h2>5. Administraci&oacute;n de mesas</h2>
 <h3>5.1 Dar de alta</h3>
-<br><img src="screens/addgametable.png" width="504" height="581" /><br>
+Para registrar una mesa que f&iacute;sicamente exista en la sucursal debe escribir el ID de la mesa, que debe estar f&iacute;sicamente impreso en la mesa y seleccionar el tipo de juego que ofrecer&aacute; dicha mesa. Puede haber varias mesas que ofrezcan el mismo tipo de juego pero no puede haber m&aacute;s de una mesa con el mismo identificador. La existencia de mesas no implica que est&eacute; disponible para juego, para eso se tienen que usar sesiones.<br><img src="screens/addgametable.png" width="504" height="581" /><br>
 <h3>5.2 Cambiar mesa de tipo de juego</h3>
-<br><img src="screens/updategametable.png" width="469" height="511" /><br>
+<p>D&eacute; doble clic sobre la fila de la mesa que desea editar. Seleccione la opci&oacute;n de &quot;Cambiar tipo de juego&quot;. </p>
+<p><br>
+<img src="screens/updategametable.png" width="469" height="511" /></p>
+<p>Ahora le aparecer&aacute; la siguiente pantalla. Deber&aacute; seleccionar el nuevo tipo de juego:</p>
+<p><img src="screens/newtablegametype.png" alt="newgametype" width="527" height="258" /></p>
+<p>D&eacute; clic en OK y el cambio se ver&aacute; reflejado en la ventana de administraci&oacute;n de mesas.<br>
+</p>
 <h3>5.3 Dar de baja</h3>
-<br><img src="screens/deletegametable.png" width="469" height="514" /><br>
-<br>
+<p>D&eacute; doble clic sobre la mesa que desea eliminar, seleccione la opci&oacute;n de &quot;Eliminar mesa&quot; y d&eacute; clic en OK. El cambio se ver&aacute; reflejado posteriormente en la ventana de administraci&oacute;n de mesas de juego.</p>
+<p><br>
+  <img src="screens/deletegametable.png" width="469" height="514" /><br>
+  <br>
+</p>
 <h2>6. Administraci&oacute;n de sesiones de juego</h2>
 <img src="screens/adminsessions.png" alt="searching servers" width="924" height="624" /><br> 
 
 <h2>7. Sincronizaci&oacute;n</h2>
+<p>D&eacute; clic en el men&uacute; &quot;Servicios&quot; y luego en la opci&oacute;n de &quot;Sincronizar&quot;. Ver&aacute; la siguiente pantalla, en donde se estar&aacute; buscando a las otras sucursales disponibles. Para ello, se acceder&aacute; al servidor central.</p>
 <p><img src="screens/searchingservers.png" alt="searching servers" width="326" height="122" /></p>
-<p><img src="screens/syncform.png" alt="searching servers" width="604" height="481" /><br> 
+<p>Una vez que el servidor central env&iacute;a las sucursales que tienen permisos de recibir sincronizaciones, se desplegar&aacute; la siguiente pantalla.</p>
+<p><img src="screens/syncform.png" alt="searching servers" width="604" height="481" /></p>
+<p>El bot&oacute;n de &quot;Actualizar&quot; har&aacute; que la aplicaci&oacute;n se conecte al servidor central y traiga la lista de sucursales nuevamente. El bot&oacute;n de &quot;Sincronizar&quot; se conectar&aacute; con las sucursales disponibles a enviar la informaci&oacute;n mas reciente. Si hay alg&uacute;n error de sincronizaci&oacute;n &eacute;ste se desplegar&aacute;. Si no se muestra ninguna ventana, significa que se lograron hacer las actualizaciones.</p>
+<p>&nbsp;</p>
+<p><br> 
   
   <br>
   (c) Copyright Alfredo Fern&aacute;ndez Acu&ntilde;a (alfredofernandeza@gmail.com)

@@ -6,6 +6,7 @@ public class Casino {
     private String ip;
     private int latestsyncedid;
     private boolean available;
+    private boolean updatedid;
 
     public Casino(String casinoid, String ip) {
         super();
@@ -21,6 +22,7 @@ public class Casino {
         this.ip = ip;
         this.latestsyncedid = latestsyncedid;
         this.available = false;
+        updatedid = true;
     }
     
     public String getCasinoid() {
@@ -30,10 +32,14 @@ public class Casino {
         this.casinoid = casinoid;
     }
     public int getLatestsyncedid() {
+        if(!updatedid){
+            throw new NullPointerException("No se ha definido el latestsyncedid");
+        }
         return latestsyncedid;
     }
     public void setLatestsyncedid(int latestsyncedid) {
         this.latestsyncedid = latestsyncedid;
+        updatedid = true;
     }
 
     public boolean isAvailable() {

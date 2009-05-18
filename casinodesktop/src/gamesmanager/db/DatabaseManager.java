@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class DatabaseManager {
     
     public static final int CONNECTIONTIMEOUT = 5;
-    public static final String BOSSIP = "10.0.1.53";
+    public static final String BOSSIP = "10.49.10.108";
 
     public static Connection connectToBoss(){
         Connection conn = null;

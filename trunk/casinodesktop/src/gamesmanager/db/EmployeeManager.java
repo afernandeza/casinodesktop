@@ -354,7 +354,7 @@ public class EmployeeManager {
             cs.setString(17, d.getPais());
 
             User u = e.getUser();
-            cs.setString(18, u.getUsername());
+            cs.setString(18, u.getPassword());
 
             Type et = e.getEmployeetype();
             cs.setInt(19, et.getTypeid());

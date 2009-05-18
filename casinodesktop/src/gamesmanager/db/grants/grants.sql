@@ -10,8 +10,8 @@ grant select on repmesas to casinomngmtapp;
 grant select on repclientes to casinomngmtapp;
 grant select on repempleados to casinomngmtapp;
 grant execute on function repsesiones(date, date) to casinomngmtapp;
-grant execute on function deleteextuser(character varying);
-grant execute on function  insertextuser(character varying, character varying);
-grant execute on function  updateextuser(character varying, character varying);
+grant execute on function deleteextuser(character varying) to casinomngmtapp;
+grant execute on function  insertextuser(character varying, character varying) to casinomngmtapp;
+grant execute on function  updateextuser(character varying, character varying) to casinomngmtapp;
 
 

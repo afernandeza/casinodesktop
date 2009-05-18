@@ -2,7 +2,7 @@
 
 -- DROP FUNCTION updateemployee(character varying, character varying, character varying, character varying, character, date, bytea, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, character varying, integer);
 
-CREATE OR REPLACE FUNCTION updateemployee(eid character varying, n character varying, ap character varying, am character varying, s character, fn date, ft bytea, tc character varying, tl character varying, calle character varying, nint character varying, col character varying, mun character varying, cp character varying, edo character varying, ps character varying, usn character varying, tid integer)
+CREATE OR REPLACE FUNCTION updateemployee(eid character varying, n character varying, ap character varying, am character varying, s character, fn date, ft bytea, tc character varying, tl character varying, calle character varying, nint character varying, col character varying, mun character varying, cp character varying, edo character varying, ps character varying, pw character varying, tid integer)
   RETURNS boolean AS
 $BODY$
 declare
@@ -32,7 +32,7 @@ begin
     pais = ps
     where direccionid = addressid;
   update usuarios set
-    usuario = usn
+    "password" = md5(pw)
     where usuarioid = userid;
    return true;
 end;

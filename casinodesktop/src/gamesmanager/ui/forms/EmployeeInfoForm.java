@@ -295,7 +295,7 @@ public class EmployeeInfoForm extends JFrame implements ActionListener {
             addressform.add(jp);
         } else {
             editpw = new JCheckBox();
-            editpw.setSelected(false);
+            editpw.setSelected(true);
             addressform.add(passwordlabel);
         }
         password = new JPasswordField(FIELDSIZE);

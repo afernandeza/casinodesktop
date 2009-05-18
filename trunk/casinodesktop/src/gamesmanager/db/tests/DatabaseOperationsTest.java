@@ -18,14 +18,5 @@ public class DatabaseOperationsTest {
         System.out.println(EmployeeManager.getEmployeeTypes());
     }
 
-    @Test
-    public void testlogin() {
-        Assert.assertTrue(DatabaseOperations.login(new User("ric", "ric")));
-    }
-
-    @Test
-    public void testlogin2() {
-        Assert.assertFalse(DatabaseOperations.login(new User("rec", "rec")));
-    }
 
 }

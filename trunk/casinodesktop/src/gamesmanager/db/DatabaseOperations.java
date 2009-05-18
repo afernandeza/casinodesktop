@@ -18,7 +18,8 @@ import java.util.List;
 
 public class DatabaseOperations {
 
-    private final static String AUTH = "{ ? = call authenticate( ?, ? ) }";
+    private final static String AUTH = "SELECT externo FROM usuarios WHERE " +
+    		"usuario = ? AND password = md5(?) AND active = ?";
     private final static String GETCOUNTRIES = "SELECT printable_name "
             + "FROM country ORDER BY printable_name";
     private final static String GETSTATES = "SELECT estado "
@@ -89,7 +90,11 @@ public class DatabaseOperations {
         return false;
     }
 
-    public static Session getSessionInfo(String usuario) {
+    public static Session getSessionInfo(User u) {
+        if(u.isExterno()){
+            Type et = new Type(1, "Administrador");
+            return new Session(u.getUsername(), u, et);
+        }
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
             return null;
@@ -98,10 +103,8 @@ public class DatabaseOperations {
         Session session = null;
         try {
             query = conn.prepareStatement(SESSIONINFO);
-            query.setString(1, usuario);
+            query.setString(1, u.getUsername());
             Object[] o = getResult(query);
-            User u = new User(o[1].toString());
-            u.setExterno((Boolean) o[2]);
             Type et = new Type((Integer) o[3], o[4].toString());
             session = new Session(o[0].toString(), u, et);
 
@@ -231,33 +234,36 @@ public class DatabaseOperations {
         return false;
     }
 
-    public static boolean login(User u) {
-        boolean authorized = false;
-
+    public static User login(String username, String password) {
         Connection conn = DatabaseManager.connect();
         if (conn == null) {
-            return false;
+            return null;
         }
-        CallableStatement cs = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            cs = conn.prepareCall(AUTH);
-            cs.registerOutParameter(1, Types.BOOLEAN);
-            cs.setString(2, u.getUsername());
-            cs.setString(3, u.getPassword());
-
-            cs.execute();
-            authorized = cs.getBoolean(1);
+            pstmt = conn.prepareStatement(AUTH);
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            pstmt.setBoolean(3, true);
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                User u = new User(username);
+                u.setExterno(rs.getBoolean(1));
+                return u;
+            }
         } catch (SQLException sqle) {
             if (Helpers.DEBUG) {
                 sqle.printStackTrace();
                 System.out.println("Error authorizing: " + sqle.getMessage());
             }
+            return null;
         } finally {
-            DatabaseManager.close(cs);
+            DatabaseManager.close(rs);
+            DatabaseManager.close(pstmt);
             DatabaseManager.close(conn);
         }
-
-        return authorized;
+        return null;
     }
 
     public static List<String> getCountries() {

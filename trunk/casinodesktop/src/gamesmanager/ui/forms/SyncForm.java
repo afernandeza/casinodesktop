@@ -1,6 +1,6 @@
 package gamesmanager.ui.forms;
 
-import gamesmanager.db.CasinoManager;
+import gamesmanager.db.sync.CasinoManager;
 import gamesmanager.db.sync.SyncFormThread;
 import gamesmanager.db.sync.SynchronizerThread;
 import gamesmanager.ui.Helpers;

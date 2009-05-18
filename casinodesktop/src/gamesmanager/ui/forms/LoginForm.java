@@ -87,11 +87,10 @@ public class LoginForm extends JPanel implements KeyListener, ActionListener {
     private void attemptLogin() {
         String username = this.username.getText();
         String password = new String(this.password.getPassword());
-        User u = new User(username, password);
-        boolean login = DatabaseOperations.login(u);
-        if (login) {
+        User u = DatabaseOperations.login(username, password);
+        if (u != null) {
             Session.setCurrentSession(DatabaseOperations
-                    .getSessionInfo(username));
+                    .getSessionInfo(u));
             this.mainwindow.startSession();
         } else {
             GuiDialogs.errorBeep();

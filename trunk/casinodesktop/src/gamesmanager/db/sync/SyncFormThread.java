@@ -11,6 +11,7 @@ public class SyncFormThread extends SwingWorker<Void, Void>{
     
         private SyncForm sf;
         private JFrame progress;
+        private Object[][] o = null;
         
         @Override
         protected Void doInBackground() throws Exception {
@@ -23,13 +24,14 @@ public class SyncFormThread extends SwingWorker<Void, Void>{
             progress.setSize(progress.getWidth() + 100, progress.getHeight());
             progress.setLocationRelativeTo(null);
             progress.setVisible(true);
-            sf = new SyncForm();
+            o = CasinoManager.getCasinosTable();
             return null;
         }
         
         @Override
         public void done(){
             progress.dispose();
+            sf = new SyncForm(o);
             sf.setVisible(true);
         }
 }

@@ -1,0 +1,1 @@
+A desktop application for managing casino games.
